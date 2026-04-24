@@ -1,6 +1,7 @@
 import './Footer.css';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { FiPhoneCall } from 'react-icons/fi';
+import { Link } from 'react-router-dom'
 
 export default function Footer () {
 
@@ -9,10 +10,10 @@ export default function Footer () {
       <div className="footer-container">
         
         <div className="footer-section about-link">
-          <a href="/about">
+          <Link to="/about">
             <AiOutlineInfoCircle className="footer-icon" />
             <span>About us</span>
-          </a>
+          </Link>
         </div>
 
         <div className="footer-section copyright">
@@ -20,10 +21,10 @@ export default function Footer () {
         </div>
 
         <div className="footer-section contact-info">
-          <a>
+          <Link>
             <FiPhoneCall className="footer-icon" />
             <span>+359 700 100 100</span>
-          </a>
+          </Link>
         </div>
 
       </div>

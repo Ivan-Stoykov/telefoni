@@ -4,24 +4,25 @@ import SwapIconImage from '../../assets/swap.png'
 import { FiShoppingCart } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
 import { FaFacebook, FaYoutube, FaInstagram, FaTwitter, FaChevronDown, FaSearch } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 
 export default function MainNavigation() {
 return <header>
-    <div class="top-bar">
-        <div class="container">
+    <div className="top-bar">
+        <div className="container">
             <div>
                 <span>Welcome to SwaPhone online eCommerce store.</span>
             </div>
-            <div class="top-bar-right">
-                <div class="social-links">
+            <div className="top-bar-right">
+                <div className="social-links">
                     <span>Follow us:</span>
-                    <a href="#"><FaTwitter/></a>
-                    <a href="#"><FaFacebook /></a>
-                    <a href="#"><FaYoutube/></a>
-                    <a href="#"><FaInstagram/></a>
+                    <Link to="#"><FaTwitter/></Link>
+                    <Link to="#"><FaFacebook /></Link>
+                    <Link to="#"><FaYoutube/></Link>
+                    <Link to="#"><FaInstagram/></Link>
                 </div>
-                <div class="language-selector">
+                <div className="language-selector">
                     <span>Eng</span>
                     <FaChevronDown/>
                 </div>
@@ -29,30 +30,30 @@ return <header>
         </div>
     </div>
 
-    <div class="main-nav">
-        <div class="container">
-            <div class="logo">
-                <img src={logo} alt="SWAPHONE" />
+    <div className="main-nav">
+        <div className="container">
+            <div className="logo">
+                <Link to="/"><img src={logo} alt="SWAPHONE" /></Link>
             </div>
 
-            <div class="search-container">
+            <div className="search-container">
                 <input type="text" placeholder="Search for anything..." />
                 <button type="submit"><FaSearch/></button>
             </div>
 
-            <div class="nav-icons">
-                <a href="#" class="icon-btn">
+            <div className="nav-icons">
+                <Link to="#" className="icon-btn">
                     <img 
               src={SwapIconImage} 
               alt="Swap Phones" 
               className="custom-swap-icon" 
-            /> </a>
-                <a href="#" class="icon-btn">
-                    <FiShoppingCart class="header-icon"/>
-                </a>
-                <a href="#" class="icon-btn">
-                    <LuUserRound class="header-icon"/>
-                </a>
+            /> </Link>
+                <Link to="#" className="icon-btn">
+                    <FiShoppingCart className="header-icon"/>
+                </Link>
+                <Link to="#" className="icon-btn">
+                    <LuUserRound className="header-icon"/>
+                </Link>
             </div>
         </div>
     </div>
