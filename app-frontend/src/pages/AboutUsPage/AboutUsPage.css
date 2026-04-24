@@ -5,17 +5,15 @@
             --bg-light: #f3f4f6;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            background-color: #fff;
-            color: var(--text-gray);
-        }
 
         .content-wrapper {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #fff;
+            color: var(--text-gray);
         }
 
         .about-hero {
