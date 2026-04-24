@@ -1,9 +1,9 @@
 .swaphone-footer {
-  background-color: #0047B5;
+  background-color: #0047b5;
   color: #ffffff;
   padding: 15px 0;
   width: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
 }
 
@@ -51,7 +51,7 @@
     gap: 10px;
     text-align: center;
   }
-  
+
   .copyright {
     order: 3;
     font-size: 12px;

@@ -1,14 +1,12 @@
-import './Footer.css';
-import { AiOutlineInfoCircle } from 'react-icons/ai';
-import { FiPhoneCall } from 'react-icons/fi';
-import { Link } from 'react-router-dom'
+import "./Footer.css";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import { FiPhoneCall } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
-export default function Footer () {
-
+export default function Footer() {
   return (
     <footer className="swaphone-footer">
       <div className="footer-container">
-        
         <div className="footer-section about-link">
           <Link to="/about">
             <AiOutlineInfoCircle className="footer-icon" />
@@ -26,8 +24,7 @@ export default function Footer () {
             <span>+359 700 100 100</span>
           </Link>
         </div>
-
       </div>
     </footer>
   );
-};
+}

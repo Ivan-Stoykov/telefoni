@@ -1,0 +1,133 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  min-height: 70vh;
+  font-family: "Inter", sans-serif;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+}
+
+.auth-tabs {
+  display: flex;
+  background: #fdfdfd;
+  border-bottom: 1px solid #eee;
+}
+
+.tab {
+  flex: 1;
+  padding: 18px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #6C8196;
+  text-decoration: none;
+  text-align: center;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.tab.active {
+  color: #0047b5;
+  border-bottom: 3px solid #0047b5;
+  background: #fff;
+}
+
+.auth-form {
+  padding: 30px;
+}
+
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.forgot-pass {
+  font-size: 11px;
+  color: #999;
+  text-decoration: none;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bbb;
+  cursor: pointer;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  margin: 20px 0;
+  line-height: 1.4;
+}
+.checkbox-group a {
+  color: #6C8196;
+    text-decoration: none;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: #0047b5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background: #0047b5;
+}
+
+.error-message {
+  background: #ffe0e0;
+  color: #d8000c;
+  padding: 5px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+.error-message p {
+  margin: 15px 0;
+}
