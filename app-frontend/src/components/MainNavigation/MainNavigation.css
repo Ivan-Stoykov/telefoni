@@ -1,0 +1,128 @@
+/* Използваме Font Awesome за иконите */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+:root {
+    --swaphone-blue: #004dc3;
+    --white: #ffffff;
+    --text-light: rgba(255, 255, 255, 0.9);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-bar {
+    background-color: var(--swaphone-blue);
+    color: var(--text-light);
+    font-size: 13px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.social-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+.main-nav {
+    background-color: var(--swaphone-blue);
+    padding: 20px 0;
+}
+
+.logo {
+    height: 45px;
+    display: block;
+}
+img {
+    height: 150px;
+    display: block;
+    position:relative;
+    top:-55px;
+}
+
+.header-icon {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.custom-swap-icon {
+  height: 30px;
+  width: auto;
+  transition: opacity 0.2s ease;
+  top: -2px;
+}
+.search-container {
+    flex: 0 1 500px;
+    position: relative;
+    display: flex;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-container button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.icon-btn {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 22px;
+    transition: opacity 0.2s;
+}
+
+.icon-btn:hover {
+    opacity: 0.8;
+}
