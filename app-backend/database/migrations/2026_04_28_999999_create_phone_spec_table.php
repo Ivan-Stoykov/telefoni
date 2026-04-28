@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('phoneSpec', function (Blueprint $table) {
+        Schema::create('phone_specs', function (Blueprint $table) {
             $table->id();
-            $table->string('mainCamera')->nullable();
+            $table->text('mainCamera')->nullable();
             $table->string('MCFeatures')->nullable();
             $table->string('MCVideo')->nullable();
             $table->string('SelfieCamera')->nullable();
@@ -38,7 +38,9 @@ return new class extends Migration
             $table->string('Battery')->nullable();
             $table->string('Charging')->nullable();
             $table->unsignedBigInteger('processorId');
-            $table->foreign('processorId')->references('id')->on('processor')->onDelete('cascade');
+            $table->foreign('processorId')->references('id')->on('processors')->onDelete('cascade');
+            $table->unsignedBigInteger('brandId');
+            $table->foreign('brandId')->references('id')->on('brands')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -48,6 +50,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('phone_spec');
+        Schema::dropIfExists('phone_specs');
     }
 };

@@ -4,17 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PhoneSpec;
-use App\Models\Colors;
-
-#[Fillable(['SalesPackage', 'RAM', 'Storage', 'PhoneSpecId', 'Description'])]
+use App\Models\PhoneColor;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+#[Fillable(['name', 'RAM', 'Storage', 'PhoneSpecId', 'Description', 'imageUrl', 'price'])]
 class Phone extends Model
 {
-    public function spec(){
-        return $this->belongsTo(PhoneSpec::class, 'PhoneSpecId');
+    public function phoneSpec(){
+        return $this->belongsTo(PhoneSpec::class, 'phoneSpecId');
     }
 
     public function colors()
     {
-        return $this->hasMany(Colors::class, 'Id');
+        return $this->hasMany(PhoneColor::class, 'phoneId');
     }
 }

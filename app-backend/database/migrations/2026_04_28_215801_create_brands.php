@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('phone_colors', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('colorId');
-            $table->unsignedBigInteger('phoneId');
-            $table->foreign('colorId')->references('id')->on('colors')->onDelete('cascade');
-            $table->foreign('phoneId')->references('id')->on('phones')->onDelete('cascade');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('phone_colors');
+        Schema::dropIfExists('brands');
     }
 };

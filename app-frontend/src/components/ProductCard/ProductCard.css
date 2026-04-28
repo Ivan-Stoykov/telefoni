@@ -66,7 +66,7 @@
 .product-card .card-title {
   min-height: 42px; /* Принуждава заглавието винаги да заема място за 2 реда */
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Ограничава до 2 реда, ако текстът е прекалено дълъг */
+  line-clamp: 2; /* Ограничава до 2 реда, ако текстът е прекалено дълъг */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

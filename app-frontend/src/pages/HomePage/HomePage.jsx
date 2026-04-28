@@ -1,4 +1,4 @@
-import React , { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductCard from '../../components/ProductCard/ProductCard';
 
 const HomePage = () => {
@@ -28,47 +28,26 @@ const HomePage = () => {
     });
   };
 
-  const phones = [
-    {
-      id: 1,
-      brand: 'Samsung',
-      model: 'Galaxy S26 Ultra',
-      storage: '1TB',
-      price: 1949.00,
-      refurbished: false,
-      image: '/images/asni.jpg',
-      colors: ['#D1E8FF', '#9181B1', '#2D2D2D', '#FFFFFF'],
-      specs: { cpu: 'SNAPDRAGON 8 ELITE G5', battery: '5000 mAh', ram: '16 GB' }
-    },
-    {
-      id: 2,
-      brand: 'Samsung',
-      model: 'Galaxy S26 Ultra',
-      storage: '512GB',
-      price: 1649.00,
-      refurbished: false,
-      image: '/images/asni2.jpg',
-      colors: ['#D1E8FF', '#9181B1', '#2D2D2D', '#FFFFFF'],
-      specs: { cpu: 'SNAPDRAGON 8 ELITE G5', battery: '5000 mAh', ram: '16 GB' }
-    },
-    {
-      id: 3,
-      brand: 'IPhone',
-      model: '15 Pro Max',
-      storage: '256GB',
-      price: 1449.00,
-      refurbished: false,
-      image: '/images/asni3.jpg',
-      colors: ['#D1E8FF', '#9181B1', '#2D2D2D', '#FFFFFF'],
-      specs: { cpu: 'SNAPDRAGON 8 ELITE G5', battery: '5000 mAh', ram: '16 GB' }
-    },
-    
-  ];
+  const [phones, setPhones] = useState([]);
+
+  useEffect(() => {
+
+    async function fetchPhones() {
+      const response = await fetch('http://localhost:8000/api/phones');
+      if (response.ok) {
+        const data = await response.json();
+        setPhones(data);
+        console.log('Fetched phones:', data); // За проверка в конзолата
+      }
+    }
+      fetchPhones();
+  }, []);
+
 
   // 3. Филтриране на телефоните (Засега работи локално, после ще се прави в Laravel)
   const filteredPhones = phones.filter(phone => {
     // Ако има избрани марки и марката на телефона не е сред тях -> скрий го
-    if (filters.brand.length > 0 && !filters.brand.includes(phone.brand)) return false;
+    if (filters.brand.length > 0 && !filters.brand.includes(phone.phone_spec.brand.name)) return false;
     
     // Ако има избрана памет и паметта на телефона не е сред тях -> скрий го
     if (filters.storage.length > 0 && !filters.storage.includes(phone.storage)) return false;
@@ -124,7 +103,7 @@ const HomePage = () => {
             {/* Brand */}
             <div className="mb-5">
               <h6 className="fw-bold mb-3">Brand</h6>
-              {['IPhone', 'Samsung', 'Motorola', 'Xiaomi', 'Honor'].map(brand => (
+              {['Apple', 'Samsung', 'Motorola', 'Xiaomi', 'Honor'].map(brand => (
                 <div className="form-check text-muted mb-2 small" key={brand}>
                   <input 
                     className="form-check-input" 
@@ -200,12 +179,22 @@ const HomePage = () => {
 
           {/* Мрежа с продукти */}
           <div className="row">
-            {sortedPhones.map(phone => (
+            {phones.length > 0 && sortedPhones.length > 0 && sortedPhones.map(phone => (
               // Използваме col-xl-4, за да имаме по 3 продукта на ред на големи екрани
               <div className="col-md-6 col-xl-4 mb-5" key={phone.id}>
                 <ProductCard phone={phone} />
               </div>
             ))}
+            {phones.length > 0 && sortedPhones.length === 0 && (
+              <div className="col-12">
+                <p className="text-center text-muted">No phones match the selected filters.</p>
+              </div>
+            )}
+            {phones.length === 0 && (
+              <div className="col-12">
+                <p className="text-center text-muted">Loading phones...</p>
+              </div>
+            )}
           </div>
 
         </div>

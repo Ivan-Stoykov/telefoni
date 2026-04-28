@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('phone', function (Blueprint $table) {
+        Schema::create('phones', function (Blueprint $table) {
             $table->id();
-            $table->string('SalesPackage')->nullable();
+            $table->string('name');
+            $table->string('imageUrl')->nullable();
+            $table->double('price')->nullable();
             $table->string('RAM')->nullable();
             $table->string('Storage')->nullable();
-            $table->text('Decription');
+            $table->text('Description');
             $table->unsignedBigInteger('phoneSpecId');
-            $table->foreign('phoneSpecId')->references('id')->on('phoneSpec')->onDelete('cascade');
+            $table->foreign('phoneSpecId')->references('id')->on('phone_specs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('phone');
+        Schema::dropIfExists('phones');
     }
 };

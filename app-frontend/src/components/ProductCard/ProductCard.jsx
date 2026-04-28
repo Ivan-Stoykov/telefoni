@@ -1,4 +1,3 @@
-import React from 'react';
 import './ProductCard.css';
 import { Link } from 'react-router-dom';
 
@@ -11,9 +10,9 @@ const ProductCard = ({ phone }) => {
       <Link to={`/product/${phone.id}`} className="text-decoration-none text-dark">
       {/* Снимка */}
       <img 
-        src={phone.image} 
+        src={phone.imageUrl} 
         className="card-img-top product-image" 
-        alt={`${phone.brand} ${phone.model}`} 
+        alt={`${phone.name}`} 
       />
       </Link>
       
@@ -21,35 +20,30 @@ const ProductCard = ({ phone }) => {
         {/* Заглавие и Модел */}
         <Link to={`/product/${phone.id}`} className="text-decoration-none text-dark">
         <h6 className="card-title mb-1 fw-bold">
-          {phone.brand} {phone.model} {phone.storage}
+          {phone.name}
         </h6>
         </Link>
-
-        {/* Таг за реновиран (ако има) */}
-        {phone.refurbished && (
-          <p className="text-primary small fw-bold mb-1">Refurbished</p>
-        )}
         
         {/* Цена */}
         <p className="price-text mb-2">{phone.price.toFixed(2)} €</p>
         
         {/* Характеристики */}
         <div className="specs-list mb-3">
-          <div>Processor: {phone.specs.cpu}</div>
-          <div>Battery: {phone.specs.battery}</div>
-          <div>RAM: {phone.specs.ram}</div>
+          <div>Processor: {phone.phone_spec.processor.brand + " " + phone.phone_spec.processor.name}</div>
+          <div>Battery: {phone.phone_spec.battery}</div>
+          <div>RAM: {phone.RAM}</div>
         </div>
 
         {/* Цветове */}
         <div className="mb-3">
           <div className="small text-muted mb-1">Colors</div>
           <div className="d-flex">
-            {phone.colors.map((color, index) => (
+            {phone.colors.map((color) => (
               <span 
-                key={index} 
+                key={color.id} 
                 className="color-dot" 
-                style={{ backgroundColor: color }}
-                title={color}
+                style={{ backgroundColor: color.color }}
+                title={color.color}
               ></span>
             ))}
           </div>
