@@ -1,0 +1,72 @@
+/* src/components/ProductCard/ProductCard.css */
+
+/* Специфични стилове за картата на продукта */
+.product-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  background-color: #fff; /* Сигурен бял фон */
+  border: 1px solid #eee; /* Тънка рамка като на дизайна */
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+}
+
+.product-card .product-image {
+  height: 220px;       /* Задаваме фиксирана, по-малка височина */
+  object-fit: contain;  /* Най-важното! Картинката се смалява, за да се събере цялата БЕЗ да се разтяга */
+  width: 100%;          /* Заема цялата ширина на картата */
+  margin-top: 25px;     /* Малко място от горния ръб */
+  margin-bottom: -30px;   /* Малко място от долния ръб */
+}
+
+.color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+}
+
+.specs-list {
+  font-size: 0.8rem;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
+.price-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #212529;
+}
+
+/* Стилове за бутоните, за да приличат на дизайна */
+.product-card .btn-outline-dark {
+  border-radius: 50px;
+  background-color: #f8f9fa;
+  border-color: #ced4da;
+  color: #212529;
+}
+
+.product-card .btn-outline-dark:hover {
+  background-color: #e2e6ea;
+  border-color: #adb5bd;
+}
+
+.product-card .btn-outline-secondary {
+  border-radius: 50px;
+  background-color: #fff;
+  border-color: #ced4da;
+  color: #6c757d;
+}
+/* Добавяме това към съществуващия ти CSS */
+.product-card .card-title {
+  min-height: 42px; /* Принуждава заглавието винаги да заема място за 2 реда */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Ограничава до 2 реда, ако текстът е прекалено дълъг */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
