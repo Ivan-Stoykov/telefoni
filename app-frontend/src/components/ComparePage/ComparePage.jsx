@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './ComparePage.css';
+import { useCart } from '../../context/CartContext';
 
 const ComparePage = () => {
   const [searchParams] = useSearchParams();
@@ -9,6 +10,8 @@ const ComparePage = () => {
   const [allPhones, setAllPhones] = useState([]);
   const [compareSlots, setCompareSlots] = useState([null, null, null]);
   const [searchTerms, setSearchTerms] = useState(['', '', '']);
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     async function fetchPhones() {
@@ -109,7 +112,9 @@ const ComparePage = () => {
 
                 {/* РЕШЕНИЕ 1 (продължение): mt-auto избутва бутоните най-отдолу, изравнявайки ги перфектно */}
                 <div className="d-flex gap-3 mt-auto pt-3 border-top">
-                  <button className="btn btn-outline-primary btn-sm w-50 py-2 rounded-pill fw-bold">Add to cart</button>
+                  <button className="btn btn-outline-primary btn-sm w-50 py-2 rounded-pill fw-bold" onClick={() => addToCart(phone)}>
+                    Add to cart
+                  </button>
                   <button 
                     className="btn btn-outline-secondary btn-sm w-50 py-2 rounded-pill fw-bold"
                     onClick={() => handleRemove(index)}

@@ -78,7 +78,7 @@ img {
   height: 30px;
   width: auto;
   transition: opacity 0.2s ease;
-  top: -2px;
+  top: 2px;
 }
 .search-container {
   flex: 0 1 500px;

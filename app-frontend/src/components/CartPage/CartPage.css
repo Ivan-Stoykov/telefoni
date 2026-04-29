@@ -1,0 +1,122 @@
+/* src/pages/CartPage/CartPage.css */
+
+.cart-page-container {
+  background-color: #f8f9fa;
+  min-height: 80vh;
+  padding-top: 50px; /* ТУК РАЗШИРЯВАМЕ ПРОСТРАНСТВОТО ОТГОРЕ */
+}
+
+.cart-card, .summary-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.cart-title {
+  color: #0044b3;
+  font-weight: 600;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.cart-item-box {
+  border: 1px solid #e9ecef;
+  padding: 20px; 
+  margin-bottom: 20px;
+  border-radius: 12px;
+  position: relative;
+  background-color: #fff;
+  /* БЕЗ overflow: hidden тук! */
+}
+.cart-image-wrapper {
+  width: 80px;         /* Твърда ширина */
+  height: 100px;       /* Твърда височина */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;      /* Забранява мачкането */
+   /* ТУК Е КЛЮЧЪТ: Каквото излезе извън пазача - се реже! */
+}
+
+/* Самата снимка вътре */
+.cart-item-img {
+  top: 0px;
+  width: 100% !important;  
+  height: 100% !important; 
+  object-fit: contain;    
+  object-position: center; 
+  margin: 0 !important;    
+  padding: 0 !important;
+  display: block;
+}
+
+.cart-item-title {
+  color: #5b708b;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 5px;
+}
+
+.cart-item-specs {
+  color: #8c98a4;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.cart-item-price {
+  color: #0044b3;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.delete-btn {
+  color: #aeb5be;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: #dc3545;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+  font-weight: bold;
+}
+
+.summary-total-price {
+  color: #0044b3;
+  font-size: 1.4rem;
+}
+
+.checkout-btn {
+  background-color: #0044b3;
+  color: white;
+  font-weight: 500;
+  border-radius: 20px;
+  padding: 10px;
+  transition: background-color 0.2s;
+}
+
+.checkout-btn:hover {
+  background-color: #003388;
+  color: white;
+}

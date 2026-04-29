@@ -8,6 +8,7 @@ import SignUpPage from "./pages/Auth/SignUpPage.jsx";
 
 import ProductDetails from "./components/ProductDetails/ProductDetails.jsx";
 import ComparePage from "./components/ComparePage/ComparePage.jsx";
+import CartPage from "./components/CartPage/CartPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: "signup", element: <SignUpPage /> },
       { path: "product/:slug", element: <ProductDetails /> },
       { path: "compare", element: <ComparePage /> },
+      { path: "cart", element: <CartPage /> },
     ],
   },
 ]);

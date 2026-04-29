@@ -13,10 +13,16 @@ import {
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useCart } from '../../context/CartContext';
 
 export default function MainNavigation() {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const navigate = useNavigate();
+
+  const { cartItems } = useCart();
+
+  // 3. Пресмятаме общия брой (така ако имаш 2 броя от един и същи телефон, ще покаже 2, а не 1)
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   function logout() {
     localStorage.removeItem("token");
@@ -88,10 +94,20 @@ export default function MainNavigation() {
               />{" "}
             </Link>
 
-            <Link to="#" className="icon-btn">
+            <Link to="/cart" className="icon-btn position-relative">
               <FiShoppingCart className="header-icon" />
-            </Link>
 
+              {/* Магията: Показваме червеното кръгче САМО ако имаме поне 1 продукт */}
+              {totalItems > 0 && (
+                <span
+                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  style={{ fontSize: '0.65rem', padding: '0.3em 0.5em' }}
+                >
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+            
             <div className="user-menu-container">
               <button
                 onClick={() => {

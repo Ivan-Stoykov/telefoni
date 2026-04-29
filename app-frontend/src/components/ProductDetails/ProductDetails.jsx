@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './ProductDetails.css';
 import { useParams } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 
 const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState('description');
@@ -9,6 +10,8 @@ const ProductDetails = () => {
   
   const [phone, setPhone] = useState();
   const [selectedModel, setSelectedModel] = useState();
+
+  const { addToCart } = useCart();
 
   useEffect(()=>{
     async function fetchPhone() {
@@ -72,7 +75,7 @@ const ProductDetails = () => {
               <p className="text-muted mb-0 fw-bold">Price:</p>
               <h2 className="fw-bold mb-0">{phone.phone[0].price.toFixed(2)} €</h2>
             </div>
-            <button className="btn btn-outline-primary px-5 py-2 rounded-pill fw-bold" style={{ borderWidth: '2px' }}>
+            <button className="btn btn-outline-primary px-5 py-2 rounded-pill fw-bold" style={{ borderWidth: '2px' }} onClick={() => addToCart(phone)}>
               Add to cart
             </button>
           </div>
