@@ -1,10 +1,13 @@
 /* src/pages/ProductDetails/ProductDetails.css */
 
 .product-details-img {
-  width: 100%;
+  width: 100%; 
+  max-width: 400px;
   height: auto;
-  max-height: 650px; /* Увеличаваме лимита, за да може да стане голяма */
+  max-height: 500px;
   object-fit: contain;
+  margin: 0 auto;
+  display: block;
 }
 
 /* Кутийки за памет */

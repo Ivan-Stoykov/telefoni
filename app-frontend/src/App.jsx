@@ -7,6 +7,9 @@ import LoginPage from "./pages/Auth/LoginPage.jsx";
 import SignUpPage from "./pages/Auth/SignUpPage.jsx";
 
 import ProductDetails from "./components/ProductDetails/ProductDetails.jsx";
+import ComparePage from "./components/ComparePage/ComparePage.jsx";
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,6 +20,7 @@ const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignUpPage /> },
       { path: "product/:slug", element: <ProductDetails /> },
+      { path: "compare", element: <ComparePage /> },
     ],
   },
 ]);
