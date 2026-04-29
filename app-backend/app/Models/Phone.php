@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\PhoneSpec;
 use App\Models\PhoneColor;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
-#[Fillable(['name', 'RAM', 'Storage', 'PhoneSpecId', 'Description', 'imageUrl', 'price'])]
+#[Fillable(['RAM', 'Storage', 'PhoneSpecId', 'price'])]
 class Phone extends Model
 {
     public function phoneSpec(){

@@ -7,12 +7,12 @@ const ProductCard = ({ phone }) => {
     // МАХНАХМЕ най-външния <div className="col-md-4">
     // Сега директно започваме с картата:
     <div className="card border-0 h-100 product-card shadow-sm p-2">
-      <Link to={`/product/${phone.id}`} className="text-decoration-none text-dark">
+      <Link to={`/product/${phone.phone_spec.slug}`} className="text-decoration-none text-dark">
       {/* Снимка */}
       <img 
-        src={phone.imageUrl} 
+        src={phone.phone_spec.imageUrl} 
         className="card-img-top product-image" 
-        alt={`${phone.name}`} 
+        alt={`${phone.phone_spec.name}`} 
       />
       </Link>
       
@@ -20,7 +20,7 @@ const ProductCard = ({ phone }) => {
         {/* Заглавие и Модел */}
         <Link to={`/product/${phone.id}`} className="text-decoration-none text-dark">
         <h6 className="card-title mb-1 fw-bold">
-          {phone.name}
+          {phone.phone_spec.name} {phone.Storage}
         </h6>
         </Link>
         
@@ -30,7 +30,7 @@ const ProductCard = ({ phone }) => {
         {/* Характеристики */}
         <div className="specs-list mb-3">
           <div>Processor: {phone.phone_spec.processor.brand + " " + phone.phone_spec.processor.name}</div>
-          <div>Battery: {phone.phone_spec.battery}</div>
+          <div>Battery: {phone.phone_spec.Battery}</div>
           <div>RAM: {phone.RAM}</div>
         </div>
 
@@ -42,8 +42,8 @@ const ProductCard = ({ phone }) => {
               <span 
                 key={color.id} 
                 className="color-dot" 
-                style={{ backgroundColor: color.color }}
-                title={color.color}
+                style={{ backgroundColor: color.color.color }}
+                title={color.color.color}
               ></span>
             ))}
           </div>

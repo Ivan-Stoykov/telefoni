@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Phone;
+use App\Models\PhoneSpec;
 use Symfony\Component\HttpFoundation\Response;
 
 class PhoneController extends Controller
@@ -28,9 +29,10 @@ class PhoneController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $phone = PhoneSpec::with("processor", "brand", "Phone.colors.color")->where("slug", $slug)->first();
+        return response($phone, 200);
     }
 
     /**

@@ -9,7 +9,6 @@ const HomePage = () => {
     storage: [],
     color: [],
     memory: [],
-    refurbished: []
   });
 
   const [sortType, setSortType] = useState('');
@@ -50,7 +49,9 @@ const HomePage = () => {
     if (filters.brand.length > 0 && !filters.brand.includes(phone.phone_spec.brand.name)) return false;
     
     // Ако има избрана памет и паметта на телефона не е сред тях -> скрий го
-    if (filters.storage.length > 0 && !filters.storage.includes(phone.storage)) return false;
+    if (filters.storage.length > 0 && !filters.storage.includes(phone.Storage)) return false;
+    if (filters.memory.length > 0 && !filters.memory.includes(phone.RAM)) return false;
+    if (filters.color.length > 0 && phone.colors.some(color=>!filters.color.includes(color.color.color))) return false;
     
     // (По същия начин могат да се добавят проверки за цвят, RAM и т.н., когато добавиш тези полета в mock данните)
 
@@ -89,16 +90,6 @@ const HomePage = () => {
         <div className="col-md-3 col-xl-2 pe-lg-4">
           
           <div className="filter-section">
-            {/* Refurbished */}
-            <div className="mb-5">
-              <h6 className="fw-bold mb-3">Refirbished</h6>
-              {['Yes', 'No'].map(opt => (
-                <div className="form-check text-muted mb-2 small" key={opt}>
-                  <input className="form-check-input" type="checkbox" id={`ref-${opt}`} />
-                  <label className="form-check-label" htmlFor={`ref-${opt}`}>{opt}</label>
-                </div>
-              ))}
-            </div>
 
             {/* Brand */}
             <div className="mb-5">
@@ -122,7 +113,8 @@ const HomePage = () => {
               <h6 className="fw-bold mb-3">Color</h6>
               {['White', 'Black', 'Beige', 'Blue', 'Green', 'Purple'].map(color => (
                 <div className="form-check text-muted mb-2 small" key={color}>
-                  <input className="form-check-input" type="checkbox" id={color} />
+                  <input className="form-check-input" type="checkbox" id={color}
+                                      onChange={(e) => handleFilterChange('color', color, e.target.checked)} />
                   <label className="form-check-label" htmlFor={color}>{color}</label>
                 </div>
               ))}
@@ -150,7 +142,8 @@ const HomePage = () => {
               <h6 className="fw-bold mb-3">Memory</h6>
               {['4 GB', '6 GB', '8 GB', '12 GB', '16 GB'].map(mem => (
                 <div className="form-check text-muted mb-2 small" key={mem}>
-                  <input className="form-check-input" type="checkbox" id={mem} />
+                  <input className="form-check-input" type="checkbox" id={mem}
+                                      onChange={(e) => handleFilterChange('memory', mem.replace(' ',''), e.target.checked)} />
                   <label className="form-check-label" htmlFor={mem}>{mem}</label>
                 </div>
               ))}

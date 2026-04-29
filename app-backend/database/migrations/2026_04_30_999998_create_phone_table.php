@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('imageUrl')->nullable();
             $table->double('price')->nullable();
             $table->string('RAM')->nullable();
             $table->string('Storage')->nullable();
-            $table->text('Description');
             $table->unsignedBigInteger('phoneSpecId');
             $table->foreign('phoneSpecId')->references('id')->on('phone_specs')->onDelete('cascade');
             $table->timestamps();

@@ -41,6 +41,9 @@ class DatabaseSeeder extends Seeder
 
         $spec = PhoneSpec::create([
             'processorId' => $proc->id,
+            'name' => 'Samsung Galaxy S26 Ultra',
+            'slug' => 'Samsung_Galaxy_S26_Ultra',
+            'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s26-ultra.jpg',
             'brandId' => $brand->id,
             'MainCamera' => '200 MP (wide), \n 10 MP (telephoto) 3x zoom, \n 50 MP (periscope telephoto) 5x zoom,\n 50 MP (ultrawide)',
             'MCFeatures' => 'Laser AF, Best Face, Horizon Lock, LED flash, auto-HDR, panorama',
@@ -65,16 +68,14 @@ class DatabaseSeeder extends Seeder
             'Weight' => '214g',
             'OS' => 'Android 16, One UI 8.5',
             'Battery' => 'Li-Ion 5000 mAh',
-            'Charging' =>'60W wired, 25W wireless'
+            'Charging' =>'60W wired, 25W wireless',
+            'description' => 'Specific High-End Phone',
         ]);
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Samsung Galaxy S26 Ultra 512GB',
-            'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s26-ultra.jpg',
             'RAM' => '12GB',
             'Storage' => '512GB',
-            'Description' => 'Specific High-End Phone',
             'price' => 1649.99,
             ]);
             
@@ -98,6 +99,9 @@ class DatabaseSeeder extends Seeder
         $spec = PhoneSpec::create([
             'processorId' => $proc->id,
             'brandId' => $brand->id,
+            'name' => 'Apple iPhone 17 Pro Max',
+            'slug' => 'Apple_iPhone_17_Pro_Max',
+            'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-17-pro-max.jpg',
             'MainCamera' => '48 MP (wide), \n 48 MP (periscope telephoto), 4x zoom \n 48 MP (ultrawide)',
             'MCFeatures' => 'Dual-LED dual-tone flash, HDR (photo/panorama)',
             'MCVideo' => '4K@24/25/30/60/100/120fps, 1080p@25/30/60/120/240fps, 10-bit HDR, Dolby Vision HDR (up to 120fps), ProRes, ProRes RAW (up to 120fps), Apple Log 2, 3D (spatial) video/audio, stereo sound rec.',
@@ -121,16 +125,14 @@ class DatabaseSeeder extends Seeder
             'Weight' => '233g',
             'OS' => 'iOS 26',
             'Battery' => 'Li-Ion 4823 mAh',
-            'Charging' =>'40W wired, 25W wireless'
+            'Charging' =>'40W wired, 25W wireless',
+            'description' => 'Specific High-End Phone',
         ]);
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-17-pro-max.jpg',
-            'name' => 'Apple iPhone 17 Pro Max 512GB',
             'RAM' => '12GB',
             'Storage' => '512GB',
-            'Description' => 'Specific High-End Phone',
             'price' => 1699.99
             ]);
             

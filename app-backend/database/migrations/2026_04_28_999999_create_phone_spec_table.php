@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('phone_specs', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->text('description')->nullable();
+            $table->string('imageUrl')->nullable();
             $table->text('mainCamera')->nullable();
             $table->string('MCFeatures')->nullable();
             $table->string('MCVideo')->nullable();
