@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import './ComparePage.css';
-import { useCart } from '../../context/CartContext';
 
 const ComparePage = () => {
   const [searchParams] = useSearchParams();
@@ -10,8 +9,6 @@ const ComparePage = () => {
   const [allPhones, setAllPhones] = useState([]);
   const [compareSlots, setCompareSlots] = useState([null, null, null]);
   const [searchTerms, setSearchTerms] = useState(['', '', '']);
-
-  const { addToCart } = useCart();
 
   useEffect(() => {
     async function fetchPhones() {
@@ -66,7 +63,7 @@ const ComparePage = () => {
                 <div className="text-center mb-4">
                   <img 
                     src={phone.phone_spec?.imageUrl || fallbackImage} 
-                    alt={phone.phone_spec?.name || 'Phone'} 
+                    alt={phone?.name || 'Phone'} 
                     style={{ height: '250px', objectFit: 'contain' }} 
                     onError={(e) => {
                       e.target.onerror = null; 
@@ -75,7 +72,7 @@ const ComparePage = () => {
                   />
                 </div>
                 
-                <h5 className="fw-bold mb-3">{phone.phone_spec?.name || 'Unknown Model'}</h5>
+                <h5 className="fw-bold mb-3">{phone.name || 'Unknown Model'}</h5>
                 <p className="fw-bold text-dark">{Number(phone.price || 0).toFixed(2)} €</p>
 
                 {/* --- СПЕЦИФИКАЦИИ --- */}
@@ -112,9 +109,9 @@ const ComparePage = () => {
 
                 {/* РЕШЕНИЕ 1 (продължение): mt-auto избутва бутоните най-отдолу, изравнявайки ги перфектно */}
                 <div className="d-flex gap-3 mt-auto pt-3 border-top">
-                  <button className="btn btn-outline-primary btn-sm w-50 py-2 rounded-pill fw-bold" onClick={() => addToCart(phone)}>
-                    Add to cart
-                  </button>
+                  <Link to={`/product/${phone.slug}`} className="btn btn-outline-primary btn-sm w-50 py-2 rounded-pill fw-bold">
+                    View Details
+                  </Link>
                   <button 
                     className="btn btn-outline-secondary btn-sm w-50 py-2 rounded-pill fw-bold"
                     onClick={() => handleRemove(index)}
@@ -144,7 +141,7 @@ const ComparePage = () => {
                   {searchTerms[index].length > 0 && (
                     <div className="position-absolute w-100 bg-white border rounded shadow-sm mt-1 z-3" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                       {allPhones
-                        .filter(p => p.phone_spec?.name?.toLowerCase().includes(searchTerms[index].toLowerCase()))
+                        .filter(p => p.name?.toLowerCase().includes(searchTerms[index].toLowerCase()))
                         .map(p => (
                           <div 
                             key={p.id} 
@@ -154,17 +151,10 @@ const ComparePage = () => {
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                           >
-                            <img 
-                              src={p.phone_spec?.imageUrl || fallbackImage} 
-                              alt="" 
-                              className="flex-shrink-0"
-                              style={{width: '30px', height: '30px', objectFit: 'contain', marginRight: '10px'}} 
-                              onError={(e) => { e.target.src = fallbackImage }} 
-                            />
-                            <span className="small fw-bold text-truncate">{p.phone_spec?.name || 'Unknown Model'}</span>
+                            <span className="small fw-bold text-truncate">{p.name || 'Unknown Model'}</span>
                           </div>
                       ))}
-                      {allPhones.filter(p => p.phone_spec?.name?.toLowerCase().includes(searchTerms[index].toLowerCase())).length === 0 && (
+                      {allPhones.filter(p => p.name?.toLowerCase().includes(searchTerms[index].toLowerCase())).length === 0 && (
                         <div className="p-2 small text-muted text-center">Няма намерени телефони</div>
                       )}
                     </div>

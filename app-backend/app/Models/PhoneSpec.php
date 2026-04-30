@@ -7,8 +7,6 @@ use App\Models\Processor;
 use App\Models\Phone;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 #[Fillable([
-    'name',
-    'slug',
     'imageUrl',
     'description',
     'MainCamera',

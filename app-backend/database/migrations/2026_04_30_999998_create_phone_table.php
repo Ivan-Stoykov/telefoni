@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
             $table->double('price')->nullable();
             $table->string('RAM')->nullable();
             $table->string('Storage')->nullable();

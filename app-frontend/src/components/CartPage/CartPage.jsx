@@ -53,7 +53,7 @@ const CartPage = () => {
                                         {/* Информация за продукта */}
                                         <div className="flex-grow-1">
                                             <div className="cart-item-title">
-                                                {item.phone_spec?.name || item.name || 'Unknown Phone'}
+                                                { item.name + " - " + item.color || 'Unknown Phone'}
                                                 {/* Махнахме стария бадж "x2", защото вече имаме хубави бутони! */}
                                             </div>
 
@@ -64,7 +64,7 @@ const CartPage = () => {
                                             {/* НОВО: Контейнер за цената и контролера за бройка */}
                                             <div className="d-flex align-items-center gap-4 mt-2">
                                                 <div className="cart-item-price mb-0">
-                                                    €{Number(item.price || item.phone_spec?.price || 0).toFixed(2)}
+                                                    €{Number(item.price || 0).toFixed(2)}
                                                 </div>
 
                                                 {/* Бутони + / - */}
@@ -84,7 +84,7 @@ const CartPage = () => {
 
                                                     <button
                                                         className="btn btn-sm btn-light border-0 px-2 text-muted fw-bold"
-                                                        onClick={() => addToCart(item)}
+                                                        onClick={() => addToCart({phone:item})}
                                                         style={{ background: 'transparent' }}
                                                     >
                                                         +

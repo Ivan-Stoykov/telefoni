@@ -51,7 +51,7 @@ const HomePage = () => {
     // Ако има избрана памет и паметта на телефона не е сред тях -> скрий го
     if (filters.storage.length > 0 && !filters.storage.includes(phone.Storage)) return false;
     if (filters.memory.length > 0 && !filters.memory.includes(phone.RAM)) return false;
-    if (filters.color.length > 0 && phone.colors.some(color=>!filters.color.includes(color.color.color))) return false;
+    if (filters.color.length > 0 && phone.colors.every(color => !filters.color.includes(color.color.color))) return false;
     
     // (По същия начин могат да се добавят проверки за цвят, RAM и т.н., когато добавиш тези полета в mock данните)
 
@@ -68,8 +68,8 @@ const HomePage = () => {
     } 
     
     // За имената комбинираме Марка + Модел, за да е точно
-    const nameA = `${a.brand} ${a.model}`.toLowerCase();
-    const nameB = `${b.brand} ${b.model}`.toLowerCase();
+    const nameA = `${a.name}`.toLowerCase();
+    const nameB = `${b.name}`.toLowerCase();
     
     if (sortType === 'name-asc') {
       return nameA.localeCompare(nameB); // От А до Я
@@ -111,7 +111,7 @@ const HomePage = () => {
             {/* Color */}
             <div className="mb-5">
               <h6 className="fw-bold mb-3">Color</h6>
-              {['White', 'Black', 'Beige', 'Blue', 'Green', 'Purple'].map(color => (
+              {['White', 'Black', 'Orange', 'Blue', 'Green', 'Purple'].map(color => (
                 <div className="form-check text-muted mb-2 small" key={color}>
                   <input className="form-check-input" type="checkbox" id={color}
                                       onChange={(e) => handleFilterChange('color', color, e.target.checked)} />

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 
 // 1. Създаваме самия контекст
 const CartContext = createContext();
@@ -18,9 +18,9 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   // Функция за добавяне в количката
-  const addToCart = (phone) => {
+  const addToCart = ({phone, color}) => {
     setCartItems((prevItems) => {
-      // Проверяваме дали този телефон (с това ID) вече е в количката
+      // Проверяваме дали този телефон (с това ID) вече е в количката 
       const existingItem = prevItems.find(item => item.id === phone.id);
       
       if (existingItem) {
@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) => {
         );
       } else {
         // Ако го няма, го добавяме като нов обект с бройка: 1
-        return [...prevItems, { ...phone, quantity: 1 }];
+        return [...prevItems, { ...phone, color: color, quantity: 1 }];
       }
     });
   };

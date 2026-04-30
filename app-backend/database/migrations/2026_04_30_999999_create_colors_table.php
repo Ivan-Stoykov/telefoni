@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('colorId');
             $table->unsignedBigInteger('phoneId');
+            $table->integer('quantity');
             $table->foreign('colorId')->references('id')->on('colors')->onDelete('cascade');
             $table->foreign('phoneId')->references('id')->on('phones')->onDelete('cascade');
             $table->timestamps();

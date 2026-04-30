@@ -1,20 +1,17 @@
 import './ProductCard.css';
 import { Link } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
 
 const ProductCard = ({ phone }) => {
-
-const { addToCart } = useCart();
 
   return (
     
     <div className="card border-0 h-100 product-card shadow-sm p-2">
-      <Link to={`/product/${phone.phone_spec.slug}`} className="text-decoration-none text-dark">
+      <Link to={`/product/${phone.slug}`} className="text-decoration-none text-dark">
         {/* Снимка */}
         <img
           src={phone.phone_spec.imageUrl}
           className="card-img-top product-image"
-          alt={`${phone.phone_spec.name}`}
+          alt={`${phone.name}`}
         />
       </Link>
 
@@ -22,7 +19,7 @@ const { addToCart } = useCart();
         {/* Заглавие и Модел */}
         <Link to={`/product/${phone.id}`} className="text-decoration-none text-dark">
           <h6 className="card-title mb-1 fw-bold">
-            {phone.phone_spec.name} {phone.Storage}
+            {phone.name}
           </h6>
         </Link>
 
@@ -53,9 +50,9 @@ const { addToCart } = useCart();
 
         {/* Бутони*/}
         <div className="mt-auto d-flex gap-2">
-          <button className="btn btn-outline-dark btn-sm w-100 py-2" onClick={() => addToCart(phone)}>
-            Add to cart
-          </button>
+          <Link to={`/product/${phone.slug}`} className="btn btn-outline-dark btn-sm w-100 py-2">
+            View Details
+          </Link>
           <Link to={`/compare?id=${phone.id}`} className="w-100 text-decoration-none">
             <button className="btn btn-outline-secondary btn-sm w-100 py-2">Compare</button>
           </Link>

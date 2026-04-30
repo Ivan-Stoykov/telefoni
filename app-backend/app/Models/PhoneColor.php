@@ -5,7 +5,7 @@ use App\Models\Color;
 use App\Models\Phone;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
-#[Fillable(['colorId', 'phoneId'])]
+#[Fillable(['colorId', 'phoneId', 'quantity'])]
 class PhoneColor extends Model
 {
     public function color(){

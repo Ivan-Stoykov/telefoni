@@ -41,8 +41,6 @@ class DatabaseSeeder extends Seeder
 
         $spec = PhoneSpec::create([
             'processorId' => $proc->id,
-            'name' => 'Samsung Galaxy S26 Ultra',
-            'slug' => 'Samsung_Galaxy_S26_Ultra',
             'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s26-ultra.jpg',
             'brandId' => $brand->id,
             'MainCamera' => '200 MP (wide), \n 10 MP (telephoto) 3x zoom, \n 50 MP (periscope telephoto) 5x zoom,\n 50 MP (ultrawide)',
@@ -74,18 +72,52 @@ class DatabaseSeeder extends Seeder
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
+            'name' => 'Samsung Galaxy S26 Ultra 512GB',
+            'slug' => 'Samsung_Galaxy_S26_Ultra_512GB',
             'RAM' => '12GB',
             'Storage' => '512GB',
             'price' => 1649.99,
             ]);
             
+            
             $color = Color::firstOrCreate(['color' => 'Black']);
+            PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+            $color = Color::firstOrCreate(['color' => 'White']);
             
         PhoneColor::create([
             'phoneId' => $phone->id,
-            'colorId' => $color->id
+            'colorId' => $color->id,
+            'quantity' => 50
         ]);
 
+
+        $phone = Phone::create([
+            'PhoneSpecId' => $spec->id,
+            'name' => 'Samsung Galaxy S26 Ultra 1TB',
+            'slug' => 'Samsung_Galaxy_S26_Ultra_1TB',
+            'RAM' => '16GB',
+            'Storage' => '1TB',
+            'price' => 1949.99,
+            ]);
+            
+            
+            $color = Color::firstOrCreate(['color' => 'Black']);
+            PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+            $color = Color::firstOrCreate(['color' => 'White']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
 
 
         $proc = Processor::create([
@@ -99,8 +131,6 @@ class DatabaseSeeder extends Seeder
         $spec = PhoneSpec::create([
             'processorId' => $proc->id,
             'brandId' => $brand->id,
-            'name' => 'Apple iPhone 17 Pro Max',
-            'slug' => 'Apple_iPhone_17_Pro_Max',
             'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-17-pro-max.jpg',
             'MainCamera' => '48 MP (wide), \n 48 MP (periscope telephoto), 4x zoom \n 48 MP (ultrawide)',
             'MCFeatures' => 'Dual-LED dual-tone flash, HDR (photo/panorama)',
@@ -131,6 +161,8 @@ class DatabaseSeeder extends Seeder
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
+            'name' => 'Apple iPhone 17 Pro Max 512GB',
+            'slug' => 'Apple_iPhone_17_Pro_Max_512GB',
             'RAM' => '12GB',
             'Storage' => '512GB',
             'price' => 1699.99
@@ -140,7 +172,39 @@ class DatabaseSeeder extends Seeder
             
         PhoneColor::create([
             'phoneId' => $phone->id,
-            'colorId' => $color->id
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+        $color = Color::firstOrCreate(['color' => 'Orange']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+
+        $phone = Phone::create([
+            'PhoneSpecId' => $spec->id,
+            'name' => 'Apple iPhone 17 Pro Max 1TB',
+            'slug' => 'Apple_iPhone_17_Pro_Max_1TB',
+            'RAM' => '12GB',
+            'Storage' => '1TB',
+            'price' => 1959.99
+            ]);
+            
+            $color = Color::firstOrCreate(['color' => 'White']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+        $color = Color::firstOrCreate(['color' => 'Orange']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
         ]);
     }
 }
