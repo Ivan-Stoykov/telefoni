@@ -1,36 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import './AccountPage.css';
+import { useState } from "react";
+import "./AccountPage.css";
 
 const AccountPage = () => {
+  const storedUser = localStorage.getItem("user");
+  const parsedUser = JSON.parse(storedUser);
   const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: ''
+    name: parsedUser.name || "",
+    email: parsedUser.email || "",
+    phone: parsedUser.phone || "",
+    address: parsedUser.address || "",
+    city: parsedUser.city || "",
   });
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUserData({
-          name: parsedUser.name || '',
-          email: parsedUser.email || '',
-          phone: parsedUser.phone || '',
-          address: parsedUser.address || '',
-          city: parsedUser.city || ''
-        });
-      } catch (error) {
-        console.error("Грешка при прочитане на user от localStorage:", error);
-      }
-    }
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData(prev => ({ ...prev, [name]: value }));
+    setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -43,17 +27,18 @@ const AccountPage = () => {
     <div className="account-page-container px-4">
       <div className="account-card">
         <h3 className="account-title">My Account</h3>
-        <p className="account-subtitle">Manage your personal information and shipping details.</p>
+        <p className="account-subtitle">
+          Manage your personal information and shipping details.
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="row">
-            
             <div className="col-12 form-group">
               <label>Name and Surname</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="name"
-                className="custom-input" 
+                className="custom-input"
                 value={userData.name}
                 onChange={handleChange}
                 required
@@ -62,22 +47,22 @@ const AccountPage = () => {
 
             <div className="col-md-6 form-group">
               <label>Email</label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 name="email"
-                className="custom-input" 
+                className="custom-input"
                 value={userData.email}
                 onChange={handleChange}
-                disabled 
+                disabled
               />
             </div>
 
             <div className="col-md-6 form-group">
               <label>Phone number</label>
-              <input 
-                type="tel" 
+              <input
+                type="tel"
                 name="phone"
-                className="custom-input" 
+                className="custom-input"
                 value={userData.phone}
                 onChange={handleChange}
                 placeholder="+359..."
@@ -86,10 +71,10 @@ const AccountPage = () => {
 
             <div className="col-12 form-group">
               <label>Address</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="address"
-                className="custom-input" 
+                className="custom-input"
                 value={userData.address}
                 onChange={handleChange}
                 placeholder="Street name, apartment, etc."
@@ -98,15 +83,14 @@ const AccountPage = () => {
 
             <div className="col-md-6 form-group">
               <label>City</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="city"
-                className="custom-input" 
+                className="custom-input"
                 value={userData.city}
                 onChange={handleChange}
               />
             </div>
-
           </div>
 
           <button type="submit" className="save-btn">

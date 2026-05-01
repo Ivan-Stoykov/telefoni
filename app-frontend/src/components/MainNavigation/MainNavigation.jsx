@@ -13,14 +13,17 @@ import {
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react"; // ДОБАВЕН: useEffect
-import { useCart } from '../../context/CartContext';
+import { useCart } from "../../context/CartContext";
 
 export default function MainNavigation() {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const navigate = useNavigate();
 
   const { cartItems } = useCart();
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
 
   // --- НОВО: ЛОГИКА ЗА ТЪРСАЧКАТА ---
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,7 +35,7 @@ export default function MainNavigation() {
   useEffect(() => {
     async function fetchPhones() {
       try {
-        const response = await fetch('http://localhost:8000/api/phones');
+        const response = await fetch("http://localhost:8000/api/phones");
         if (response.ok) {
           const data = await response.json();
           setAllPhones(data);
@@ -50,7 +53,7 @@ export default function MainNavigation() {
     setSearchQuery(query);
 
     if (query.trim().length > 0) {
-      const filtered = allPhones.filter(phone => {
+      const filtered = allPhones.filter((phone) => {
         const phoneName = phone.phone_spec?.name || phone.name || "";
         return phoneName.toLowerCase().includes(query.toLowerCase());
       });
@@ -124,11 +127,13 @@ export default function MainNavigation() {
               placeholder="Search for anything..."
               value={searchQuery}
               onChange={handleSearchChange}
-              onFocus={() => { if (searchQuery.length > 0) setIsSearchOpen(true) }}
+              onFocus={() => {
+                if (searchQuery.length > 0) setIsSearchOpen(true);
+              }}
               onBlur={() => setTimeout(() => setIsSearchOpen(false), 200)}
               /* 1. ХВАЩАМЕ НАТИСКАНЕТО НА ENTER */
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && searchQuery.trim().length > 0) {
+                if (e.key === "Enter" && searchQuery.trim().length > 0) {
                   setIsSearchOpen(false);
                   // Пренасочваме към страницата с продуктите + параметър за търсене
                   navigate(`/?search=${searchQuery}`);
@@ -153,16 +158,30 @@ export default function MainNavigation() {
             {isSearchOpen && (
               <div
                 className="position-absolute bg-white border rounded shadow mt-2"
-                style={{ top: '100%', left: 0, width: '100%', maxHeight: '300px', overflowY: 'auto', zIndex: 1050 }}
+                style={{
+                  top: "100%",
+                  left: 0,
+                  width: "100%",
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                  zIndex: 1050,
+                }}
               >
                 {searchResults.length > 0 ? (
-                  searchResults.map(phone => (
+                  searchResults.map((phone) => (
                     <div
                       key={phone.id}
                       className="d-flex align-items-center p-2 border-bottom"
-                      style={{ cursor: 'pointer', transition: 'background 0.2s' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      style={{
+                        cursor: "pointer",
+                        transition: "background 0.2s",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#f8f9fa")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "transparent")
+                      }
                       onClick={() => {
                         setIsSearchOpen(false);
                         setSearchQuery("");
@@ -174,12 +193,12 @@ export default function MainNavigation() {
                         src={phone.phone_spec?.imageUrl || "/images/asni.jpg"}
                         alt="phone"
                         style={{
-                          width: '40px',
-                          height: '40px',
-                          minWidth: '40px', /* ТОВА Е МАГИЯТА */
-                          objectFit: 'contain',
-                          marginRight: '10px',
-                          top: '0',
+                          width: "40px",
+                          height: "40px",
+                          minWidth: "40px" /* ТОВА Е МАГИЯТА */,
+                          objectFit: "contain",
+                          marginRight: "10px",
+                          top: "0",
                         }}
                         onError={(e) => {
                           e.target.onerror = null;
@@ -188,10 +207,18 @@ export default function MainNavigation() {
                       />
                       <div className="d-flex flex-column text-start">
                         <span className="small fw-bold text-dark mb-0 leading-tight">
-                          {phone.phone_spec?.name || phone.name || 'Unknown Model'}
+                          {phone.phone_spec?.name ||
+                            phone.name ||
+                            "Unknown Model"}
                         </span>
-                        <span className="text-primary fw-bold" style={{ fontSize: '0.8rem' }}>
-                          €{Number(phone.price || phone.phone_spec?.price || 0).toFixed(2)}
+                        <span
+                          className="text-primary fw-bold"
+                          style={{ fontSize: "0.8rem" }}
+                        >
+                          €
+                          {Number(
+                            phone.price || phone.phone_spec?.price || 0,
+                          ).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -221,7 +248,7 @@ export default function MainNavigation() {
               {totalItems > 0 && (
                 <span
                   className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                  style={{ fontSize: '0.65rem', padding: '0.3em 0.5em' }}
+                  style={{ fontSize: "0.65rem", padding: "0.3em 0.5em" }}
                 >
                   {totalItems}
                 </span>
@@ -269,16 +296,14 @@ export default function MainNavigation() {
                   <div className="dropdown-arrow"></div>
                   <ul className="dropdown-list">
                     <li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            setIsAccountOpen(false);
-                            navigate("/account"); // ТУК Е ПРОМЯНАТА
-                          }}
-                        >
-                          Account
-                        </button>
-                      </li>
+                      <button
+                        onClick={() => {
+                          setIsAccountOpen(false);
+                          navigate("/account");
+                        }}
+                      >
+                        Account
+                      </button>
                     </li>
                     <li>
                       <button onClick={logout}>Logout</button>
