@@ -53,7 +53,7 @@ const CartPage = () => {
                                         {/* Информация за продукта */}
                                         <div className="flex-grow-1">
                                             <div className="cart-item-title">
-                                                { item.name + " - " + item.color || 'Unknown Phone'}
+                                                {item.name + " - " + item.color || 'Unknown Phone'}
                                                 {/* Махнахме стария бадж "x2", защото вече имаме хубави бутони! */}
                                             </div>
 
@@ -84,7 +84,7 @@ const CartPage = () => {
 
                                                     <button
                                                         className="btn btn-sm btn-light border-0 px-2 text-muted fw-bold"
-                                                        onClick={() => addToCart({phone:item})}
+                                                        onClick={() => addToCart({ phone: item })}
                                                         style={{ background: 'transparent' }}
                                                     >
                                                         +
@@ -127,9 +127,9 @@ const CartPage = () => {
                                     <span className="summary-total-price">€{orderValue.toFixed(2)}</span>
                                 </div>
 
-                                <button className="btn w-100 mt-4 checkout-btn">
+                                <Link to="/checkout" className="btn w-100 mt-4 checkout-btn text-decoration-none">
                                     To checkout &raquo;
-                                </button>
+                                </Link>
 
                                 <p className="text-center text-muted mt-3 mb-0" style={{ fontSize: '0.75rem' }}>
                                     *Custom orders need a few working days to be created. More info <Link to="#">here</Link>

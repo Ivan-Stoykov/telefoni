@@ -12,7 +12,7 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // ДОБАВЕН: useEffect
 import { useCart } from '../../context/CartContext';
 
 export default function MainNavigation() {
@@ -20,9 +20,48 @@ export default function MainNavigation() {
   const navigate = useNavigate();
 
   const { cartItems } = useCart();
-
-  // 3. Пресмятаме общия брой (така ако имаш 2 броя от един и същи телефон, ще покаже 2, а не 1)
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  // --- НОВО: ЛОГИКА ЗА ТЪРСАЧКАТА ---
+  const [searchQuery, setSearchQuery] = useState("");
+  const [allPhones, setAllPhones] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // 1. Взимаме всички телефони при зареждане на навигацията
+  useEffect(() => {
+    async function fetchPhones() {
+      try {
+        const response = await fetch('http://localhost:8000/api/phones');
+        if (response.ok) {
+          const data = await response.json();
+          setAllPhones(data);
+        }
+      } catch (error) {
+        console.error("Грешка при зареждане на телефони за търсачката:", error);
+      }
+    }
+    fetchPhones();
+  }, []);
+
+  // 2. Функция, която филтрира докато пишем
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    if (query.trim().length > 0) {
+      const filtered = allPhones.filter(phone => {
+        const phoneName = phone.phone_spec?.name || phone.name || "";
+        return phoneName.toLowerCase().includes(query.toLowerCase());
+      });
+      setSearchResults(filtered);
+      setIsSearchOpen(true);
+    } else {
+      setSearchResults([]);
+      setIsSearchOpen(false);
+    }
+  };
+  // ----------------------------------
 
   function logout() {
     localStorage.removeItem("token");
@@ -78,12 +117,94 @@ export default function MainNavigation() {
             </Link>
           </div>
 
-          <div className="search-container">
-            <input type="text" placeholder="Search for anything..." />
-            <button type="submit">
+          {/* НОВО: ОБНОВЕН КОНТЕЙНЕР ЗА ТЪРСАЧКА */}
+          <div className="search-container position-relative">
+            <input
+              type="text"
+              placeholder="Search for anything..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onFocus={() => { if (searchQuery.length > 0) setIsSearchOpen(true) }}
+              onBlur={() => setTimeout(() => setIsSearchOpen(false), 200)}
+              /* 1. ХВАЩАМЕ НАТИСКАНЕТО НА ENTER */
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim().length > 0) {
+                  setIsSearchOpen(false);
+                  // Пренасочваме към страницата с продуктите + параметър за търсене
+                  navigate(`/?search=${searchQuery}`);
+                }
+              }}
+            />
+
+            {/* 2. ХВАЩАМЕ КЛИКА ВЪРХУ ЛУПАТА */}
+            <button
+              type="submit"
+              onClick={() => {
+                if (searchQuery.trim().length > 0) {
+                  setIsSearchOpen(false);
+                  navigate(`/?search=${searchQuery}`);
+                }
+              }}
+            >
               <FaSearch />
             </button>
+
+            {/* ПАДАЩО МЕНЮ С РЕЗУЛТАТИТЕ */}
+            {isSearchOpen && (
+              <div
+                className="position-absolute bg-white border rounded shadow mt-2"
+                style={{ top: '100%', left: 0, width: '100%', maxHeight: '300px', overflowY: 'auto', zIndex: 1050 }}
+              >
+                {searchResults.length > 0 ? (
+                  searchResults.map(phone => (
+                    <div
+                      key={phone.id}
+                      className="d-flex align-items-center p-2 border-bottom"
+                      style={{ cursor: 'pointer', transition: 'background 0.2s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      onClick={() => {
+                        setIsSearchOpen(false);
+                        setSearchQuery("");
+                        navigate(`/product/${phone.slug}`);
+                      }}
+                    >
+                      {/* 3. ОПРАВЕНА СНИМКА (добавен flexShrink: 0 и сигурен fallback) */}
+                      <img
+                        src={phone.phone_spec?.imageUrl || "/images/asni.jpg"}
+                        alt="phone"
+                        style={{
+                          width: '40px',
+                          height: '40px',
+                          minWidth: '40px', /* ТОВА Е МАГИЯТА */
+                          objectFit: 'contain',
+                          marginRight: '10px',
+                          top: '0',
+                        }}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/images/asni.jpg";
+                        }}
+                      />
+                      <div className="d-flex flex-column text-start">
+                        <span className="small fw-bold text-dark mb-0 leading-tight">
+                          {phone.phone_spec?.name || phone.name || 'Unknown Model'}
+                        </span>
+                        <span className="text-primary fw-bold" style={{ fontSize: '0.8rem' }}>
+                          €{Number(phone.price || phone.phone_spec?.price || 0).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-3 text-center text-muted small">
+                    Няма намерени резултати за "{searchQuery}"
+                  </div>
+                )}
+              </div>
+            )}
           </div>
+          {/* КРАЙ НА ТЪРСАЧКАТА */}
 
           <div className="nav-icons">
             <Link to="#" className="icon-btn">
@@ -97,7 +218,6 @@ export default function MainNavigation() {
             <Link to="/cart" className="icon-btn position-relative">
               <FiShoppingCart className="header-icon" />
 
-              {/* Магията: Показваме червеното кръгче САМО ако имаме поне 1 продукт */}
               {totalItems > 0 && (
                 <span
                   className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -107,7 +227,7 @@ export default function MainNavigation() {
                 </span>
               )}
             </Link>
-            
+
             <div className="user-menu-container">
               <button
                 onClick={() => {

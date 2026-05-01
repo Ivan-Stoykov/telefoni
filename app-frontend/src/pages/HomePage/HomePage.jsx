@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom'; // 1. ДОБАВЕНО: Импортираме hook-а за URL параметри
 import ProductCard from '../../components/ProductCard/ProductCard';
 
 const HomePage = () => {
-  // Тестови данни (Mock Data)
+  // 2. ДОБАВЕНО: Взимаме каквото е написано в търсачката от линка (напр. ?search=sam)
+  const [searchParams] = useSearchParams();
+  const searchWord = searchParams.get('search');
 
   const [filters, setFilters] = useState({
     brand: [],
@@ -13,15 +16,12 @@ const HomePage = () => {
 
   const [sortType, setSortType] = useState('');
 
-  // 2. Функция, която се изпълнява при цъкане на чекбокс
   const handleFilterChange = (category, value, isChecked) => {
     setFilters(prev => {
       const currentValues = prev[category];
       if (isChecked) {
-        // Добавяме стойността, ако е чекирано
         return { ...prev, [category]: [...currentValues, value] };
       } else {
-        // Премахваме стойността, ако е отмаркирано
         return { ...prev, [category]: currentValues.filter(item => item !== value) };
       }
     });
@@ -30,21 +30,29 @@ const HomePage = () => {
   const [phones, setPhones] = useState([]);
 
   useEffect(() => {
-
     async function fetchPhones() {
       const response = await fetch('http://localhost:8000/api/phones');
       if (response.ok) {
         const data = await response.json();
         setPhones(data);
-        console.log('Fetched phones:', data); // За проверка в конзолата
+        console.log('Fetched phones:', data);
       }
     }
       fetchPhones();
   }, []);
 
-
-  // 3. Филтриране на телефоните (Засега работи локално, после ще се прави в Laravel)
+  // 3. Филтриране на телефоните
   const filteredPhones = phones.filter(phone => {
+    // --- НОВО: Филтър от главната търсачка ---
+    if (searchWord) {
+      const phoneName = phone.phone_spec?.name || phone.name || "";
+      // Ако името не съдържа търсената дума, директно го скриваме
+      if (!phoneName.toLowerCase().includes(searchWord.toLowerCase())) {
+        return false;
+      }
+    }
+    // -----------------------------------------
+
     // Ако има избрани марки и марката на телефона не е сред тях -> скрий го
     if (filters.brand.length > 0 && !filters.brand.includes(phone.phone_spec.brand.name)) return false;
     
@@ -52,14 +60,11 @@ const HomePage = () => {
     if (filters.storage.length > 0 && !filters.storage.includes(phone.Storage)) return false;
     if (filters.memory.length > 0 && !filters.memory.includes(phone.RAM)) return false;
     if (filters.color.length > 0 && phone.colors.every(color => !filters.color.includes(color.color.color))) return false;
-    
-    // (По същия начин могат да се добавят проверки за цвят, RAM и т.н., когато добавиш тези полета в mock данните)
 
     return true; // Ако мине всички проверки, го покажи
   });
 
   const sortedPhones = [...filteredPhones].sort((a, b) => {
-    
     if (sortType === 'price-asc') {
       return a.price - b.price; // Ниска към висока
     } 
@@ -82,14 +87,20 @@ const HomePage = () => {
   });
 
   return (
-    // Използваме container-fluid с по-голям padding за по-широк изглед
     <div className="container-fluid px-4 px-xl-5 py-5 bg-white">
       <div className="row">
         
-        {/* Лява колона: Филтри (Увеличихме ширината за по-големи екрани) */}
+        {/* Лява колона: Филтри */}
         <div className="col-md-3 col-xl-2 pe-lg-4">
           
           <div className="filter-section">
+            {/* Ако имаме активно търсене, показваме един малък текст, за да знае потребителят */}
+            {searchWord && (
+              <div className="mb-4 p-2 bg-light rounded text-center border">
+                <span className="small text-muted">Showing results for:</span><br/>
+                <span className="fw-bold text-primary">"{searchWord}"</span>
+              </div>
+            )}
 
             {/* Brand */}
             <div className="mb-5">
@@ -100,7 +111,6 @@ const HomePage = () => {
                     className="form-check-input" 
                     type="checkbox" 
                     id={brand} 
-                    // ТУК Е ПРОМЯНАТА:
                     onChange={(e) => handleFilterChange('brand', brand, e.target.checked)}
                   />
                   <label className="form-check-label" htmlFor={brand}>{brand}</label>
@@ -129,7 +139,6 @@ const HomePage = () => {
                     className="form-check-input" 
                     type="checkbox" 
                     id={size} 
-                    // ТУК Е ПРОМЯНАТА:
                     onChange={(e) => handleFilterChange('storage', size.replace(' ', ''), e.target.checked)}
                   />
                   <label className="form-check-label" htmlFor={size}>{size}</label>
@@ -173,7 +182,6 @@ const HomePage = () => {
           {/* Мрежа с продукти */}
           <div className="row">
             {phones.length > 0 && sortedPhones.length > 0 && sortedPhones.map(phone => (
-              // Използваме col-xl-4, за да имаме по 3 продукта на ред на големи екрани
               <div className="col-md-6 col-xl-4 mb-5" key={phone.id}>
                 <ProductCard phone={phone} />
               </div>
