@@ -97,6 +97,12 @@ const CheckoutPage = () => {
     return total + (price * item.quantity);
   }, 0);
 
+  // НОВО: Изчисляваме цената на доставката
+  const shippingCost = formData.shipping.includes('Econt') ? 5 : 0;
+  
+  // НОВО: Крайната цена
+  const finalTotal = orderValue + shippingCost;
+
   const handleSubmit = (e) => {
     e.preventDefault(); 
     
@@ -241,9 +247,16 @@ const CheckoutPage = () => {
                   <span>€{orderValue.toFixed(2)}</span>
                 </div>
 
+                {/* НОВО: Ред за цената на доставката */}
+                <div className="summary-item-row">
+                  <span>Shipping</span>
+                  <span>{shippingCost === 0 ? 'Free' : `€${shippingCost.toFixed(2)}`}</span>
+                </div>
+
                 <div className="summary-total-row">
                   <span>TOTAL</span>
-                  <span className="text-primary fs-3">€{orderValue.toFixed(2)}</span>
+                  {/* ПРОМЯНА: Тук вече показваме finalTotal, а не orderValue */}
+                  <span className="text-primary fs-3">€{finalTotal.toFixed(2)}</span>
                 </div>
 
               </div>

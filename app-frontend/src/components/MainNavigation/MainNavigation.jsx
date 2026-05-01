@@ -269,14 +269,16 @@ export default function MainNavigation() {
                   <div className="dropdown-arrow"></div>
                   <ul className="dropdown-list">
                     <li>
-                      <button
-                        onClick={() => {
-                          setIsAccountOpen(false);
-                          navigate("/login");
-                        }}
-                      >
-                        Account
-                      </button>
+                      <li>
+                        <button
+                          onClick={() => {
+                            setIsAccountOpen(false);
+                            navigate("/account"); // ТУК Е ПРОМЯНАТА
+                          }}
+                        >
+                          Account
+                        </button>
+                      </li>
                     </li>
                     <li>
                       <button onClick={logout}>Logout</button>
