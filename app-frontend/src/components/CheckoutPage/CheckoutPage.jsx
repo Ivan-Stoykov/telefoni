@@ -4,7 +4,7 @@ import { useCart } from "../../context/CartContext";
 import "./CheckoutPage.css";
 
 const CheckoutPage = () => {
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
 
   // НОВО: State за съхранение на грешките
@@ -88,20 +88,83 @@ const CheckoutPage = () => {
   // НОВО: Крайната цена
   const finalTotal = orderValue + shippingCost;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Преди да продължим, проверяваме дали всичко е попълнено правилно
-    if (validateForm()) {
-      console.log("Order Data:", {
-        items: cartItems,
-        shippingDetails: formData,
-        userId: formData.userId,
-        totalPrice: finalTotal,
+    // 1. Проверка за грешки: Ако има червени полета, спираме изпълнението
+    if (Object.keys(errors).length > 0) {
+      alert("Моля, попълнете всички задължителни полета коректно.");
+      return;
+    }
+
+    // 2. Взимаме user_id, ако потребителят е логнат (от localStorage)
+    const storedUser = localStorage.getItem('user');
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+    const userId = parsedUser ? parsedUser.id : null;
+
+    // 3. Подготвяме продуктите за междинната таблица
+    // Мапваме количката към колоните: phone_id, color_id, price, quantity
+    const orderItems = cartItems.map(item => ({
+      id: item.id || item.phone_id,         // ПРОМЯНА: бекендът търси 'id', а не 'phone_id'
+      name: item.name || item.brand + ' ' + item.model, // ПРОМЯНА: бекендът иска 'name' за съобщението за грешка
+      color: item.color || 'Black',         // Трябва да е текст (име на цвят), напр. 'Black'
+      price: Number(item.price || item.phone_spec?.price || 0),
+      quantity: item.quantity
+    }));
+
+    // 4. Сглобяваме главния обект
+    const orderPayload = {
+      userId: userId,
+      totalPrice: finalTotal,
+      
+      shippingDetails: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        shipping: formData.shipping
+      },
+      
+      items: orderItems 
+    };
+
+    try {
+      console.log("Данни, готови за бекенда:", orderPayload);
+
+      // --- КОДЪТ ЗА БЕКЕНДА (Разкоментираш го, когато API-то е готово) ---
+
+      const response = await fetch('http://localhost:8000/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          // Ако бекендът изисква токен за логнати потребители:
+          // 'Authorization': `Bearer ${parsedUser?.token}` 
+        },
+        body: JSON.stringify(orderPayload)
       });
-      alert(
-        "Към плащане... (тук ще извикаме бекенда за създаване на поръчката)",
-      );
+
+      if (!response.ok) {
+        throw new Error('Грешка при записване на поръчката');
+      }
+
+      const result = await response.json();
+      console.log("Успешна поръчка от сървъра:", result);
+      
+      // 5. След успешна поръчка изчистваме количката и пренасочваме:
+      clearCart();
+
+      navigate('/success', {
+        state: {
+          items: cartItems,
+          total: finalTotal,
+        }
+      });
+
+    } catch (error) {
+      console.error("Грешка:", error);
+      alert('Възникна проблем с поръчката. Моля, опитайте отново.');
     }
   };
 

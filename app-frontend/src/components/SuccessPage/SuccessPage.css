@@ -1,0 +1,100 @@
+/* SuccessPage.css */
+
+.success-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.success-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 50px 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.success-icon-wrapper {
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  color: #0044b3;
+}
+
+.success-title {
+  color: #0044b3;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+}
+
+.success-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.success-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+.success-item-name {
+  max-width: 70%;
+}
+
+.success-item-price {
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Стил за малките стотинки, както е на дизайна */
+.price-cents {
+  font-size: 0.7rem;
+  vertical-align: super;
+}
+
+.success-divider {
+  height: 1px;
+  background-color: #e9ecef;
+  margin: 20px 0;
+}
+
+.success-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: #495057;
+  font-size: 1.1rem;
+}
+
+.success-total-price {
+  color: #0044b3;
+  font-size: 1.5rem;
+}
+
+.continue-shopping-btn {
+  display: inline-block;
+  margin-top: 40px;
+  color: #0044b3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.continue-shopping-btn:hover {
+  opacity: 0.8;
+}

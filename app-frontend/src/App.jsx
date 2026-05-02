@@ -11,6 +11,7 @@ import ComparePage from "./components/ComparePage/ComparePage.jsx";
 import CartPage from "./components/CartPage/CartPage.jsx";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage.jsx";
 import AccountPage from "./components/AccountPage/AccountPage.jsx";
+import SuccessPage from "./components/SuccessPage/SuccessPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "cart", element: <CartPage /> },
       { path: "checkout", element: <CheckoutPage /> },
       { path: "account", element: <AccountPage /> },
+      { path: "success", element: <SuccessPage /> },
     ],
   },
 ]);
