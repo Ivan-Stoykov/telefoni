@@ -95,7 +95,9 @@ const CheckoutPage = () => {
     if (validateForm()) {
       console.log("Order Data:", {
         items: cartItems,
-        shippingDetails: { ...formData, totalPrice: finalTotal },
+        shippingDetails: formData,
+        userId: formData.userId,
+        totalPrice: finalTotal,
       });
       alert(
         "Към плащане... (тук ще извикаме бекенда за създаване на поръчката)",
