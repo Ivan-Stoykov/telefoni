@@ -6,7 +6,8 @@ const SuccessPage = () => {
   const location = useLocation();
   // Взимаме данните от state-а (подадени през navigate). 
   // Ако няма, слагаме празни стойности за защита от крашване.
-  const { items = [], total = 0, beforeDiscount = 0 } = location.state || {};
+  const { items = [], total = 0, beforeDiscount = 0, shippingMethod } = location.state || {};
+  const shippingCost = shippingMethod.includes("Econt") ? 5 : 0;
 
   // Функция за форматиране на цената с малки стотинки горе
   const formatPrice = (price) => {
@@ -36,10 +37,22 @@ const SuccessPage = () => {
         <div className="success-summary-list">
           {items.map((item, index) => (
             <div className="success-summary-row" key={index}>
-              <span className="success-item-name">{item.name || item.brand + ' ' + item.model}</span>
-              <span className="success-item-price">{formatPrice(item.price)}</span>
+              <span className="success-item-name">{item.name || item.brand + ' ' + item.model} <b>x{item.quantity}</b></span>
+              <span className="success-item-price">{formatPrice(item.price * item.quantity)}</span> 
             </div>
+
           ))}
+
+          <div className="success-summary-row" style={{ marginTop: '15px' }}>
+            <span className="success-item-name">
+              Shipping <span style={{ color: '#868e96', fontSize: '0.85rem' }}> - {shippingMethod.split(' ')[0]}</span>
+            </span>
+            <span className="success-item-price">
+              {shippingCost > 0 ? formatPrice(shippingCost) : (
+                <span style={{ color: '#868e96', fontWeight: 'normal' }}>Free</span>
+              )}
+            </span>
+          </div>
 
           {/* Total before discount (показва се само ако е подаден) */}
           {beforeDiscount > 0 && (

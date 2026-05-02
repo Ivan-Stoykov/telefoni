@@ -1,76 +1,106 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AccountPage.css';
-
-// По-богати фалшиви данни за поръчките (включващи продукти)
-const MOCK_ORDERS = [
-  { 
-    id: 'ORD-2026-001', 
-    date: '28 Apr 2026', 
-    shippingCost: 0,
-    total: 3299.98,
-    status: 'Processing',
-    items: [
-      {
-        id: 1,
-        name: 'Samsung Galaxy S26 Ultra 512GB - Black',
-        specs: '512GB - 12GB',
-        price: 1649.99,
-        quantity: 2,
-        image: 'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg' // Слагаме примерна картинка
-      }
-    ]
-  },
-  { 
-    id: 'ORD-2026-002', 
-    date: '15 Mar 2026', 
-    shippingCost: 5.00,
-    total: 1254.50,
-    status: 'Delivered',
-    items: [
-      {
-        id: 2,
-        name: 'iPhone 15 Pro Max - Natural Titanium',
-        specs: '256GB - 8GB',
-        price: 1249.50,
-        quantity: 1,
-        image: 'https://cdn.dummyjson.com/product-images/2/thumbnail.jpg'
-      }
-    ]
-  }
-];
 
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState('details'); 
-  // НОВО: State за следене на отворената поръчка
   const [selectedOrder, setSelectedOrder] = useState(null); 
+  
+  // --- НОВИ STATE-ове ЗА РЕАЛНИ ДАННИ ---
+  const [orders, setOrders] = useState([]);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(true);
 
+  // Взимаме логнатия потребител
+  const storedUser = localStorage.getItem("user");
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
+  const [userData, setUserData] = useState({
+    name: parsedUser?.name || '',
+    email: parsedUser?.email || '',
+    phone: parsedUser?.phone || '',
+    address: parsedUser?.address || '',
+    city: parsedUser?.city || ''
+  });
 
-    const storedUser = localStorage.getItem("user");
-        const parsedUser = JSON.parse(storedUser);
- const [userData, setUserData] = useState({
-          name: parsedUser.name || '',
-          email: parsedUser.email || '',
-          phone: parsedUser.phone || '',
-          address: parsedUser.address || '',
-          city: parsedUser.city || ''
+  // --- ЗАРЕЖДАНЕ НА ПОРЪЧКИТЕ ОТ БЕКЕНДА ---
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!parsedUser || !parsedUser.id) {
+        setIsLoadingOrders(false);
+        return;
+      }
+
+      try {
+        // Забележка: Попитай бекенд колегите дали това е точният линк за поръчките на потребител!
+        // Често е нещо като: /api/orders?user_id=1 ИЛИ /api/users/1/orders
+        const response = await fetch(`http://localhost:8000/api/orders?user_id=${parsedUser.id}`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            // 'Authorization': `Bearer ${localStorage.getItem('token')}` // Ако ползвате токени
+          }
         });
 
+        if (response.ok) {
+          const data = await response.json();
+          // Очакваме бекендът да върне масив с поръчки
+          setOrders(data.orders || data); 
+        } else {
+          console.error("Грешка при зареждане на поръчките");
+        }
+      } catch (error) {
+        console.error("Fetch грешка:", error);
+      } finally {
+        setIsLoadingOrders(false);
+      }
+    };
+
+    fetchOrders();
+  }, [parsedUser?.id]); // Извиква се само веднъж при зареждане на страницата
+
+  // --- РЕДАКТИРАНЕ НА ДАННИТЕ ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // --- ЗАПАЗВАНЕ НА РЕАЛНИ ДАННИ ---
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Данни за запазване:", userData);
-    alert("Запазване... (чакаме бекенда)");
+    try {
+      // Забележка: Попитай колегите за точния линк за ъпдейт на юзър
+      const response = await fetch(`http://localhost:8000/api/users/${parsedUser.id}`, {
+        method: 'PUT', // или POST в зависимост от бекенда
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        alert("Данните са запазени успешно!");
+        // Обновяваме и localStorage, за да се помнят новите данни
+        localStorage.setItem("user", JSON.stringify({ ...parsedUser, ...userData }));
+      } else {
+        alert("Грешка при запазване на данните.");
+      }
+    } catch (error) {
+      console.error("Грешка:", error);
+      alert("Сървърна грешка. Опитайте отново.");
+    }
   };
 
-  // Функция за смяна на табовете (нулира избраната поръчка)
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setSelectedOrder(null);
+  };
+
+  // Помощна функция за красиво форматиране на датата (от timestamp към нормална дата)
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
   return (
@@ -133,22 +163,26 @@ const AccountPage = () => {
           {/* === ТАБ: ПОРЪЧКИ === */}
           {activeTab === 'orders' && (
             <div>
-              {/* Ако НЯМАМЕ избрана поръчка -> показваме списъка */}
               {!selectedOrder ? (
                 <>
                   <h3 className="account-title">Orders</h3>
-                  {MOCK_ORDERS.length > 0 ? (
-                    MOCK_ORDERS.map((order) => (
+                  
+                  {/* Показваме "Зареждане", докато чакаме бекенда */}
+                  {isLoadingOrders ? (
+                    <p className="text-muted">Loading your orders...</p>
+                  ) : orders.length > 0 ? (
+                    orders.map((order) => (
                       <div className="order-card" key={order.id}>
                         <div className="order-info">
-                          <span className="order-id">Order {order.id}</span>
+                          <span className="order-id">Order ORD-2026-{order.id.toString().padStart(3, '0')}</span>
                           <span className="order-price">
-                            Date: {order.date} &nbsp;|&nbsp; Price: €{order.total.toFixed(2)}
+                            {/* Използваме created_at и total_price, защото така са в базата */}
+                            Date: {formatDate(order.created_at)} &nbsp;|&nbsp; Price: €{Number(order.total_price).toFixed(2)}
                           </span>
                         </div>
                         <button 
                           className="view-btn"
-                          onClick={() => setSelectedOrder(order)} // Задаваме коя поръчка да се отвори
+                          onClick={() => setSelectedOrder(order)} 
                         >
                           View
                         </button>
@@ -159,35 +193,41 @@ const AccountPage = () => {
                   )}
                 </>
               ) : (
-                /* Ако ИМАМЕ избрана поръчка -> показваме детайлния изглед (Read-only Cart) */
+                /* ДЕТАЙЛЕН ИЗГЛЕД НА ПОРЪЧКАТА */
                 <div>
                   <button className="back-to-orders" onClick={() => setSelectedOrder(null)}>
                     ← Back to orders
                   </button>
                   <h3 className="account-title" style={{ marginBottom: '5px' }}>
-                    Order {selectedOrder.id}
+                    Order ORD-2026-{selectedOrder.id.toString().padStart(3, '0')}
                   </h3>
                   <p className="text-muted" style={{ marginBottom: '25px', fontSize: '0.9rem' }}>
-                    Date: {selectedOrder.date} &nbsp;|&nbsp; Status: <strong>{selectedOrder.status}</strong>
+                    Date: {formatDate(selectedOrder.created_at)} &nbsp;|&nbsp; Status: <strong style={{textTransform: 'capitalize'}}>{selectedOrder.status}</strong>
                   </p>
 
                   <div className="order-details-layout">
                     {/* Лява част - Списък с продукти */}
                     <div className="order-details-items">
-                      {selectedOrder.items.map((item) => (
-                        <div className="order-item-card" key={item.id}>
-                          <img src={item.image} alt={item.name} className="order-item-img" />
-                          <div className="order-item-info">
-                            <div className="order-item-name">{item.name}</div>
-                            <div className="order-item-specs">{item.specs}</div>
-                            <div className="order-item-price-qty">
-                              <span className="order-item-price">€{item.price.toFixed(2)}</span>
-                              {/* ПРОМЯНАТА Е ТУК: Слагаме знак за умножение вместо Qty: */}
-                              <span className="order-item-qty">× {item.quantity}</span>
+                      {/* Проверяваме дали има items, за да не гръмне, ако бекендът ги забрави */}
+                      {selectedOrder.items && selectedOrder.items.length > 0 ? (
+                        selectedOrder.items.map((item, index) => (
+                          <div className="order-item-card" key={item.id || index}>
+                            {/* Слагаме placeholder картинка, ако бекендът не ни прати */}
+                            <img src={item.phone?.image || 'https://via.placeholder.com/70'} alt="phone" className="order-item-img" />
+                            <div className="order-item-info">
+                              {/* Опитваме да вземем името на телефона от релацията, ако го няма - пишем просто Phone */}
+                              <div className="order-item-name">{item.phone?.name || item.phone?.model || `Phone #${item.phone_id}`}</div>
+                              <div className="order-item-specs">Color: {item.color?.color || 'N/A'}</div>
+                              <div className="order-item-price-qty">
+                                <span className="order-item-price">€{Number(item.price).toFixed(2)}</span>
+                                <span className="order-item-qty">× {item.quantity}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))
+                      ) : (
+                        <p>No items found for this order.</p>
+                      )}
                     </div>
 
                     {/* Дясна част - Order Summary */}
@@ -195,17 +235,13 @@ const AccountPage = () => {
                       <h4 className="summary-title">Order Summary</h4>
                       
                       <div className="summary-row">
-                        <span>Order value</span>
-                        <span>€{(selectedOrder.total - selectedOrder.shippingCost).toFixed(2)}</span>
-                      </div>
-                      <div className="summary-row">
-                        <span>Shipping</span>
-                        <span>{selectedOrder.shippingCost === 0 ? 'Free' : `€${selectedOrder.shippingCost.toFixed(2)}`}</span>
+                        <span>Shipping method</span>
+                        <span>{selectedOrder.shipping_method}</span>
                       </div>
                       
                       <div className="summary-row total">
                         <span>TOTAL</span>
-                        <span className="total-price">€{selectedOrder.total.toFixed(2)}</span>
+                        <span className="total-price">€{Number(selectedOrder.total_price).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>

@@ -159,6 +159,8 @@ const CheckoutPage = () => {
         state: {
           items: cartItems,
           total: finalTotal,
+          shippingCost: 5,
+          shippingMethod: formData.shipping,
         }
       });
 
