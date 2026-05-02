@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
     'ScreenSize',
     'ScreenResolution',
     'ScreenType',
-    'Procection',
+    'Protection',
     'Speakers',
     'ModelNumber',
     'Series',
