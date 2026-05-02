@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Phone;
-use App\Models\PhoneSpec;
 use Symfony\Component\HttpFoundation\Response;
 
 class PhoneController extends Controller

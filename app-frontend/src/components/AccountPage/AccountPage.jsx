@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './AccountPage.css';
 
 // По-богати фалшиви данни за поръчките (включващи продукти)
@@ -43,28 +43,18 @@ const AccountPage = () => {
   const [activeTab, setActiveTab] = useState('details'); 
   // НОВО: State за следене на отворената поръчка
   const [selectedOrder, setSelectedOrder] = useState(null); 
-  
-  const [userData, setUserData] = useState({
-    name: '', email: '', phone: '', address: '', city: ''
-  });
 
-  useEffect(() => {
+
+
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
         const parsedUser = JSON.parse(storedUser);
-        setUserData({
+ const [userData, setUserData] = useState({
           name: parsedUser.name || '',
           email: parsedUser.email || '',
           phone: parsedUser.phone || '',
           address: parsedUser.address || '',
           city: parsedUser.city || ''
         });
-      } catch (error) {
-        console.error("Грешка при прочитане:", error);
-      }
-    }
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
