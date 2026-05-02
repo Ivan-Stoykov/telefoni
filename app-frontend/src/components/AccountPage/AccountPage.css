@@ -1,36 +1,115 @@
+/* src/pages/AccountPage/AccountPage.css */
+
 .account-page-container {
   background-color: #f8f9fa;
   min-height: 80vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 50px;
+  padding: 50px 20px; /* Слагаме малко padding отстрани за малки екрани */
+}
+
+/* ТОВА Е МАГИЯТА: CSS Grid вместо Bootstrap колонки */
+.account-page-inner {
+  display: grid;
+  grid-template-columns: 260px 1fr; /* Лявата колона е 260px, дясната(1fr) взима целия останал екран */
+  gap: 30px; /* Разстоянието между двете бели карти */
+  max-width: 1200px;
+  margin: 0 auto; /* Центрира всичко в средата на екрана */
+  align-items: start; /* Картите да не се разпъват излишно на височина */
+}
+
+/* На мобилни телефони и таблети ги слагаме едно под друго */
+@media (max-width: 992px) {
+  .account-page-inner {
+    grid-template-columns: 1fr;
+  }
 }
 
 .account-card {
   background-color: white;
   border-radius: 8px;
-  padding: 40px;
+  padding: 30px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   width: 100%;
-  max-width: 700px;
 }
 
 .account-title {
   color: #0044b3;
   font-weight: 600;
-  text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
   font-size: 1.5rem;
 }
 
-.account-subtitle {
-  text-align: center;
-  color: #6c757d;
-  font-size: 0.9rem;
-  margin-bottom: 30px;
+/* --- Навигация --- */
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
+.sidebar-item {
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #495057;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-left: 4px solid transparent;
+}
+
+.sidebar-item:hover {
+  background-color: #f8f9fa;
+  color: #0044b3;
+}
+
+.sidebar-item.active {
+  background-color: #eef1f6;
+  color: #0044b3;
+  border-left: 4px solid #0044b3;
+}
+
+/* --- Поръчки --- */
+.order-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-id {
+  font-weight: 600;
+  color: #212529;
+  font-size: 1.1rem;
+}
+
+.order-price {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.view-btn {
+  background-color: white;
+  color: #0044b3;
+  border: 1px solid #0044b3;
+  border-radius: 6px;
+  padding: 8px 25px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.view-btn:hover {
+  background-color: #0044b3;
+  color: white;
+}
+
+/* --- Форма --- */
 .custom-input {
   background-color: #eef1f6;
   border: none;
@@ -72,10 +151,153 @@
   font-weight: 500;
   border: none;
   width: 100%;
+  max-width: 200px;
   transition: background-color 0.2s;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .save-btn:hover {
   background-color: #003388;
+}
+
+/* --- Детайлен изглед на поръчка (Read-only Cart) --- */
+.back-to-orders {
+  color: #6c757d;
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.back-to-orders:hover {
+  color: #0044b3;
+}
+
+.order-details-layout {
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+/* Лява част - Продуктите */
+.order-details-items {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-item-card {
+  display: flex;
+  gap: 20px;
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.order-item-img {
+  width: 70px;
+  height: auto;
+  object-fit: contain;
+  top: 0;
+}
+
+.order-item-info {
+  flex: 1;
+}
+
+.order-item-name {
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+}
+
+.order-item-specs {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.order-item-price-qty {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.order-item-price {
+  color: #0044b3;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.order-item-qty {
+  color: #0044b3; /* Правим го в основния ни син цвят */
+  font-weight: 600;
+  background-color: #eef1f6; /* Много лек, приятен син фон */
+  padding: 4px 12px;
+  border-radius: 50px; /* Напълно заоблено (pill дизайн) */
+  border: none; /* Махаме грозния ръб */
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Дясна част - Order Summary */
+.order-details-summary {
+  flex: 1;
+  background-color: #fcfcfc;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 25px;
+}
+
+.summary-title {
+  color: #0044b3;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.summary-row.total {
+  border-top: 1px solid #e9ecef;
+  padding-top: 15px;
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-weight: 700;
+  color: #212529;
+  align-items: center;
+}
+
+.summary-row.total .total-price {
+  color: #0044b3;
+  font-size: 1.3rem;
+}
+
+/* За мобилни телефони ги слагаме едно под друго */
+@media (max-width: 768px) {
+  .order-details-layout {
+    flex-direction: column;
+  }
+  .order-details-items, .order-details-summary {
+    width: 100%;
+  }
 }
