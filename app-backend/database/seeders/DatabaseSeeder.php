@@ -11,6 +11,8 @@ use App\Models\Phone;
 use App\Models\Color;
 use App\Models\Brand;
 use App\Models\PhoneColor;
+use App\Models\OrderItem;
+use App\Models\Order;
 
 class DatabaseSeeder extends Seeder
 {
@@ -206,5 +208,60 @@ class DatabaseSeeder extends Seeder
             'colorId' => $color->id,
             'quantity' => 50
         ]);
+
+
+        $samsung = Phone::where('slug', 'Samsung_Galaxy_S26_Ultra_512GB')->first();
+        $iphone = Phone::where('slug', 'Apple_iPhone_17_Pro_Max_1TB')->first();
+
+        $black = Color::where('color', 'Black')->first();
+        $orange = Color::where('color', 'Orange')->first();
+
+        $order1 = Order::create([
+            'user_id'          => 0,
+            'total_price'      => 1649.99, 
+            'status'           => 'pending',
+            'shipping_name'    => 'Ivan Stoykov',
+            'shipping_email'   => 'ivan@test.com',
+            'shipping_phone'   => '+359',
+            'shipping_address' => 'ul. Shipka 10',
+            'shipping_city'    => 'Varna',
+            'shipping_method'  => 'Speedy - free delivery',
+        ]);
+
+        OrderItem::create([
+            'order_id' => $order1->id,
+            'phone_id' => $samsung->id, 
+            'color_id' => $black->id, 
+            'price'    => 1649.99,
+            'quantity' => 1,
+        ]);
+
+        PhoneColor::where('phoneId', $samsung->id)->where('colorId', $black->id)->decrement('quantity', 1);
+
+        $admin = User::where('email', 'admin@example.com')->first();
+
+        $order2 = Order::create([
+            'user_id'          => $admin->id,
+            'total_price'      => 1959.99, 
+            'status'           => 'delivered',
+            'shipping_name'    => 'Admin Manager',
+            'shipping_email'   => 'admin@example.com',
+            'shipping_phone'   => '000-000-000',
+            'shipping_address' => 'Office Hub 1',
+            'shipping_city'    => 'Sofia',
+            'shipping_method'  => 'Econt - 5.00 EUR',
+        ]);
+
+        OrderItem::create([
+            'order_id' => $order2->id,
+            'phone_id' => $iphone->id, 
+            'color_id' => $orange->id,
+            'price'    => 1959.99,
+            'quantity' => 1,
+        ]);
+
+        PhoneColor::where('phoneId', $iphone->id)->where('colorId', $orange->id)->decrement('quantity', 1);
     }
+
+    
 }
