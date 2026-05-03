@@ -12,7 +12,7 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react"; // ДОБАВЕН: useEffect
+import { useState, useEffect } from "react";
 import { useCart } from "../../context/CartContext";
 
 export default function MainNavigation() {
@@ -24,6 +24,11 @@ export default function MainNavigation() {
     (total, item) => total + item.quantity,
     0,
   );
+
+  const storedUser = localStorage.getItem("user");
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+
+  const isAdmin = parsedUser && (parsedUser.isAdmin === 1 || parsedUser.isAdmin === true);
 
   // --- НОВО: ЛОГИКА ЗА ТЪРСАЧКАТА ---
   const [searchQuery, setSearchQuery] = useState("");
@@ -120,7 +125,7 @@ export default function MainNavigation() {
             </Link>
           </div>
 
-          {/* НОВО: ОБНОВЕН КОНТЕЙНЕР ЗА ТЪРСАЧКА */}
+          {/*КОНТЕЙНЕР ЗА ТЪРСАЧКА */}
           <div className="search-container position-relative">
             <input
               type="text"
@@ -141,7 +146,6 @@ export default function MainNavigation() {
               }}
             />
 
-            {/* 2. ХВАЩАМЕ КЛИКА ВЪРХУ ЛУПАТА */}
             <button
               type="submit"
               onClick={() => {
@@ -188,7 +192,6 @@ export default function MainNavigation() {
                         navigate(`/product/${phone.slug}`);
                       }}
                     >
-                      {/* 3. ОПРАВЕНА СНИМКА (добавен flexShrink: 0 и сигурен fallback) */}
                       <img
                         src={phone.phone_spec?.imageUrl || "/images/asni.jpg"}
                         alt="phone"
@@ -232,11 +235,13 @@ export default function MainNavigation() {
             )}
           </div>
           {/* КРАЙ НА ТЪРСАЧКАТА */}
-          
+
           <div className="nav-icons">
-            <Link to="/admin" className="icon-btn" title="Admin Panel">
-              <FiShield className="header-icon" />
-            </Link>
+            {isAdmin && (
+              <Link to="/admin" className="icon-btn" title="Admin Panel">
+                <FiShield className="header-icon" />
+              </Link>
+            )}
 
             {/* <Link to="#" className="icon-btn">
               <img

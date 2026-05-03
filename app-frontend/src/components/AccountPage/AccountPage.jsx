@@ -30,8 +30,7 @@ const AccountPage = () => {
       }
 
       try {
-        // Провери дали пътят в твоя бекенд е този или /api/orders?user_id=...
-        const response = await fetch(`http://localhost:8000/api/orders?user_id=${parsedUser.id}`, {
+        const response = await fetch(`http://localhost:8000/api/users/${parsedUser.id}/orders`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
@@ -40,7 +39,6 @@ const AccountPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          // Ако данните идват опаковани в { data: [...] }, промени го на data.data
           setOrders(data || []);
         } else {
           console.error("Грешка при зареждане на поръчките");
@@ -88,7 +86,6 @@ const AccountPage = () => {
       if (response.ok) {
         const updatedUserFromDB = await response.json();
 
-        // Обновяваме localStorage с новите данни, за да се помнят!
         const updatedStorageUser = { ...parsedUser, ...userData };
         localStorage.setItem("user", JSON.stringify(updatedStorageUser));
 
@@ -138,7 +135,7 @@ const AccountPage = () => {
         {/* ДЯСНА КОЛОНА (Съдържание) */}
         <div className="account-card">
 
-          {/* === ТАБ: ДЕТАЙЛИ === */}
+          {/*ТАБ: ДЕТАЙЛИ*/}
           {activeTab === 'details' && (
             <div>
               <h3 className="account-title">Details</h3>
@@ -170,7 +167,7 @@ const AccountPage = () => {
             </div>
           )}
 
-          {/* === ТАБ: ПОРЪЧКИ === */}
+          {/*ТАБ: ПОРЪЧКИ*/}
           {activeTab === 'orders' && (
             <div>
               {!selectedOrder ? (
