@@ -20,6 +20,7 @@ Route::get('/users', [AdminController::class, 'usersList']);
 Route::get('/users/{id}', [AdminController::class, 'user']);
 Route::put('/users/{id}', [AdminController::class, 'updateUser']);
 Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
+Route::get('/users/{id}/orders', [AdminController::class, 'userOrders']);
 
 // Orders
 Route::get('/orders', [AdminController::class, 'ordersList']);

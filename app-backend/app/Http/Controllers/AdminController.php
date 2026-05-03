@@ -19,6 +19,15 @@ class AdminController extends Controller
         return response($user, 200);
     }
 
+    public function userOrders($id)
+    {
+        $orders = Order::where('user_id', $id)
+            ->with(['orderItems.phone.phoneSpec', 'orderItems.color'])
+            ->get();
+
+        return response()->json($orders, 200);
+    }
+
     public function updateUser(Request $request, $id)
     {
         $user = User::findOrFail($id);
