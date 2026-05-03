@@ -1,7 +1,7 @@
 import "./MainNavigation.css";
 import logo from "../../assets/logo.png";
 import SwapIconImage from "../../assets/swap.png";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart, FiShield } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
 import {
   FaFacebook,
@@ -195,7 +195,7 @@ export default function MainNavigation() {
                         style={{
                           width: "40px",
                           height: "40px",
-                          minWidth: "40px" /* ТОВА Е МАГИЯТА */,
+                          minWidth: "40px",
                           objectFit: "contain",
                           marginRight: "10px",
                           top: "0",
@@ -232,15 +232,19 @@ export default function MainNavigation() {
             )}
           </div>
           {/* КРАЙ НА ТЪРСАЧКАТА */}
-
+          
           <div className="nav-icons">
-            <Link to="#" className="icon-btn">
+            <Link to="/admin" className="icon-btn" title="Admin Panel">
+              <FiShield className="header-icon" />
+            </Link>
+
+            {/* <Link to="#" className="icon-btn">
               <img
                 src={SwapIconImage}
                 alt="Swap Phones"
                 className="custom-swap-icon"
               />{" "}
-            </Link>
+            </Link> */}
 
             <Link to="/cart" className="icon-btn position-relative">
               <FiShoppingCart className="header-icon" />
