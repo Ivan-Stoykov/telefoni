@@ -71,6 +71,30 @@ class DatabaseSeeder extends Seeder
             'Charging' =>'60W wired, 25W wireless',
             'description' => 'Specific High-End Phone',
         ]);
+
+        $phone = Phone::create([
+            'PhoneSpecId' => $spec->id,
+            'name' => 'Samsung Galaxy S26 Ultra 256GB',
+            'slug' => 'Samsung_Galaxy_S26_Ultra_256GB',
+            'RAM' => '12GB',
+            'Storage' => '256GB',
+            'price' => 1449.99,
+            ]);
+            
+            
+            $color = Color::firstOrCreate(['color' => 'Black']);
+            PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+            $color = Color::firstOrCreate(['color' => 'White']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
@@ -96,7 +120,6 @@ class DatabaseSeeder extends Seeder
             'quantity' => 50
         ]);
 
-
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
             'name' => 'Samsung Galaxy S26 Ultra 1TB',
@@ -108,6 +131,87 @@ class DatabaseSeeder extends Seeder
             
             
             $color = Color::firstOrCreate(['color' => 'Black']);
+            PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+            $color = Color::firstOrCreate(['color' => 'White']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+
+        $brand = Brand::firstOrCreate(['name' => 'Xiaomi']);
+
+        $spec = PhoneSpec::create([
+            'processorId' => $proc->id,
+            'imageUrl' => 'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-17-ultra-global-1.jpg',
+            'brandId' => $brand->id,
+            'MainCamera' => '50 MP (wide), \n 200 MP (periscope telephoto) 3x zoom, \n 50 MP (ultrawide)',
+            'MCFeatures' => 'Laser AF, color spectrum sensor, Leica lenses, Dual-LED flash, HDR, panorama',
+            'MCVideo' => '8K@30fps, 4K@30/60/120fps, 1080p@30/60/120/240/480/960/1920fps, gyro-EIS, Dolby Vision HDR 10-bit rec. (4K@60fps, 1080p)',
+            'SelfieCamera' => '50 MP, f/2.2, 21mm (wide)',
+            'SCFeatures' => 'HDR, panorama',
+            'SCVideo' => '4K@30/60fps, 1080p@30/60/120fps, gyro-EIS',
+            'Wifi' => 'Wi-Fi 802.11 a/b/g/n/ac/6e/7, dual-band or tri-band, Wi-Fi Direct',
+            'Bluetooth' => '6.0, A2DP, LE, aptX HD, aptX Adaptive, LHDC 5, MIHC',
+            'Port' => '	USB Type-C 3.2 Gen 2, DisplayPort, OTG',
+            'NFC' => true,
+            'Positioning' => 'GPS, GLONASS, BDS, GALILEO, QZSS, NavIC',
+            'Display' => 'LTPO AMOLED, 68B colors, 120Hz, 2160Hz PWM, Dolby Vision, HDR10+, 3500 nits (peak)',
+            'ScreenSize' => '6.9 inches, 116.6 cm2 (~92.3% screen-to-body ratio)',
+            'ScreenResolution' => '1200 x 2608 pixels',
+            'ScreenType' => 'LTPO AMOLED',
+            'Protection' => 'Xiaomi Shield Glass 3.0',
+            'Speakers' => 'Stereo speakers',
+            'ModelNumber' => '25128PNA1G',
+            'Series' => 'Xiaomi 17 Series',
+            'Dimensions' => '162.9 x 77.6 x 8.3 mm',
+            'Weight' => '218.4g',
+            'OS' => 'Android 16, HyperOS 3',
+            'Battery' => 'Li-Ion 6000 mAh',
+            'Charging' =>'90W wired, 50W wireless',
+            'description' => 'Specific High-End Phone',
+        ]);
+
+        $phone = Phone::create([
+            'PhoneSpecId' => $spec->id,
+            'name' => 'Xiaomi 17 Ultra 512GB',
+            'slug' => 'Xiaomi_17_Ultra_512GB',
+            'RAM' => '16GB',
+            'Storage' => '512GB',
+            'price' => 1499.99,
+            ]);
+            
+            
+            $color = Color::firstOrCreate(['color' => 'Green']);
+            PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+            $color = Color::firstOrCreate(['color' => 'White']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+
+         $phone = Phone::create([
+            'PhoneSpecId' => $spec->id,
+            'name' => 'Xiaomi 17 Ultra 1TB',
+            'slug' => 'Xiaomi_17_Ultra_1TB',
+            'RAM' => '16GB',
+            'Storage' => '1TB',
+            'price' => 1699.99,
+            ]);
+            
+            
+            $color = Color::firstOrCreate(['color' => 'Green']);
             PhoneColor::create([
             'phoneId' => $phone->id,
             'colorId' => $color->id,
@@ -160,6 +264,30 @@ class DatabaseSeeder extends Seeder
             'Charging' =>'40W wired, 25W wireless',
             'description' => 'Specific High-End Phone',
         ]);
+
+        $phone = Phone::create([
+            'PhoneSpecId' => $spec->id,
+            'name' => 'Apple iPhone 17 Pro Max 256GB',
+            'slug' => 'Apple_iPhone_17_Pro_Max_256GB',
+            'RAM' => '12GB',
+            'Storage' => '256GB',
+            'price' => 1449.99
+            ]);
+            
+            $color = Color::firstOrCreate(['color' => 'White']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
+        $color = Color::firstOrCreate(['color' => 'Orange']);
+            
+        PhoneColor::create([
+            'phoneId' => $phone->id,
+            'colorId' => $color->id,
+            'quantity' => 50
+        ]);
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
@@ -208,6 +336,8 @@ class DatabaseSeeder extends Seeder
             'colorId' => $color->id,
             'quantity' => 50
         ]);
+
+        
 
 
         $samsung = Phone::where('slug', 'Samsung_Galaxy_S26_Ultra_512GB')->first();

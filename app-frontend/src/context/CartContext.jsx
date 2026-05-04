@@ -21,7 +21,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = ({phone, color}) => {
     setCartItems((prevItems) => {
       // Проверяваме дали този телефон (с това ID) вече е в количката 
-      const existingItem = prevItems.find(item => item.id === phone.id);
+      const existingItem = prevItems.find(item => item.id === phone.id && item.color === color);
       
       if (existingItem) {
         // Ако го има, просто му увеличаваме бройката (quantity) с 1
