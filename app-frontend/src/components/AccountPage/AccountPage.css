@@ -1,7 +1,6 @@
 /* src/pages/AccountPage/AccountPage.css */
 
 .account-page-container {
-  background-color: #f8f9fa;
   min-height: 80vh;
   padding: 50px 20px; /* Слагаме малко padding отстрани за малки екрани */
 }

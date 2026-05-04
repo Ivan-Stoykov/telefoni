@@ -1,6 +1,5 @@
 import "./MainNavigation.css";
 import logo from "../../assets/logo.png";
-import SwapIconImage from "../../assets/swap.png";
 import { FiShoppingCart, FiShield } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
 import {
