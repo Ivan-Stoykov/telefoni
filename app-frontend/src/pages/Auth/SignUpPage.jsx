@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export default function SignUpPage() {
   const [error, setError] = useState();
+  const [viewPass, setViewPass] = useState('password');
+  const [viewConfPass, setViewConfPass] = useState('password');
   const navigate = useNavigate();
 
   async function signup(event) {
@@ -76,11 +78,15 @@ export default function SignUpPage() {
             <div className="password-wrapper">
               <input
                 name="password"
-                type="password"
+                type={viewPass}
                 placeholder="at least 8 characters"
                 required
               />
-              <FaEye className="eye-icon" />
+              <FaEye className="eye-icon" onClick={
+                ()=>{if(viewPass == "password") setViewPass('text');
+                else setViewPass('password');
+                }
+              } />
             </div>
           </div>
 
@@ -89,11 +95,15 @@ export default function SignUpPage() {
             <div className="password-wrapper">
               <input
                 name="password_confirmation"
-                type="password"
+                type={viewConfPass}
                 placeholder="Confirm your password"
                 required
               />
-              <FaEye className="eye-icon" />
+              <FaEye className="eye-icon" onClick={
+                ()=>{if(viewConfPass == "password") setViewConfPass('text');
+                else setViewConfPass('password');
+                }
+              }/>
             </div>
           </div>
 

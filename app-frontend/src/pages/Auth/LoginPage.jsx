@@ -6,6 +6,7 @@ import { useState } from "react";
 export default function LoginPage() {
 
   const [error, setError] = useState();
+  const [viewPass, setViewPass] = useState('password');
   const navigate = useNavigate();
 
   async function login(event){
@@ -67,12 +68,16 @@ export default function LoginPage() {
             </div>
             <div className="password-wrapper">
               <input
-                type="password"
+                type={viewPass}
                 placeholder="at least 8 characters"
                 name="password"
                 required
               />
-              <FaEye className="eye-icon" />
+              <FaEye className="eye-icon" onClick={
+                ()=>{if(viewPass == "password") setViewPass('text');
+                else setViewPass('password');
+                }
+              } />
             </div>
           </div>
 

@@ -15,11 +15,11 @@ const CheckoutPage = () => {
 
   const [formData, setFormData] = useState({
     userId: userData?.id || 0,
-    name: userData.name || "",
-    phone: userData.phone || "",
-    email: userData.email || "",
-    address: userData.address || "",
-    city: userData.city || "",
+    name: userData?.name || "",
+    phone: userData?.phone || "",
+    email: userData?.email || "",
+    address: userData?.address || "",
+    city: userData?.city || "",
     shipping: "Speedy - free delivery",
   });
 
@@ -114,7 +114,7 @@ const CheckoutPage = () => {
 
     // 4. Сглобяваме главния обект
     const orderPayload = {
-      userId: userId,
+      userId: userId === null ? 0 : userId,
       totalPrice: finalTotal,
       
       shippingDetails: {

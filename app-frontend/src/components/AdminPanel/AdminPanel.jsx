@@ -92,7 +92,6 @@ const AdminPanel = () => {
 
       if (response.ok) {
         setUsers(prev => prev.filter(user => user.id !== id));
-        alert("Потребителят е изтрит успешно.");
       } else {
         alert("Възникна грешка при изтриването.");
       }
@@ -138,7 +137,6 @@ const AdminPanel = () => {
           user.id === id ? { ...user, ...editUserForm } : user
         ));
         setEditingUserId(null); // Затваряме режима за редакция
-        alert("Промените са запазени!");
       } else {
         alert("Грешка при запазване на промените.");
       }
@@ -183,7 +181,6 @@ const AdminPanel = () => {
         setOrderEditForm(prev => ({ ...prev, status: newStatus }));
         setOrders(prev => prev.map(o => o.id === selectedAdminOrder.id ? { ...o, status: newStatus } : o));
         setSelectedAdminOrder(prev => ({ ...prev, status: newStatus }));
-        alert(`Статусът е променен на ${newStatus.toUpperCase()}!`);
       }
     } catch (error) {
       console.error("Грешка при смяна на статуса:", error);
@@ -208,7 +205,6 @@ const AdminPanel = () => {
       if (response.ok) {
         setOrders(prev => prev.map(o => o.id === selectedAdminOrder.id ? { ...o, ...orderEditForm } : o));
         setSelectedAdminOrder(prev => ({ ...prev, ...orderEditForm }));
-        alert("Данните за доставка са обновени!");
       }
     } catch (error) {
       console.error("Грешка при запазване:", error);
