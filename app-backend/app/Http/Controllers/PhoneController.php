@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Phone;
+use App\Models\PhoneColor;
 use Symfony\Component\HttpFoundation\Response;
 
 class PhoneController extends Controller
@@ -13,7 +14,7 @@ class PhoneController extends Controller
      */
     public function index()
     {
-        $phones = Phone::with("PhoneSpec.processor", "PhoneSpec.brand", "colors.color")->get();
+        $phones = Phone::with("PhoneSpec.processor", "PhoneSpec.brand", "colors.color")->where('isDeleted', false)->get();
         return response($phones, 200);
     }
 
@@ -49,5 +50,7 @@ class PhoneController extends Controller
     public function destroy(string $id)
     {
         //
+        Phone::findOrFail($id)->where('id', $id)->update(['isDeleted' => true]);
+        return response(['message' => 'Phone was deleted'], 200);
     }
 }

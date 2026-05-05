@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double('price')->nullable();
             $table->string('RAM')->nullable();
             $table->string('Storage')->nullable();
+            $table->boolean('isDeleted')->default(false);
             $table->unsignedBigInteger('phoneSpecId');
             $table->foreign('phoneSpecId')->references('id')->on('phone_specs')->onDelete('cascade');
             $table->timestamps();

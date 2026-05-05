@@ -211,6 +211,17 @@ const AdminPanel = () => {
     }
   };
 
+  async function handleDeletePhone(id) {
+    const response = await fetch(`http://localhost:8000/api/phones/${id}`, {
+      method: 'DELETE',
+      headers: {'Content-Type':'application/json', 'Accept':'application/json'}
+    });
+    if(response.ok)
+    {
+      setPhones(prevPhones => prevPhones.filter(phone => phone.id !== id))
+    }
+  }
+
   // --- РЕНДЕР ФУНКЦИИ ЗА ТАБЛИЦИТЕ ---
   const renderPhonesList = () => (
     <>
@@ -236,7 +247,7 @@ const AdminPanel = () => {
                 <td>€{Number(phone.price).toFixed(2)}</td>
                 <td>
                   <button className="action-btn">Edit</button>
-                  <button className="action-btn delete">Delete</button>
+                  <button className="action-btn delete" onClick={()=>handleDeletePhone(phone.id)}>Delete</button>
                 </td>
               </tr>
             ))}
