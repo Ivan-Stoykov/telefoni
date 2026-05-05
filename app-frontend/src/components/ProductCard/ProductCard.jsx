@@ -17,7 +17,7 @@ const ProductCard = ({ phone }) => {
 
       <div className="card-body d-flex flex-column">
         {/* Заглавие и Модел */}
-        <Link to={`/product/${phone.id}`} className="text-decoration-none text-dark">
+        <Link to={`/product/${phone.slug}`} className="text-decoration-none text-dark">
           <h6 className="card-title mb-1 fw-bold">
             {phone.name}
           </h6>
