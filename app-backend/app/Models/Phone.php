@@ -17,4 +17,9 @@ class Phone extends Model
     {
         return $this->hasMany(PhoneColor::class, 'phoneId');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'phone_id');
+    }
 }
