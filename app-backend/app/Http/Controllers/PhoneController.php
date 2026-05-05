@@ -30,8 +30,14 @@ class PhoneController extends Controller
      */
     public function show(string $slug)
     {
-        $phone = Phone::with("phoneSpec.processor", "phoneSpec.brand", "colors.color")->where("slug", $slug)->first();
+        $slug = strtolower($slug);
+
+        $phone = Phone::with("phoneSpec.processor", "phoneSpec.brand", "colors.color","reviews.user")
+            ->where("slug", $slug)
+            ->firstOrFail();
+
         $models = Phone::where('phoneSpecId', $phone->phoneSpec->id)->get();
+        
         return response(["phone" => $phone, 'models'=>$models], 200);
     }
 
