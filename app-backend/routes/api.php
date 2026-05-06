@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\PhoneSpecController;
 // Auth
 Route::post('login', [AuthController::class, 'login']);
 Route::post('signup', [AuthController::class, 'signup']);
@@ -37,3 +38,5 @@ Route::delete('/orders/{id}', [AdminController::class, 'deleteOrder']);
 
 // Checkout
 Route::post('/checkout', [CheckoutController::class, 'store']);
+
+Route::get('/phoneSpecs', [PhoneSpecController::class, 'index']);

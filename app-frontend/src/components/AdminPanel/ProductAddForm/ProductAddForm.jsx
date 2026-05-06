@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import "./ProductAddForm.css";
 
 const ProductAddForm = () => {
   const [useExistingSpecs, setUseExistingSpecs] = useState(false);
+  const [phoneSpecs, setPhoneSpecs] = useState([]);
 
   const { register, control, handleSubmit, unregister } = useForm({
     defaultValues: { colors: [{ colorName: "", quantity: 1 }] },
@@ -25,6 +26,15 @@ const ProductAddForm = () => {
         alert('Product added successfully!')
        }
   };
+
+  useEffect(() => {
+    async function fetchSpecs() {
+      const response = await fetch("http://localhost:8000/api/phoneSpecs");
+      const data = await response.json();
+      setPhoneSpecs(data);
+    }
+    fetchSpecs();
+  }, [])
 
   return (
     <div className="container py-5">
@@ -55,6 +65,14 @@ const ProductAddForm = () => {
                 className="form-control"
               />
             </div>
+                <div className="col-md-6">
+                  <label>RAM</label>
+                  <input {...register("RAM")} className="form-control" />
+                </div>
+                <div className="col-md-6">
+                  <label>Storage</label>
+                  <input {...register("Storage")} className="form-control" />
+                </div>
           </div>
 
           {/* Секция: Спецификации (Логика за споделяне) */}
@@ -96,8 +114,11 @@ const ProductAddForm = () => {
                   className="form-select"
                   placeholder=""
                 >
-                  <option value="1">iPhone 15 Pro Max</option>
-                  <option value="2">Galaxy S24 Ultra</option>
+                  {phoneSpecs.map((spec) => (
+                    <option key={spec.id} value={spec.id}>
+                      {spec.specName}
+                    </option>
+                  ))}
                 </select>
               </div>
             ) : (
@@ -118,14 +139,7 @@ const ProductAddForm = () => {
                     className="form-control"
                   />
                 </div>
-                <div className="col-md-6">
-                  <label>RAM</label>
-                  <input {...register("RAM")} className="form-control" />
-                </div>
-                <div className="col-md-6">
-                  <label>Storage</label>
-                  <input {...register("Storage")} className="form-control" />
-                </div>
+
                 <div className="col-md-6">
                   <label>Dimensions</label>
                   <input
