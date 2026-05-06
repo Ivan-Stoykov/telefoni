@@ -2,7 +2,11 @@ import "./App.css";
 import Layout from "./components/Layout/Layout.jsx";
 import HomePage from "./pages/HomePage/HomePage.jsx";
 import AboutUsPage from "./pages/AboutUsPage/AboutUsPage.jsx";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import LoginPage from "./pages/Auth/LoginPage.jsx";
 import SignUpPage from "./pages/Auth/SignUpPage.jsx";
 
@@ -12,12 +16,17 @@ import CartPage from "./components/CartPage/CartPage.jsx";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage.jsx";
 import AccountPage from "./components/AccountPage/AccountPage.jsx";
 import SuccessPage from "./components/SuccessPage/SuccessPage.jsx";
-import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
+import AdminPanel from "./components/AdminPanel/AdminPanelLayout/AdminPanel.jsx";
+import PhonesPanel from "./components/AdminPanel/PhonesPanel/PhonesPanel.jsx";
+import OrdersPanel from "./components/AdminPanel/OrdersPanel/OrdersPanel.jsx";
+import UsersPanel from "./components/AdminPanel/UsersPanel/UsersPanel.jsx";
+import ProductAddForm from "./components/AdminPanel/ProductAddForm/ProductAddForm.jsx";
 
 const ProtectedAdminRoute = ({ children }) => {
   const storedUser = localStorage.getItem("user");
   const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-  const isAdmin = parsedUser && (parsedUser.isAdmin === 1 || parsedUser.isAdmin === true);
+  const isAdmin =
+    parsedUser && (parsedUser.isAdmin === 1 || parsedUser.isAdmin === true);
 
   if (!isAdmin) {
     return <Navigate to="/" replace />;
@@ -25,7 +34,6 @@ const ProtectedAdminRoute = ({ children }) => {
 
   return children;
 };
-
 
 const router = createBrowserRouter([
   {
@@ -42,13 +50,20 @@ const router = createBrowserRouter([
       { path: "checkout", element: <CheckoutPage /> },
       { path: "account", element: <AccountPage /> },
       { path: "success", element: <SuccessPage /> },
-      { 
-        path: "admin", 
+      {
+        path: "admin",
         element: (
           <ProtectedAdminRoute>
             <AdminPanel />
           </ProtectedAdminRoute>
-        ) 
+        ),
+        children: [
+          { path: "", element: <Navigate to="phones" replace /> },
+          { path: "phones", element: <PhonesPanel /> },
+          { path: "phones/add", element: <ProductAddForm /> },
+          { path: "orders", element: <OrdersPanel /> },
+          { path: "users", element: <UsersPanel /> },
+        ],
       },
     ],
   },

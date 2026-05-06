@@ -40,6 +40,7 @@
   padding: 15px 25px;
   color: #a0aec0;
   background: transparent;
+  text-decoration: none;
   border: none;
   text-align: left;
   font-size: 1rem;
@@ -83,6 +84,7 @@
 
 .admin-add-btn {
   background-color: #0044b3;
+  text-decoration: none;
   color: white;
   border: none;
   padding: 10px 20px;
