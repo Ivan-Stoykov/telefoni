@@ -8,6 +8,7 @@ use App\Models\Phone;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 #[Fillable([
     'imageUrl',
+    'specName',
     'description',
     'MainCamera',
     'MCFeatures',

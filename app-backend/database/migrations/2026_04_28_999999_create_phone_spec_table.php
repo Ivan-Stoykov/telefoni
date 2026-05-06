@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('description')->nullable();
             $table->string('imageUrl')->nullable();
+            $table->string('specName')->nullable();
             $table->text('mainCamera')->nullable();
             $table->string('MCFeatures')->nullable();
             $table->string('MCVideo')->nullable();

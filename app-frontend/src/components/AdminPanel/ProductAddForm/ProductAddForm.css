@@ -1,0 +1,95 @@
+.admin-form-card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin: auto;
+  background-color: #ffffff;
+}
+
+.admin-form-card h2 {
+  color: #0d1b3e;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.admin-form-card label {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.admin-form-card .form-control {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  color: #212529;
+}
+
+.admin-form-card .form-control:focus {
+  border-color: #0d1b3e;
+  box-shadow: none;
+}
+
+.btn-save-admin {
+  background-color: #0d1b3e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.btn-save-admin:hover {
+  background-color: #1a2a4e;
+  color: #fff;
+}
+
+.section-title {
+  color: #0d1b3e;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+}
+
+.spec-container {
+  transition: all 0.3s ease;
+  border-left: 4px solid #0d1b3e !important;
+}
+
+.form-switch .form-check-input:checked {
+  background-color: #0d1b3e;
+  border-color: #0d1b3e;
+}
+
+.custom-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+.form-subsection-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0d1b3e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.form-subsection-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+  margin-left: 15px;
+}

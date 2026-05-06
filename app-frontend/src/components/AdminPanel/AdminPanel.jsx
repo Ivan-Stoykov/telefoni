@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './AdminPanel.css';
+import ProductAddForm from './ProductAddForm/ProductAddForm';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('phones');
@@ -8,6 +9,7 @@ const AdminPanel = () => {
   const [phones, setPhones] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
+  const [phoneRenders, setPhoneRenders] = useState('list');
   const [isLoading, setIsLoading] = useState(true);
 
     // State за следене кой потребител се редактира в момента (пази ID-то му)
@@ -225,9 +227,10 @@ const AdminPanel = () => {
   // --- РЕНДЕР ФУНКЦИИ ЗА ТАБЛИЦИТЕ ---
   const renderPhonesList = () => (
     <>
+    {phoneRenders === 'list' && <>
       <div className="admin-header">
         <h2 className="admin-title">Manage Phones</h2>
-        <button className="admin-add-btn">+ Add New Phone</button>
+        <button className="admin-add-btn" onClick={()=>{setPhoneRenders('add-form')}}>+ Add New Phone</button>
       </div>
       <div className="admin-table-container">
         <table className="admin-table">
@@ -253,7 +256,8 @@ const AdminPanel = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div></>}
+      {phoneRenders === 'add-form' && <ProductAddForm setPhoneRenders={setPhoneRenders} />}
     </>
   );
 
