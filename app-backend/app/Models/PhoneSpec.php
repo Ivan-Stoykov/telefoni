@@ -34,7 +34,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
     'OS',
     'Battery',
     'Charging',
-    'processorId'
+    'processorId',
+    'brandId',
 ])]
 class PhoneSpec extends Model
 {

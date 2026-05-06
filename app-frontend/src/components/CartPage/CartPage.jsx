@@ -83,7 +83,7 @@ const CartPage = () => {
 
                                                     <button
                                                         className="btn btn-sm btn-light border-0 px-2 text-muted fw-bold"
-                                                        onClick={() => addToCart({ phone: item })}
+                                                        onClick={() => addToCart({ phone: item, color: item.color })}
                                                         style={{ background: 'transparent' }}
                                                     >
                                                         +

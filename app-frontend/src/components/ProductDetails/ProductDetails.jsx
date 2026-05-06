@@ -7,7 +7,7 @@ const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState("description");
   const [selectedColor, setSelectedColor] = useState();
   const { slug } = useParams();
-  const model = slug.split("_")[slug.split("_").length - 1];
+  const model = slug.split("-")[slug.split("-").length - 1];
 
   const [phone, setPhone] = useState(null);
   
@@ -198,7 +198,7 @@ const ProductDetails = () => {
                   {phone.models.map((option) => (
                     <Link key={option.id} to={`/product/${option.slug}`}>
                       <div
-                        className={`storage-box ${model === option.Storage ? "active" : ""}`}
+                        className={`storage-box ${model === option.Storage.toLowerCase() ? "active" : ""}`}
                       >
                         {option.RAM + " - " + option.Storage}
                       </div>

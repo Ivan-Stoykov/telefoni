@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
 
         $spec = PhoneSpec::create([
             'processorId' => $proc->id,
+            'specName' => 'Samsung Galaxy S26 Ultra',
             'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s26-ultra.jpg',
             'brandId' => $brand->id,
             'MainCamera' => '200 MP (wide), \n 10 MP (telephoto) 3x zoom, \n 50 MP (periscope telephoto) 5x zoom,\n 50 MP (ultrawide)',
@@ -148,6 +149,7 @@ class DatabaseSeeder extends Seeder
 
         $spec = PhoneSpec::create([
             'processorId' => $proc->id,
+            'specName' => 'Xiaomi 17 Ultra',
             'imageUrl' => 'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-17-ultra-global-1.jpg',
             'brandId' => $brand->id,
             'MainCamera' => '50 MP (wide), \n 200 MP (periscope telephoto) 3x zoom, \n 50 MP (ultrawide)',
@@ -237,6 +239,7 @@ class DatabaseSeeder extends Seeder
         $spec = PhoneSpec::create([
             'processorId' => $proc->id,
             'brandId' => $brand->id,
+            'specName' => 'Apple iPhone 17 Pro Max',
             'imageUrl' => 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-17-pro-max.jpg',
             'MainCamera' => '48 MP (wide), \n 48 MP (periscope telephoto), 4x zoom \n 48 MP (ultrawide)',
             'MCFeatures' => 'Dual-LED dual-tone flash, HDR (photo/panorama)',

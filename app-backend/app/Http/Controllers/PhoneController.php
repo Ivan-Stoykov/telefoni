@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Phone;
+use App\Models\PhoneSpec;
 use App\Models\PhoneColor;
+use App\Models\Color;
+use App\Models\Brand;
+use App\Models\Processor;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 
 class PhoneController extends Controller
 {
@@ -23,7 +28,54 @@ class PhoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge(['slug' => Str::slug(strtolower($request->name))]);
+        if ($request->has('phoneSpecId')) {
+            $phone = Phone::create($request->only([
+                'RAM',
+                'Storage',
+                'price',
+                'name',
+                'phoneSpecId',
+                'slug'
+            ])); 
+        }
+        else{
+            $brand = Brand::firstOrCreate(['name' => $request->input('brand')]);
+            $processor = Processor::firstOrCreate([
+                'name' => $request->specs['processor']['name'],
+                'brand' => $request->specs['processor']['brand'],
+                'coreCount' => $request->specs['processor']['coreCount'],
+                'GPU' => $request->specs['processor']['GPU']]);
+
+            $specData = $request->input('specs');
+            $specData['processorId'] = $processor->id;
+            $specData['brandId'] = $brand->id; 
+            $namearr = explode(' ', $request->input('name'));
+            array_pop($namearr);
+            $specData['specName'] = implode(' ', $namearr);
+            unset($specData['processor']); 
+
+            $spec = PhoneSpec::create($specData);
+
+            $phone = Phone::create([
+                'RAM' => $request->RAM,
+                'Storage' => $request->Storage,
+                'price' => $request->price,
+                'name' => $request->name,
+                'phoneSpecId' => $spec->id,
+                'slug' => $request->slug
+            ]); 
+        }
+        if ($request->has('colors')) {
+                foreach ($request->colors as $colorData) {
+                    $color = Color::firstOrCreate(['color' => $colorData['colorName']]);
+                    PhoneColor::create([
+                        'phoneId' => $phone->id,
+                        'colorId' => $color->id,
+                        'quantity' => $colorData['quantity']
+                    ]);
+                }
+            }
     }
 
     /**

@@ -11,10 +11,19 @@ const ProductAddForm = () => {
 
   const { fields, append, remove } = useFieldArray({ control, name: "colors" });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Ако useExistingSpecs е истина, пращаме само phoneSpecId към phones таблицата
     data.name = data.brand + " " + data.name;
     console.log("Submit Data:", data);
+    const response = await fetch("http://localhost:8000/api/phones", {
+      method: "POST",
+      headers: { "Content-Type": "application/json",
+        'Accept': 'application/json' },
+      body: JSON.stringify(data),
+       },);
+       if(response.ok) {
+        alert('Product added successfully!')
+       }
   };
 
   return (
@@ -221,8 +230,8 @@ const ProductAddForm = () => {
                 <div className="col-md-6">
                   <label>NFC</label>
                   <select {...register("specs.NFC")} className="form-select">
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
+                    <option value={1}>Yes</option>
+                    <option value={2}>No</option>
                   </select>
                 </div>
                 <div className="col-md-6">
@@ -267,7 +276,7 @@ const ProductAddForm = () => {
                   <label>Main Camera</label>
                   <input
                     type="text"
-                    {...register("specs.mainCamera")}
+                    {...register("specs.MainCamera")}
                     className="form-control"
                   />
                 </div>
