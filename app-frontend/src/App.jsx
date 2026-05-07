@@ -21,6 +21,7 @@ import PhonesPanel from "./components/AdminPanel/PhonesPanel/PhonesPanel.jsx";
 import OrdersPanel from "./components/AdminPanel/OrdersPanel/OrdersPanel.jsx";
 import UsersPanel from "./components/AdminPanel/UsersPanel/UsersPanel.jsx";
 import ProductAddForm from "./components/AdminPanel/ProductAddForm/ProductAddForm.jsx";
+import UpdatePhoneForm from "./components/AdminPanel/PhonesPanel/UpdatePhoneForm/UpdatePhoneForm.jsx";
 
 const ProtectedAdminRoute = ({ children }) => {
   const storedUser = localStorage.getItem("user");
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
           { path: "", element: <Navigate to="phones" replace /> },
           { path: "phones", element: <PhonesPanel /> },
           { path: "phones/add", element: <ProductAddForm /> },
+          { path: "phones/edit/:slug", element: <UpdatePhoneForm /> },
           { path: "orders", element: <OrdersPanel /> },
           { path: "users", element: <UsersPanel /> },
         ],

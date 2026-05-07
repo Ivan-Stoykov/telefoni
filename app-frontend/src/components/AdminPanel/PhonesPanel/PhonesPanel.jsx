@@ -83,7 +83,7 @@ export default function PhonesPanel() {
                 </td>
                 <td>€{Number(phone.price).toFixed(2)}</td>
                 <td>
-                  <button className="action-btn">Edit</button>
+                  <Link to={`edit/${phone.slug}`} className="action-btn">Edit</Link>
                   <button
                     className="action-btn delete"
                     onClick={() => handleDeletePhone(phone.id)}
