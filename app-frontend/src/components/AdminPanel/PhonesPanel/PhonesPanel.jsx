@@ -7,21 +7,16 @@ export default function PhonesPanel() {
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        // Забележка: Провери точните URL адреси с бекенд колегите си!
         const headers = {
           Accept: "application/json",
-          // 'Authorization': `Bearer ${localStorage.getItem('token')}`
         };
 
-        // Изпращаме трите заявки едновременно за максимална бързина
         const phonesRes = await fetch("http://localhost:8000/api/phones", {
           headers,
         });
 
-        // Ако заявките са успешни, парсваме JSON-а
         if (phonesRes.ok) {
           const phonesData = await phonesRes.json();
-          // Ако бекендът връща пагинация, може да е phonesData.data
           setPhones(phonesData.data || phonesData);
         }
       } catch (error) {
@@ -79,7 +74,7 @@ export default function PhonesPanel() {
               <tr key={phone.id}>
                 <td>#{phone.id}</td>
                 <td style={{ fontWeight: "600" }}>
-                  {phone.model || phone.name}
+                  {phone.phone_spec?.brand?.name + " " + phone.name || `Phone #${phone.id}`}
                 </td>
                 <td>€{Number(phone.price).toFixed(2)}</td>
                 <td>

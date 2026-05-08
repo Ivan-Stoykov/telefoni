@@ -42,6 +42,7 @@ export default function MainNavigation() {
         const response = await fetch("http://localhost:8000/api/phones");
         if (response.ok) {
           const data = await response.json();
+          data.map(phone => { phone.name = phone.phone_spec.brand.name + " " + phone.name });
           setAllPhones(data);
         }
       } catch (error) {
@@ -51,7 +52,6 @@ export default function MainNavigation() {
     fetchPhones();
   }, []);
 
-  // 2. Функция, която филтрира докато пишем
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -68,7 +68,6 @@ export default function MainNavigation() {
       setIsSearchOpen(false);
     }
   };
-  // ----------------------------------
 
   function logout() {
     localStorage.removeItem("token");
@@ -135,11 +134,9 @@ export default function MainNavigation() {
                 if (searchQuery.length > 0) setIsSearchOpen(true);
               }}
               onBlur={() => setTimeout(() => setIsSearchOpen(false), 200)}
-              /* 1. ХВАЩАМЕ НАТИСКАНЕТО НА ENTER */
               onKeyDown={(e) => {
                 if (e.key === "Enter" && searchQuery.trim().length > 0) {
                   setIsSearchOpen(false);
-                  // Пренасочваме към страницата с продуктите + параметър за търсене
                   navigate(`/?search=${searchQuery}`);
                 }
               }}
@@ -233,7 +230,6 @@ export default function MainNavigation() {
               </div>
             )}
           </div>
-          {/* КРАЙ НА ТЪРСАЧКАТА */}
 
           <div className="nav-icons">
             {isAdmin && (
@@ -241,14 +237,6 @@ export default function MainNavigation() {
                 <FiShield className="header-icon" />
               </Link>
             )}
-
-            {/* <Link to="#" className="icon-btn">
-              <img
-                src={SwapIconImage}
-                alt="Swap Phones"
-                className="custom-swap-icon"
-              />{" "}
-            </Link> */}
 
             <Link to="/cart" className="icon-btn position-relative">
               <FiShoppingCart className="header-icon" />

@@ -6,7 +6,6 @@ export default function OrdersPanel() {
 
   const [selectedAdminOrder, setSelectedAdminOrder] = useState(null);
 
-  // State за формата с данните за доставка
   const [orderEditForm, setOrderEditForm] = useState({
     status: "",
     shipping_name: "",
@@ -16,17 +15,13 @@ export default function OrdersPanel() {
     shipping_city: "",
   });
 
-  // --- ЗАРЕЖДАНЕ НА ДАННИТЕ ОТ БЕКЕНДА ---
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        // Забележка: Провери точните URL адреси с бекенд колегите си!
         const headers = {
           Accept: "application/json",
-          // 'Authorization': `Bearer ${localStorage.getItem('token')}`
         };
 
-        // Изпращаме трите заявки едновременно за максимална бързина
         const ordersRes = await fetch("http://localhost:8000/api/orders", {
           headers,
         });
@@ -47,7 +42,6 @@ export default function OrdersPanel() {
     fetchAllData();
   }, []);
 
-  // Помощна функция за форматиране на дати
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
@@ -60,7 +54,6 @@ export default function OrdersPanel() {
 
   const handleViewOrderDetails = (order) => {
     setSelectedAdminOrder(order);
-    // Зареждаме текущите данни във формата
     setOrderEditForm({
       status: order.status || "pending",
       shipping_name: order.shipping_name || "",
@@ -71,7 +64,6 @@ export default function OrdersPanel() {
     });
   };
 
-  // --- СМЯНА НА СТАТУСА (С БУТОН) ---
   const handleAdvanceStatus = async () => {
     let newStatus = "pending";
     const currentStatus = orderEditForm.status.toLowerCase();
@@ -82,7 +74,6 @@ export default function OrdersPanel() {
     else return;
 
     try {
-      // Пращаме PUT заявка към бекенда
       const response = await fetch(
         `http://localhost:8000/api/orders/${selectedAdminOrder.id}`,
         {
@@ -96,7 +87,6 @@ export default function OrdersPanel() {
       );
 
       if (response.ok) {
-        // Обновяваме state-овете, за да се смени веднага на екрана
         setOrderEditForm((prev) => ({ ...prev, status: newStatus }));
         setOrders((prev) =>
           prev.map((o) =>
@@ -110,7 +100,6 @@ export default function OrdersPanel() {
     }
   };
 
-  // --- ЗАПАЗВАНЕ НА РЕДАКТИРАНИТЕ ДАННИ ЗА ДОСТАВКА ---
   const handleOrderFormChange = (e) => {
     const { name, value } = e.target;
     setOrderEditForm((prev) => ({ ...prev, [name]: value }));
@@ -143,7 +132,6 @@ export default function OrdersPanel() {
       console.error("Грешка при запазване:", error);
     }
   };
-  // АКО ИМА ИЗБРАНА ПОРЪЧКА - ПОКАЗВАМЕ ДЕТАЙЛИТЕ И ФОРМАТА
   if (selectedAdminOrder) {
     return (
       <div className="admin-order-details">
@@ -174,7 +162,6 @@ export default function OrdersPanel() {
             Order ORD-2026-{selectedAdminOrder.id.toString().padStart(3, "0")}
           </h2>
 
-          {/* БУТОН ЗА СТАТУСА */}
           <div
             className="status-controller"
             style={{ display: "flex", alignItems: "center", gap: "15px" }}
@@ -270,8 +257,7 @@ export default function OrdersPanel() {
                   />
                   <div>
                     <div style={{ fontWeight: "bold", color: "#0f172a" }}>
-                      {item.phone?.name ||
-                        item.phone?.model ||
+                      {item.phone.phone_spec.brand.name + " " + item.phone?.name ||
                         `Phone #${item.phone_id}`}
                     </div>
                     <div
@@ -469,7 +455,6 @@ export default function OrdersPanel() {
     );
   }
 
-  // АКО НЯМА ИЗБРАНА ПОРЪЧКА - РЕНДЕРИРАМЕ ТАБЛИЦАТА
   return (
     <>
     {isLoading ? (

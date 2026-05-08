@@ -4,11 +4,9 @@ import "./UpdatePhoneForm.css";
 import { useParams } from "react-router-dom";
 
 const UpdatePhonePage = () => {
-  // Форма 1: Специфични данни за модела (Table: phones)
   const { slug } = useParams();
   const phoneForm = useForm();
   const [initialData, setInitialData] = useState();
-  // Форма 2: Общи технически спецификации (Table: phone_specs)
   const specForm = useForm();
 
   useEffect(() => {
@@ -17,12 +15,9 @@ const UpdatePhonePage = () => {
       const data = await response.json();
       setInitialData(data.phone);
       console.log(data);
-      const nameArr = data.phone.name.split(" ");
-      nameArr.shift();
-      const name = nameArr.join(" ");
 
       phoneForm.reset({
-        name: name,
+        name: data.phone.name,
         price: data.phone.price,
         brand: data.phone.phone_spec.brand.name,
         RAM: data.phone.RAM,
@@ -35,12 +30,10 @@ const UpdatePhonePage = () => {
 
   const onPhoneSubmit = (data) => {
     console.log("Updating Phone Basic Info:", data);
-    // API Call: PUT /api/phones/:id
   };
 
   const onSpecSubmit = (data) => {
     console.log("Updating Shared Specifications:", data);
-    // API Call: PUT /api/specs/:id
   };
 
   return (
@@ -120,74 +113,224 @@ const UpdatePhonePage = () => {
                 <small>Spec ID: #{initialData?.phoneSpecId}</small>
               </div>
 
-              <form onSubmit={specForm.handleSubmit(onSpecSubmit)}>
-                {/* Секция: Дисплей */}
-                <div className="form-subsection-title">Display & Screen</div>
-                <div className="row g-3 mb-4">
-                  <div className="col-md-12">
-                    <label>Display Technology</label>
-                    <input
-                      {...specForm.register("Display")}
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label>Screen Size</label>
-                    <input
-                      {...specForm.register("ScreenSize")}
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label>Resolution</label>
-                    <input
-                      {...specForm.register("ScreenResolution")}
-                      className="form-control"
-                    />
-                  </div>
+              <form onSubmit={specForm.handleSubmit(onSpecSubmit)} className="row g-3">
+                <div className="form-subsection-title">General & Build</div>
+                <div className="col-md-6">
+                  <label>Model Number</label>
+                  <input
+                    {...specForm.register("ModelNumber")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Series</label>
+                  <input
+                    {...specForm.register("Series")}
+                    className="form-control"
+                  />
                 </div>
 
-                {/* Секция: Процесор */}
-                <div className="form-subsection-title">Core Performance</div>
-                <div className="row g-3 mb-4">
-                  <div className="col-md-6">
-                    <label>Operating System</label>
-                    <input
-                      {...specForm.register("OS")}
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label>Battery Capacity</label>
-                    <input
-                      {...specForm.register("Battery")}
-                      className="form-control"
-                    />
-                  </div>
+                <div className="col-md-6">
+                  <label>Dimensions</label>
+                  <input
+                    {...specForm.register("Dimensions")}
+                    className="form-control"
+                  />
                 </div>
-
-                {/* Секция: Камери */}
-                <div className="form-subsection-title">Imaging System</div>
-                <div className="row g-3 mb-4">
-                  <div className="col-md-6">
-                    <label>Main Camera Setup</label>
-                    <input
-                      {...specForm.register("mainCamera")}
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label>Selfie Camera</label>
-                    <input
-                      {...specForm.register("SelfieCamera")}
-                      className="form-control"
-                    />
-                  </div>
+                <div className="col-md-6">
+                  <label>Weight</label>
+                  <input
+                    {...specForm.register("Weight")}
+                    className="form-control"
+                  />
                 </div>
-
-                <div className="alert alert-info border-0 bg-light-blue small mb-4">
-                  <strong>Бележка:</strong> Промените тук се отразяват глобално
-                  за всички устройства, ползващи този Spec ID.
+                <div className="col-md-6">
+                  <label>Operating system</label>
+                  <input {...specForm.register("OS")} className="form-control" />
+                </div>
+                <div className="col-md-6">
+                  <label>Battery</label>
+                  <input
+                    {...specForm.register("Battery")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Charging</label>
+                  <input
+                    {...specForm.register("Charging")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Speakers</label>
+                  <select
+                    {...specForm.register("Speakers")}
+                    className="form-select"
+                  >
+                    <option value="Stereo speakers">Stereo Speakers</option>
+                    <option value="Mono speaker">Mono Speaker</option>
+                  </select>
+                </div>
+                <div className="col-md-12">
+                  <label>ImageURL</label>
+                  <input
+                    {...specForm.register("imageUrl")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-subsection-title">Display</div>
+                <div className="col-12">
+                  <label>Display Info</label>
+                  <input
+                    {...specForm.register("Display")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Screen Size</label>
+                  <input
+                    {...specForm.register("ScreenSize")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Screen Resolution</label>
+                  <input
+                    {...specForm.register("ScreenResolution")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Screen Type</label>
+                  <input
+                    {...specForm.register("ScreenType")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Protection</label>
+                  <input
+                    {...specForm.register("Protection")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-subsection-title">Connectivity</div>
+                <div className="col-12">
+                  <label>Wireless LAN</label>
+                  <input {...specForm.register("Wifi")} className="form-control" />
+                </div>
+                <div className="col-md-6">
+                  <label>Bluetooth</label>
+                  <input
+                    {...specForm.register("Bluetooth")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Port</label>
+                  <input {...specForm.register("Port")} className="form-control" />
+                </div>
+                <div className="col-md-6">
+                  <label>NFC</label>
+                  <select {...specForm.register("NFC")} className="form-select">
+                    <option value={1}>Yes</option>
+                    <option value={2}>No</option>
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <label>Positioning</label>
+                  <input
+                    {...specForm.register("Positioning")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-subsection-title">Processor</div>
+                <div className="col-md-6">
+                  <label>Processor Brand</label>
+                  <input
+                    {...specForm.register("processor.brand")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Processor Name</label>
+                  <input
+                    {...specForm.register("processor.name")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>GPU</label>
+                  <input
+                    {...specForm.register("processor.GPU")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Core Count</label>
+                  <input
+                    type="number"
+                    {...specForm.register("processor.coreCount")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-subsection-title">Cameras</div>
+                <div className="col-12">
+                  <label>Main Camera</label>
+                  <input
+                    type="text"
+                    {...specForm.register("mainCamera")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Main Camera Features</label>
+                  <input
+                    type="text"
+                    {...specForm.register("MCFeatures")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Main Camera Video</label>
+                  <input
+                    type="text"
+                    {...specForm.register("MCVideo")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-12">
+                  <label>Selfie Camera</label>
+                  <input
+                    type="text"
+                    {...specForm.register("SelfieCamera")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Selfie Camera Features</label>
+                  <input
+                    type="text"
+                    {...specForm.register("SCFeatures")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Selfie Camera Video</label>
+                  <input
+                    type="text"
+                    {...specForm.register("SCVideo")}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-subsection-title">Description</div>
+                <div className="col-md-12">
+                  <textarea
+                    {...specForm.register("description")}
+                    className="form-control"
+                    rows="6"
+                  />
                 </div>
 
                 <button

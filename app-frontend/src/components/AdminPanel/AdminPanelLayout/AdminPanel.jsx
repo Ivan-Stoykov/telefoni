@@ -4,8 +4,7 @@ import { Outlet, useLocation, Link } from "react-router-dom";
 const AdminPanel = () => {
   const {pathname} = useLocation();
   console.log(pathname);
-  const activeTab = pathname.split("/").pop(); // Взимаме последната част от URL-то, за да определим активния таб
-  // --- РЕАЛНИ СТЕЙТОВЕ ЗА ДАННИТЕ ---
+  const activeTab = pathname.split("/").pop();
 
   return (
     <div className="admin-container">
@@ -33,7 +32,6 @@ const AdminPanel = () => {
         </div>
       </div>
 
-      {/* ОСНОВНА РАБОТНА ПЛОЩ */}
       <div className="admin-content"><Outlet /></div>
       
     </div>

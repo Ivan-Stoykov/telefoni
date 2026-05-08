@@ -16,6 +16,7 @@ const ComparePage = () => {
         const response = await fetch("http://localhost:8000/api/phones");
         if (response.ok) {
           const data = await response.json();
+          data.map(phone => { phone.name = phone.phone_spec.brand.name + " " + phone.name });
           setAllPhones(data);
 
           if (initialPhoneId) {
@@ -58,7 +59,6 @@ const ComparePage = () => {
         {compareSlots.map((phone, index) => (
           <div className="col-md-4 px-3 mb-5" key={index}>
             {phone ? (
-              /* РЕШЕНИЕ 1: Слагаме d-flex flex-column и h-100, за да заеме цялата височина на колоната */
               <div className="d-flex flex-column h-100">
                 <div className="text-center mb-4">
                   <img
@@ -150,7 +150,6 @@ const ComparePage = () => {
                   </li>
                 </ul>
 
-                {/* РЕШЕНИЕ 1 (продължение): mt-auto избутва бутоните най-отдолу, изравнявайки ги перфектно */}
                 <div className="d-flex gap-3 mt-auto pt-3 border-top">
                   <Link
                     to={`/product/${phone.slug}`}

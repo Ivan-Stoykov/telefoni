@@ -13,7 +13,6 @@ const ProductAddForm = () => {
   const { fields, append, remove } = useFieldArray({ control, name: "colors" });
 
   const onSubmit = async (data) => {
-    // Ако useExistingSpecs е истина, пращаме само phoneSpecId към phones таблицата
     data.name = data.brand + " " + data.name;
     console.log("Submit Data:", data);
     const response = await fetch("http://localhost:8000/api/phones", {
@@ -75,7 +74,6 @@ const ProductAddForm = () => {
                 </div>
           </div>
 
-          {/* Секция: Спецификации (Логика за споделяне) */}
           <div className="section-header d-flex justify-content-between align-items-center">
             <div className="section-title mb-0">Technical Specifications</div>
             <div className="form-check form-switch">
@@ -178,8 +176,8 @@ const ProductAddForm = () => {
                     {...register("specs.Speakers")}
                     className="form-select"
                   >
-                    <option value="Stereo Speakers">Stereo Speakers</option>
-                    <option value="Mono Speaker">Mono Speaker</option>
+                    <option value="Stereo speakers">Stereo Speakers</option>
+                    <option value="Mono speaker">Mono Speaker</option>
                   </select>
                 </div>
                 <div className="col-md-12">

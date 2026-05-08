@@ -6,12 +6,11 @@ import './CartPage.css';
 const CartPage = () => {
     const { cartItems, removeFromCart, addToCart, decreaseQuantity } = useCart();
 
-    // Пресмятаме общата сума на всички продукти в количката
     const orderValue = cartItems.reduce((total, item) => {
-        // Взимаме цената (подсигуряваме се, че е число)
         const price = Number(item.price || item.phone_spec?.price || 0);
         return total + (price * item.quantity);
     }, 0);
+    console.log("Cart items:", cartItems);
 
     const fallbackImage = "/images/asni.jpg";
 
@@ -19,7 +18,6 @@ const CartPage = () => {
         <div className="cart-page-container py-5">
             <div className="container-fluid px-4 px-lg-5" style={{ maxWidth: '1600px' }}>
 
-                {/* АКО КОЛИЧКАТА Е ПРАЗНА */}
                 {cartItems.length === 0 ? (
                     <div className="text-center py-5">
                         <h2 className="fw-bold mb-4">Your cart is empty</h2>
@@ -28,7 +26,6 @@ const CartPage = () => {
                         </Link>
                     </div>
                 ) : (
-                    /* АКО ИМА ПРОДУКТИ */
                     <div className="row g-4">
 
                         {/* ЛЯВА КОЛОНА: Списък с продукти */}
@@ -36,10 +33,9 @@ const CartPage = () => {
                             <div className="cart-card">
                                 <h4 className="cart-title">Cart</h4>
 
-                                {cartItems.map((item) => (
-                                    <div className="cart-item-box d-flex align-items-center" key={item.id}>
+                                {cartItems.map((item, index) => (
+                                    <div className="cart-item-box d-flex align-items-center" key={index}>
 
-                                        {/* Снимка */}
                                         <div className="cart-image-wrapper me-4">
                                             <img
                                                 src={item.phone_spec?.imageUrl || fallbackImage}
@@ -49,28 +45,24 @@ const CartPage = () => {
                                             />
                                         </div>
 
-                                        {/* Информация за продукта */}
                                         <div className="flex-grow-1">
                                             <div className="cart-item-title">
-                                                {item.name + " - " + item.color || 'Unknown Phone'}
-                                                {/* Махнахме стария бадж "x2", защото вече имаме хубави бутони! */}
+                                                {item.phone_spec.brand.name + " "+item.name + " - " + item.color || 'Unknown Phone'}
                                             </div>
 
                                             <div className="cart-item-specs">
                                                 {item.Storage || 'N/A'} - {item.RAM || 'N/A'}
                                             </div>
 
-                                            {/* НОВО: Контейнер за цената и контролера за бройка */}
                                             <div className="d-flex align-items-center gap-4 mt-2">
                                                 <div className="cart-item-price mb-0">
                                                     €{Number(item.price || 0).toFixed(2)}
                                                 </div>
 
-                                                {/* Бутони + / - */}
                                                 <div className="d-flex align-items-center border rounded">
                                                     <button
                                                         className="btn btn-sm btn-light border-0 px-2 text-muted fw-bold"
-                                                        onClick={() => decreaseQuantity(item.id)}
+                                                        onClick={() => decreaseQuantity(item.id, item.color)}
                                                         disabled={item.quantity <= 1}
                                                         style={{ background: 'transparent' }}
                                                     >
@@ -92,10 +84,9 @@ const CartPage = () => {
                                             </div>
                                         </div>
 
-                                        {/* Бутон за изтриване */}
                                         <button
                                             className="delete-btn ms-3"
-                                            onClick={() => removeFromCart(item.id)}
+                                            onClick={() => removeFromCart(item.id, item.color)}
                                             title="Remove from cart"
                                         >
                                             <FiTrash2 />

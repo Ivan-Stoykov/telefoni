@@ -7,7 +7,6 @@ const CheckoutPage = () => {
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
 
-  // НОВО: State за съхранение на грешките
   const [errors, setErrors] = useState({});
 
   const storedUser = localStorage.getItem("user");
@@ -27,13 +26,11 @@ const CheckoutPage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Ако потребителят започне да пише, махаме грешката за това поле
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
-  // НОВО: Функция за валидация
   const validateForm = () => {
     let tempErrors = {};
     let isValid = true;
@@ -43,7 +40,6 @@ const CheckoutPage = () => {
       isValid = false;
     }
 
-    // Телефон: позволява опционален +, следван от 9 до 15 цифри (игнорира интервали)
     const phoneRegex = /^\+?[0-9\s]{9,15}$/;
     if (!formData.phone.trim()) {
       tempErrors.phone = "Phone number is required";
@@ -53,7 +49,6 @@ const CheckoutPage = () => {
       isValid = false;
     }
 
-    // Имейл: стандартна проверка
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
       tempErrors.email = "Email is required";
@@ -81,38 +76,31 @@ const CheckoutPage = () => {
     const price = Number(item.price || item.phone_spec?.price || 0);
     return total + price * item.quantity;
   }, 0);
-
-  // НОВО: Изчисляваме цената на доставката
+а
   const shippingCost = formData.shipping.includes("Econt") ? 5 : 0;
 
-  // НОВО: Крайната цена
   const finalTotal = orderValue + shippingCost;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Проверка за грешки: Ако има червени полета, спираме изпълнението
     if (Object.keys(errors).length > 0) {
       alert("Моля, попълнете всички задължителни полета коректно.");
       return;
     }
 
-    // 2. Взимаме user_id, ако потребителят е логнат (от localStorage)
     const storedUser = localStorage.getItem('user');
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     const userId = parsedUser ? parsedUser.id : null;
 
-    // 3. Подготвяме продуктите за междинната таблица
-    // Мапваме количката към колоните: phone_id, color_id, price, quantity
     const orderItems = cartItems.map(item => ({
-      id: item.id || item.phone_id,         // ПРОМЯНА: бекендът търси 'id', а не 'phone_id'
-      name: item.name || item.brand + ' ' + item.model, // ПРОМЯНА: бекендът иска 'name' за съобщението за грешка
-      color: item.color || 'Black',         // Трябва да е текст (име на цвят), напр. 'Black'
+      id: item.id || item.phone_id,
+      name: item.phone_spec.brand.name + ' ' + item.name,
+      color: item.color || 'Black',
       price: Number(item.price || item.phone_spec?.price || 0),
       quantity: item.quantity
     }));
 
-    // 4. Сглобяваме главния обект
     const orderPayload = {
       userId: userId === null ? 0 : userId,
       totalPrice: finalTotal,
@@ -132,15 +120,12 @@ const CheckoutPage = () => {
     try {
       console.log("Данни, готови за бекенда:", orderPayload);
 
-      // --- КОДЪТ ЗА БЕКЕНДА (Разкоментираш го, когато API-то е готово) ---
 
       const response = await fetch('http://localhost:8000/api/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          // Ако бекендът изисква токен за логнати потребители:
-          // 'Authorization': `Bearer ${parsedUser?.token}` 
         },
         body: JSON.stringify(orderPayload)
       });
@@ -152,7 +137,6 @@ const CheckoutPage = () => {
       const result = await response.json();
       console.log("Успешна поръчка от сървъра:", result);
       
-      // 5. След успешна поръчка изчистваме количката и пренасочваме:
       clearCart();
 
       navigate('/success', {
@@ -173,7 +157,6 @@ const CheckoutPage = () => {
   return (
     <div className="checkout-page-container py-5">
       <div className="container px-4 px-lg-5" style={{ maxWidth: "1200px" }}>
-        {/* Слагаме noValidate, за да скрием грозните системни съобщения на браузъра */}
         <form onSubmit={handleSubmit} noValidate>
           <div className="row g-5">
             {/* ЛЯВА ЧАСТ: Shipping Form */}
@@ -183,7 +166,6 @@ const CheckoutPage = () => {
                 <h5 className="section-title">Shipping details</h5>
 
                 <div className="row">
-                  {/* Name */}
                   <div className="col-md-6 form-group">
                     <label>Name and Surname</label>
                     <input
@@ -198,7 +180,6 @@ const CheckoutPage = () => {
                     )}
                   </div>
 
-                  {/* Phone */}
                   <div className="col-md-6 form-group">
                     <label>Phone number</label>
                     <input
@@ -214,7 +195,6 @@ const CheckoutPage = () => {
                     )}
                   </div>
 
-                  {/* Email */}
                   <div className="col-12 form-group">
                     <label>Email</label>
                     <input
@@ -229,7 +209,6 @@ const CheckoutPage = () => {
                     )}
                   </div>
 
-                  {/* Address */}
                   <div className="col-12 form-group">
                     <label>Address</label>
                     <input
@@ -244,7 +223,6 @@ const CheckoutPage = () => {
                     )}
                   </div>
 
-                  {/* City */}
                   <div className="col-md-6 form-group">
                     <label>City</label>
                     <input
@@ -259,7 +237,6 @@ const CheckoutPage = () => {
                     )}
                   </div>
 
-                  {/* Select Shipping */}
                   <div className="col-md-6 form-group">
                     <label>Select shipping</label>
                     <select
@@ -305,7 +282,7 @@ const CheckoutPage = () => {
                   {cartItems.map((item) => (
                     <div className="summary-item-row" key={item.id}>
                       <span className="pe-2">
-                        {item.phone_spec?.name || item.name}
+                        {item.phone_spec.brand.name + " " + item.name}
                         {item.quantity > 1 ? ` x${item.quantity}` : ""}
                       </span>
                       <span className="fw-medium text-dark text-nowrap">
@@ -324,7 +301,6 @@ const CheckoutPage = () => {
                   <span>€{orderValue.toFixed(2)}</span>
                 </div>
 
-                {/* НОВО: Ред за цената на доставката */}
                 <div className="summary-item-row">
                   <span>Shipping</span>
                   <span>
@@ -336,7 +312,6 @@ const CheckoutPage = () => {
 
                 <div className="summary-total-row">
                   <span>TOTAL</span>
-                  {/* ПРОМЯНА: Тук вече показваме finalTotal, а не orderValue */}
                   <span className="text-primary fs-3">
                     €{finalTotal.toFixed(2)}
                   </span>

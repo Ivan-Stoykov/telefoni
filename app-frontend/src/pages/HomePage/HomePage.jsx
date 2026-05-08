@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom'; // 1. ДОБАВЕНО: Импортираме hook-а за URL параметри
+import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 
 const HomePage = () => {
-  // 2. ДОБАВЕНО: Взимаме каквото е написано в търсачката от линка (напр. ?search=sam)
   const [searchParams] = useSearchParams();
   const searchWord = searchParams.get('search');
 
@@ -41,49 +40,41 @@ const HomePage = () => {
       fetchPhones();
   }, []);
 
-  // 3. Филтриране на телефоните
   const filteredPhones = phones.filter(phone => {
-    // --- НОВО: Филтър от главната търсачка ---
     if (searchWord) {
-      const phoneName = phone.phone_spec?.name || phone.name || "";
-      // Ако името не съдържа търсената дума, директно го скриваме
+    const phoneName = phone.phone_spec.brand.name + " " + phone.name || "";
       if (!phoneName.toLowerCase().includes(searchWord.toLowerCase())) {
         return false;
       }
     }
-    // -----------------------------------------
 
-    // Ако има избрани марки и марката на телефона не е сред тях -> скрий го
     if (filters.brand.length > 0 && !filters.brand.includes(phone.phone_spec.brand.name)) return false;
-    
-    // Ако има избрана памет и паметта на телефона не е сред тях -> скрий го
     if (filters.storage.length > 0 && !filters.storage.includes(phone.Storage)) return false;
     if (filters.memory.length > 0 && !filters.memory.includes(phone.RAM)) return false;
     if (filters.color.length > 0 && phone.colors.every(color => !filters.color.includes(color.color.color))) return false;
 
-    return true; // Ако мине всички проверки, го покажи
+    return true;
   });
 
   const sortedPhones = [...filteredPhones].sort((a, b) => {
     if (sortType === 'price-asc') {
-      return a.price - b.price; // Ниска към висока
+      return a.price - b.price;
     } 
     if (sortType === 'price-desc') {
-      return b.price - a.price; // Висока към ниска
+      return b.price - a.price;
     } 
     
-    // За имената комбинираме Марка + Модел, за да е точно
     const nameA = `${a.name}`.toLowerCase();
     const nameB = `${b.name}`.toLowerCase();
     
     if (sortType === 'name-asc') {
-      return nameA.localeCompare(nameB); // От А до Я
+      return nameA.localeCompare(nameB);
     }
     if (sortType === 'name-desc') {
-      return nameB.localeCompare(nameA); // От Я до А
+      return nameB.localeCompare(nameA);
     }
 
-    return 0; // Ако няма избрано сортиране, не пипай нищо
+    return 0;
   });
 
   return (
@@ -94,7 +85,6 @@ const HomePage = () => {
         <div className="col-md-3 col-xl-2 pe-lg-4">
           
           <div className="filter-section">
-            {/* Ако имаме активно търсене, показваме един малък текст, за да знае потребителят */}
             {searchWord && (
               <div className="mb-4 p-2 bg-light rounded text-center border">
                 <span className="small text-muted">Showing results for:</span><br/>
@@ -102,7 +92,6 @@ const HomePage = () => {
               </div>
             )}
 
-            {/* Brand */}
             <div className="mb-5">
               <h6 className="fw-bold mb-3">Brand</h6>
               {['Apple', 'Samsung', 'Motorola', 'Xiaomi', 'Honor'].map(brand => (
@@ -118,7 +107,6 @@ const HomePage = () => {
               ))}
             </div>
 
-            {/* Color */}
             <div className="mb-5">
               <h6 className="fw-bold mb-3">Color</h6>
               {['White', 'Black', 'Orange', 'Blue', 'Green', 'Purple'].map(color => (
@@ -130,7 +118,6 @@ const HomePage = () => {
               ))}
             </div>
 
-            {/* Storage */}
             <div className="mb-5">
               <h6 className="fw-bold mb-3">Storage</h6>
               {['128 GB', '256 GB', '512 GB', '1 TB'].map(size => (
@@ -146,7 +133,6 @@ const HomePage = () => {
               ))}
             </div>
 
-            {/* Memory */}
             <div className="mb-5">
               <h6 className="fw-bold mb-3">Memory</h6>
               {['4 GB', '6 GB', '8 GB', '12 GB', '16 GB'].map(mem => (
@@ -164,7 +150,6 @@ const HomePage = () => {
         {/* Дясна колона: Списък с продукти */}
         <div className="col-md-9 col-xl-10">
           
-          {/* Сортиране */}
           <div className="d-flex justify-content-end mb-4 border-bottom pb-3">
             <select 
               className="form-select w-auto btn-sm border-secondary rounded-pill px-3"
@@ -179,7 +164,6 @@ const HomePage = () => {
             </select>
           </div>
 
-          {/* Мрежа с продукти */}
           <div className="row">
             {phones.length > 0 && sortedPhones.length > 0 && sortedPhones.map(phone => (
               <div className="col-md-6 col-xl-4 mb-5" key={phone.id}>

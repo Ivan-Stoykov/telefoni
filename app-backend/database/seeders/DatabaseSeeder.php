@@ -75,8 +75,8 @@ class DatabaseSeeder extends Seeder
 
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Samsung Galaxy S26 Ultra 256GB',
-            'slug' => 'samsung-galaxy-s26-ultra-256gb',
+            'name' => 'Galaxy S26 Ultra 256GB',
+            'slug' => 'galaxy-s26-ultra-256gb',
             'RAM' => '12GB',
             'Storage' => '256GB',
             'price' => 1449.99,
@@ -99,8 +99,8 @@ class DatabaseSeeder extends Seeder
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Samsung Galaxy S26 Ultra 512GB',
-            'slug' => 'samsung-galaxy-s26-ultra-512gb',
+            'name' => 'Galaxy S26 Ultra 512GB',
+            'slug' => 'galaxy-s26-ultra-512gb',
             'RAM' => '12GB',
             'Storage' => '512GB',
             'price' => 1649.99,
@@ -123,8 +123,8 @@ class DatabaseSeeder extends Seeder
 
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Samsung Galaxy S26 Ultra 1TB',
-            'slug' => 'samsung-galaxy-s26-ultra-1tb',
+            'name' => 'Galaxy S26 Ultra 1TB',
+            'slug' => 'galaxy-s26-ultra-1tb',
             'RAM' => '16GB',
             'Storage' => '1TB',
             'price' => 1949.99,
@@ -181,8 +181,8 @@ class DatabaseSeeder extends Seeder
 
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Xiaomi 17 Ultra 512GB',
-            'slug' => 'xiaomi-17-ultra-512gb',
+            'name' => '17 Ultra 512GB',
+            'slug' => '17-ultra-512gb',
             'RAM' => '16GB',
             'Storage' => '512GB',
             'price' => 1499.99,
@@ -205,8 +205,8 @@ class DatabaseSeeder extends Seeder
 
          $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Xiaomi 17 Ultra 1TB',
-            'slug' => 'xiaomi-17-ultra-1tb',
+            'name' => '17 Ultra 1TB',
+            'slug' => '17-ultra-1tb',
             'RAM' => '16GB',
             'Storage' => '1TB',
             'price' => 1699.99,
@@ -270,8 +270,8 @@ class DatabaseSeeder extends Seeder
 
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Apple iPhone 17 Pro Max 256GB',
-            'slug' => 'apple-iphone-17-pro-max-256gb',
+            'name' => 'iPhone 17 Pro Max 256GB',
+            'slug' => 'iphone-17-pro-max-256gb',
             'RAM' => '12GB',
             'Storage' => '256GB',
             'price' => 1449.99
@@ -294,8 +294,8 @@ class DatabaseSeeder extends Seeder
         
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Apple iPhone 17 Pro Max 512GB',
-            'slug' => 'apple-iphone-17-pro-max-512gb',
+            'name' => 'iPhone 17 Pro Max 512GB',
+            'slug' => 'iphone-17-pro-max-512gb',
             'RAM' => '12GB',
             'Storage' => '512GB',
             'price' => 1699.99
@@ -318,8 +318,8 @@ class DatabaseSeeder extends Seeder
 
         $phone = Phone::create([
             'PhoneSpecId' => $spec->id,
-            'name' => 'Apple iPhone 17 Pro Max 1TB',
-            'slug' => 'apple-iphone-17-pro-max-1tb',
+            'name' => 'iPhone 17 Pro Max 1TB',
+            'slug' => 'iphone-17-pro-max-1tb',
             'RAM' => '12GB',
             'Storage' => '1TB',
             'price' => 1959.99
@@ -342,8 +342,8 @@ class DatabaseSeeder extends Seeder
 
         
 
-        $samsung = Phone::where('slug', 'samsung-galaxy-s26-ultra-512gb')->first();
-        $iphone = Phone::where('slug', 'apple-iphone-17-pro-max-1tb')->first();
+        $samsung = Phone::where('slug', 'galaxy-s26-ultra-512gb')->first();
+        $iphone = Phone::where('slug', 'iphone-17-pro-max-1tb')->first();
 
         $black = Color::where('color', 'Black')->first();
         $orange = Color::where('color', 'Orange')->first();

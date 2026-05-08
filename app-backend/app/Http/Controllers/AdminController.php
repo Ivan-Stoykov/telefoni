@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function userOrders($id)
     {
         $orders = Order::where('user_id', $id)
-            ->with(['orderItems.phone.phoneSpec', 'orderItems.color'])
+            ->with(['orderItems.phone.phoneSpec.brand', 'orderItems.color'])
             ->get();
 
         return response()->json($orders, 200);
@@ -47,7 +47,7 @@ class AdminController extends Controller
 
     public function ordersList()
     {
-        $orders = Order::with(['orderItems.phone.phoneSpec', 'orderItems.color'])->get(); 
+        $orders = Order::with(['orderItems.phone.phoneSpec.brand', 'orderItems.color'])->get(); 
         return response($orders, 200);
     }
 

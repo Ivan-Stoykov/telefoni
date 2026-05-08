@@ -1,11 +1,8 @@
-import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import "./SuccessPage.css";
 
 const SuccessPage = () => {
   const location = useLocation();
-  // Взимаме данните от state-а (подадени през navigate).
-  // Ако няма, слагаме празни стойности за защита от крашване.
   const {
     items = [],
     total = 0,
@@ -14,7 +11,6 @@ const SuccessPage = () => {
   } = location.state || {};
   const shippingCost = shippingMethod.includes("Econt") ? 5 : 0;
 
-  // Функция за форматиране на цената с малки стотинки горе
   const formatPrice = (price) => {
     if (!price) return null;
     const [whole, cents] = Number(price).toFixed(2).split(".");
@@ -29,7 +25,6 @@ const SuccessPage = () => {
   return (
     <div className="success-page-container">
       <div className="success-card">
-        {/* Икона за успех (Checkmark) */}
         <div className="success-icon-wrapper">
           <svg
             className="success-icon"
@@ -49,13 +44,11 @@ const SuccessPage = () => {
 
         <h2 className="success-title">Order Successful</h2>
 
-        {/* Списък с продукти */}
         <div className="success-summary-list">
           {items.map((item, index) => (
             <div className="success-summary-row" key={index}>
               <span className="success-item-name">
-                {item.name + " - " + item.color ||
-                  item.brand + " " + item.model + " - " + item.color}{" "}
+                {item.phone_spec.brand.name + " " + item.name + " - " + item.color}{" "}
                 <b>x{item.quantity}</b>
               </span>
               <span className="success-item-price">
@@ -83,7 +76,6 @@ const SuccessPage = () => {
             </span>
           </div>
 
-          {/* Total before discount (показва се само ако е подаден) */}
           {beforeDiscount > 0 && (
             <div className="success-summary-row" style={{ marginTop: "10px" }}>
               <span>Total before discount</span>
@@ -96,7 +88,6 @@ const SuccessPage = () => {
 
         <div className="success-divider"></div>
 
-        {/* Крайна сума */}
         <div className="success-total-row">
           <span>TOTAL</span>
           <span className="success-total-price">
@@ -104,7 +95,6 @@ const SuccessPage = () => {
           </span>
         </div>
 
-        {/* Добавяме малък бутон за връщане към магазина */}
         <Link to="/" className="continue-shopping-btn">
           ← Continue shopping
         </Link>

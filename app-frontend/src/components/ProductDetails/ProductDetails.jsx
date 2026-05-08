@@ -11,7 +11,6 @@ const ProductDetails = () => {
 
   const [phone, setPhone] = useState(null);
   
-  // --- НОВИ STATE-ове ЗА РЕВЮТАТА ---
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,13 +21,10 @@ const ProductDetails = () => {
 
   const { addToCart } = useCart();
 
-  // Взимаме токена и логнатия потребител за авторизация
   const token = localStorage.getItem("token");
   const storedUser = localStorage.getItem("user");
   const currentUser = storedUser ? JSON.parse(storedUser) : null; 
-  // Забележка: В зависимост от това как записваш юзъра при логин, може да е currentUser.user.id или директно currentUser.id. Провери го!
 
-  // Изнасяме fetch-а в отделна функция, за да можем да го викаме пак след добавяне/триене на ревю
   const fetchPhone = useCallback(async () => {
     try {
       const response = await fetch(`http://localhost:8000/api/phones/${slug}`);
@@ -63,7 +59,7 @@ const ProductDetails = () => {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          "Authorization": `Bearer ${token}` // За Sanctum
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ rating, comment }),
       });
@@ -71,8 +67,7 @@ const ProductDetails = () => {
       if (response.ok) {
         setComment("");
         setRating(5);
-        fetchPhone(); // Презареждаме данните, за да се появи новото ревю веднага
-        //alert("Ревюто е добавено успешно!");
+        fetchPhone();
       } else {
         const errorData = await response.json();
         alert(errorData.message || "Грешка при добавяне на ревю.");
@@ -90,14 +85,12 @@ const ProductDetails = () => {
     setEditComment(review.comment);
   };
 
-  // --- ОТКАЗ ОТ РЕДАКЦИЯ ---
   const handleCancelEdit = () => {
     setEditingReviewId(null);
     setEditRating(5);
     setEditComment("");
   };
 
-  // --- ИЗПРАЩАНЕ НА РЕДАКТИРАНОТО РЕВЮ (PUT заявка) ---
   const handleUpdateReview = async (e, reviewId) => {
     e.preventDefault();
     if (!token) return;
@@ -114,9 +107,8 @@ const ProductDetails = () => {
       });
 
       if (response.ok) {
-        setEditingReviewId(null); // Затваряме формата за редакция
-        fetchPhone(); // Презареждаме ревютата, за да покажем промените
-        //alert("Ревюто е обновено успешно!");
+        setEditingReviewId(null);
+        fetchPhone();
       } else {
         const errorData = await response.json();
         alert(errorData.message || "Грешка при обновяване на ревюто.");
@@ -126,7 +118,6 @@ const ProductDetails = () => {
     }
   };
 
-  // --- ИЗТРИВАНЕ НА РЕВЮ ---
   const handleDeleteReview = async (reviewId) => {
     if (!window.confirm("Сигурни ли сте, че искате да изтриете това ревю?")) return;
 
@@ -140,7 +131,7 @@ const ProductDetails = () => {
       });
 
       if (response.ok) {
-        fetchPhone(); // Презареждаме след изтриване
+        fetchPhone();
       } else {
         alert("Грешка при изтриване.");
       }
@@ -149,13 +140,11 @@ const ProductDetails = () => {
     }
   };
 
-  // Помощна функция за форматиране на датата
   const formatDate = (dateString) => {
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
-  // Изчисляване на среден рейтинг
   const reviews = phone?.phone?.reviews || [];
   const averageRating = reviews.length > 0 
     ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) 
@@ -176,7 +165,7 @@ const ProductDetails = () => {
             </div>
 
             <div className="col-md-7 d-flex flex-column justify-content-center ps-lg-5">
-              <h2 className="fw-bold mb-4">{phone.phone.name}</h2>
+              <h2 className="fw-bold mb-4">{phone.phone.phone_spec.brand.name+" "+phone.phone.name}</h2>
 
               <div className="mb-4">
                 <h6 className="fw-bold mb-3">Colors:</h6>
@@ -249,10 +238,8 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* СЪДЪРЖАНИЕ НА ТАБОВЕТЕ */}
           <div className="tab-content py-4 px-3">
             
-            {/* ... ТАБ 1 И ТАБ 2 (Остават същите като в твоя код, спестявам ги за краткост) ... */}
             {activeTab === "description" && (
                 <div className="row text-muted small lh-lg">
                   {/* Твоето Description съдържание... */}
@@ -529,7 +516,6 @@ const ProductDetails = () => {
             )}
 
 
-            {/* ТАБ 3: REVIEW */}
             {activeTab === "review" && (
               <div>
                 {/* ГОРНА ЧАСТ: Рейтинг (ляво) и Форма (дясно) на един ред */}
@@ -550,7 +536,6 @@ const ProductDetails = () => {
                     </div>
                   </div>
 
-                  {/* ДЯСНА КОЛОНА: ФОРМА ЗА РЕВЮ */}
                   <div className="col-lg-8 col-md-7 d-flex">
                     {token ? (
                       <form 
@@ -601,7 +586,6 @@ const ProductDetails = () => {
                     )}
                   </div>
                 </div>                
-                {/* СПИСЪК С РЕВЮТА */}
                 <h6 className="fw-bold mb-4 border-bottom pb-2">Customer Feedback</h6>
                 
                 <div className="reviews-list">
@@ -629,7 +613,6 @@ const ProductDetails = () => {
                                     • {formatDate(review.created_at)}
                                   </span>
                                 </div>
-                                {/* Показваме звездите само ако не сме в режим на редакция */}
                                 {!isEditing && (
                                   <div className="text-warning" style={{ fontSize: '0.9rem' }}>
                                     {"★".repeat(review.rating)}
@@ -639,7 +622,6 @@ const ProductDetails = () => {
                               </div>
                             </div>
                             
-                            {/* РЕЖИМ НА РЕДАКЦИЯ ИЛИ НОРМАЛЕН ИЗГЛЕД */}
                             {isEditing ? (
                               <form onSubmit={(e) => handleUpdateReview(e, review.id)} className="ps-5 ms-3 mt-3">
                                 <div className="mb-2">
@@ -673,7 +655,6 @@ const ProductDetails = () => {
                               </p>
                             )}
 
-                            {/* БУТОНИ ЗА EDIT И DELETE */}
                             {isOwner && !isEditing && (
                               <div className="position-absolute top-0 end-0 mt-1 d-flex gap-2">
                                 <button 
@@ -696,7 +677,6 @@ const ProductDetails = () => {
                         );
                       })
                   ) : (
-                    // ... (Празно състояние, ако няма ревюта)
                     <div className="text-center py-5 text-muted">
                       <div className="fs-1 mb-3">💬</div>
                       <p className="fs-5">No reviews yet. Be the first to review this phone!</p>

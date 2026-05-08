@@ -16,24 +16,20 @@ const ProductCard = ({ phone }) => {
       </Link>
 
       <div className="card-body d-flex flex-column">
-        {/* Заглавие и Модел */}
         <Link to={`/product/${phone.slug}`} className="text-decoration-none text-dark">
           <h6 className="card-title mb-1 fw-bold">
-            {phone.name}
+            {phone.phone_spec.brand.name + " " + phone.name}
           </h6>
         </Link>
 
-        {/* Цена */}
         <p className="price-text mb-2">{phone.price.toFixed(2)} €</p>
 
-        {/* Характеристики */}
         <div className="specs-list mb-3">
           <div>Processor: {phone.phone_spec.processor.brand + " " + phone.phone_spec.processor.name}</div>
           <div>Battery: {phone.phone_spec.Battery}</div>
           <div>RAM: {phone.RAM}</div>
         </div>
 
-        {/* Цветове */}
         <div className="mb-3">
           <div className="small text-muted mb-1">Colors</div>
           <div className="d-flex">
@@ -48,7 +44,6 @@ const ProductCard = ({ phone }) => {
           </div>
         </div>
 
-        {/* Бутони*/}
         <div className="mt-auto d-flex gap-2">
           <Link to={`/product/${phone.slug}`} className="btn btn-outline-dark btn-sm w-100 py-2">
             View Details

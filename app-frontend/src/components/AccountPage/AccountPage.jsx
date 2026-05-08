@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './AccountPage.css';
 
 const AccountPage = () => {
@@ -8,11 +8,9 @@ const AccountPage = () => {
   const [orders, setOrders] = useState([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(true);
 
-  // Взимаме логнатия потребител от localStorage
   const storedUser = localStorage.getItem("user");
   const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
-  // State за формата
   const [userData, setUserData] = useState({
     name: parsedUser?.name || '',
     email: parsedUser?.email || '',
@@ -21,7 +19,6 @@ const AccountPage = () => {
     city: parsedUser?.city || ''
   });
 
-  // --- ЗАРЕЖДАНЕ НА ПОРЪЧКИТЕ ОТ БЕКЕНДА ---
   useEffect(() => {
     const fetchOrders = async () => {
       if (!parsedUser || !parsedUser.id) {
@@ -53,13 +50,11 @@ const AccountPage = () => {
     fetchOrders();
   }, [parsedUser?.id]);
 
-  // --- РЕДАКТИРАНЕ НА ДАННИТЕ ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData(prev => ({ ...prev, [name]: value }));
   };
 
-  // --- ЗАПАЗВАНЕ НА РЕАЛНИ ДАННИ ---
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -135,7 +130,6 @@ const AccountPage = () => {
         {/* ДЯСНА КОЛОНА (Съдържание) */}
         <div className="account-card">
 
-          {/*ТАБ: ДЕТАЙЛИ*/}
           {activeTab === 'details' && (
             <div>
               <h3 className="account-title">Details</h3>
@@ -167,7 +161,6 @@ const AccountPage = () => {
             </div>
           )}
 
-          {/*ТАБ: ПОРЪЧКИ*/}
           {activeTab === 'orders' && (
             <div>
               {!selectedOrder ? (
@@ -198,7 +191,6 @@ const AccountPage = () => {
                   )}
                 </>
               ) : (
-                /* ДЕТАЙЛЕН ИЗГЛЕД НА ПОРЪЧКАТА */
                 <div>
                   <button className="back-to-orders" onClick={() => setSelectedOrder(null)}>
                     ← Back to orders
@@ -217,7 +209,7 @@ const AccountPage = () => {
                           <div className="order-item-card" key={item.id || index}>
                             <img src={item.phone?.phone_spec?.imageUrl || 'https://via.placeholder.com/70'} alt="phone" className="order-item-img" />
                             <div className="order-item-info">
-                              <div className="order-item-name">{item.phone?.name || item.phone?.model || `Phone #${item.phone_id}`}</div>
+                              <div className="order-item-name">{item.phone?.phone_spec?.brand?.name + " " + item.phone?.name || `Phone #${item.phone_id}`}</div>
                               <div className="order-item-specs">Color: {item.color?.color || 'N/A'}</div>
                               <div className="order-item-price-qty">
                                 <span className="order-item-price">€{Number(item.price).toFixed(2)}</span>
