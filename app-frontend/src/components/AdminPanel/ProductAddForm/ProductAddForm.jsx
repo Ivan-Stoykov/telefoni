@@ -13,7 +13,6 @@ const ProductAddForm = () => {
   const { fields, append, remove } = useFieldArray({ control, name: "colors" });
 
   const onSubmit = async (data) => {
-    data.name = data.brand + " " + data.name;
     console.log("Submit Data:", data);
     const response = await fetch("http://localhost:8000/api/phones", {
       method: "POST",

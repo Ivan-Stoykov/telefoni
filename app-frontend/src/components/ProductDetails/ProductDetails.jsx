@@ -305,6 +305,8 @@ const ProductDetails = () => {
                       </div>
                     </div>
 
+                    <hr />
+
                     <h6 className="fw-bold text-dark mb-4 fs-5">
                       Display and Audio Features
                     </h6>
@@ -347,6 +349,8 @@ const ProductDetails = () => {
                       </div>
                     </div>
 
+                    <hr />
+
                     <h6 className="fw-bold text-dark mb-4 fs-5">
                       Connectivity Features
                     </h6>
@@ -378,6 +382,7 @@ const ProductDetails = () => {
                         {phone.phone.phone_spec.Positioning}
                       </div>
                     </div>
+
                   </div>
                   <div className="col-md-6 ps-lg-5">
                     <h6 className="fw-bold text-dark mb-4 fs-5">
@@ -423,6 +428,8 @@ const ProductDetails = () => {
                         {phone.phone.phone_spec.processor.coreCount}
                       </div>
                     </div>
+
+                    <hr />
 
                     <h6 className="fw-bold text-dark mb-4 fs-5">Cameras</h6>
                     <div className="row mb-2">
@@ -478,6 +485,8 @@ const ProductDetails = () => {
                         {phone.phone.phone_spec.SCVideo}
                       </div>
                     </div>
+
+                    <hr />
 
                     <h6 className="fw-bold text-dark mb-4 fs-5">Warranty</h6>
                     <div className="row mb-2">

@@ -86,3 +86,9 @@
   padding: 40px 20px;
   height: 100%;
 }
+
+hr {
+    border: 0;
+    border-top: 1px solid #6C8196; /* Светло сив цвят */
+    margin: 20px 0; /* Разстояние над и под линията */
+}

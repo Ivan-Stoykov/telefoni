@@ -89,7 +89,7 @@ class PhoneController extends Controller
             ->where("slug", $slug)
             ->firstOrFail();
 
-        $models = Phone::where('phoneSpecId', $phone->phoneSpec->id)->get();
+        $models = Phone::where('phoneSpecId', $phone->phoneSpec->id)->where('isDeleted', false)->get();
         
         return response(["phone" => $phone, 'models'=>$models], 200);
     }
