@@ -40,3 +40,4 @@ Route::delete('/orders/{id}', [AdminController::class, 'deleteOrder']);
 Route::post('/checkout', [CheckoutController::class, 'store']);
 
 Route::get('/phoneSpecs', [PhoneSpecController::class, 'index']);
+Route::put('/phoneSpecs/{id}', [PhoneSpecController::class, 'update']);

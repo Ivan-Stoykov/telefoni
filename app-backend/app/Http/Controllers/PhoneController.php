@@ -99,7 +99,22 @@ class PhoneController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $phone = Phone::findOrFail($id);
+        $phone->update($request->only(['RAM', 'Storage', 'price', 'name']));
+
+        PhoneColor::where('phoneId', $id)->delete();
+
+        if ($request->has('colors')) {
+            foreach ($request->colors as $colorData) {
+                $color = Color::firstOrCreate(['color' => $colorData['colorName']]);
+                PhoneColor::updateOrCreate(
+                    ['phoneId' => $phone->id, 'colorId' => $color->id],
+                    ['quantity' => $colorData['quantity']]
+                );
+            }
+        }
+
+        return response(['message' => 'Phone was updated'], 200);
     }
 
     /**

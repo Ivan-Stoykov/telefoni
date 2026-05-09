@@ -16,13 +16,15 @@ const ProductAddForm = () => {
     console.log("Submit Data:", data);
     const response = await fetch("http://localhost:8000/api/phones", {
       method: "POST",
-      headers: { "Content-Type": "application/json",
-        'Accept': 'application/json' },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify(data),
-       },);
-       if(response.ok) {
-        alert('Product added successfully!')
-       }
+    });
+    if (response.ok) {
+      alert("Product added successfully!");
+    }
   };
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const ProductAddForm = () => {
       setPhoneSpecs(data);
     }
     fetchSpecs();
-  }, [])
+  }, []);
 
   return (
     <div className="container py-5">
@@ -46,15 +48,8 @@ const ProductAddForm = () => {
               <label>Product Model</label>
               <input {...register("name")} className="form-control" />
             </div>
-            <div className="col-md-6">
-              <label>Brand</label>
-              <input
-                type="text"
-                {...register("brand")}
-                className="form-control"
-              />
-            </div>
-            <div className="col-md-6">
+
+            <div className="col-12">
               <label>Price (€)</label>
               <input
                 type="number"
@@ -63,14 +58,14 @@ const ProductAddForm = () => {
                 className="form-control"
               />
             </div>
-                <div className="col-md-6">
-                  <label>RAM</label>
-                  <input {...register("RAM")} className="form-control" />
-                </div>
-                <div className="col-md-6">
-                  <label>Storage</label>
-                  <input {...register("Storage")} className="form-control" />
-                </div>
+            <div className="col-md-6">
+              <label>RAM</label>
+              <input {...register("RAM")} className="form-control" />
+            </div>
+            <div className="col-md-6">
+              <label>Storage</label>
+              <input {...register("Storage")} className="form-control" />
+            </div>
           </div>
 
           <div className="section-header d-flex justify-content-between align-items-center">
@@ -80,13 +75,12 @@ const ProductAddForm = () => {
                 className="form-check-input"
                 type="checkbox"
                 onChange={(e) => {
-                    setUseExistingSpecs(e.target.checked)
-                    if(e.target.checked) {
-                      unregister('specs')
-                    }
-                    else {
-                        unregister('phoneSpecId')
-                    }
+                  setUseExistingSpecs(e.target.checked);
+                  if (e.target.checked) {
+                    unregister("specs");
+                  } else {
+                    unregister("phoneSpecId");
+                  }
                 }}
               />
               <label
@@ -121,7 +115,14 @@ const ProductAddForm = () => {
             ) : (
               <div className="row g-3">
                 <div className="form-subsection-title">General & Build</div>
-
+                <div className="col-md-12">
+                  <label>Brand</label>
+                  <input
+                    type="text"
+                    {...register("brand")}
+                    className="form-control"
+                  />
+                </div>
                 <div className="col-md-6">
                   <label>Model Number</label>
                   <input

@@ -92,3 +92,28 @@ hr {
     border-top: 1px solid #6C8196; /* Светло сив цвят */
     margin: 20px 0; /* Разстояние над и под линията */
 }
+
+.border-start {
+    border-left: 1px solid #e0e0e0 !important;
+}
+
+/* Списъкът с икони */
+.feature-list i {
+    width: 30px;
+    display: inline-block;
+    color: #2b63e0 !important; /* Наситен син цвят за иконите */
+}
+
+.feature-list span {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* Информацията за доставка */
+.shipping-info span.fw-bold {
+    color: #1a1a1a !important;
+}
+
+.shipping-info span.text-secondary {
+    color: #70757a !important;
+}

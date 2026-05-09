@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import "./UpdatePhoneForm.css";
 import { useParams } from "react-router-dom";
 
 const UpdatePhonePage = () => {
   const { slug } = useParams();
-  const phoneForm = useForm();
+  const phoneForm = useForm({
+    defaultValues: {
+      colors: [{ colorName: '', quantity: 0 }]
+    }
+  });
   const [initialData, setInitialData] = useState();
   const specForm = useForm();
+  const { fields, append, remove } = useFieldArray({
+    control:phoneForm.control,
+    name: "colors"
+  });
 
   useEffect(() => {
     async function fetchPhone() {
@@ -17,23 +25,49 @@ const UpdatePhonePage = () => {
       console.log(data);
 
       phoneForm.reset({
+        id: data.phone.id,
         name: data.phone.name,
         price: data.phone.price,
-        brand: data.phone.phone_spec.brand.name,
         RAM: data.phone.RAM,
         Storage: data.phone.Storage,
+        colors: data.phone.colors.map(pc => ({
+          colorName: pc.color.color,
+          quantity: pc.quantity
+        }))
       });
       specForm.reset(data.phone.phone_spec);
     }
     fetchPhone();
   }, [slug, phoneForm, specForm]);
 
-  const onPhoneSubmit = (data) => {
-    console.log("Updating Phone Basic Info:", data);
+  const onPhoneSubmit = async (data) => {
+    console.log("Submit Data:", data);
+    const response = await fetch(`http://localhost:8000/api/phones/${data.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      alert("Product updated successfully!");
+    }
   };
 
-  const onSpecSubmit = (data) => {
+  const onSpecSubmit = async (data) => {
     console.log("Updating Shared Specifications:", data);
+    const response = await fetch(`http://localhost:8000/api/phoneSpecs/${data.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      alert("Specifications updated successfully!");
+    }
   };
 
   return (
@@ -51,6 +85,7 @@ const UpdatePhonePage = () => {
               </div>
 
               <form onSubmit={phoneForm.handleSubmit(onPhoneSubmit)}>
+                <input {...phoneForm.register("id")} type="hidden" />
                 <div className="mb-3">
                   <label>Product Name</label>
                   <input
@@ -60,7 +95,7 @@ const UpdatePhonePage = () => {
                 </div>
 
                 <div className="row g-3 mb-3">
-                  <div className="col-6">
+                  <div className="col-12">
                     <label>Price (€)</label>
                     <input
                       type="number"
@@ -69,31 +104,64 @@ const UpdatePhonePage = () => {
                       className="form-control"
                     />
                   </div>
-                  <div className="col-6">
-                    <label>Brand</label>
-                    <input
-                      {...phoneForm.register("brand")}
-                      className="form-control"
-                    />
-                  </div>
                 </div>
 
                 <div className="row g-3 mb-4">
                   <div className="col-6">
-                    <label>RAM Configuration</label>
+                    <label>RAM</label>
                     <input
                       {...phoneForm.register("RAM")}
                       className="form-control"
                     />
                   </div>
                   <div className="col-6">
-                    <label>Internal Storage</label>
+                    <label>Storage</label>
                     <input
                       {...phoneForm.register("Storage")}
                       className="form-control"
                     />
                   </div>
                 </div>
+
+                <div className="section-title mt-4 mb-3">Colors & Stock</div>
+                
+                {fields.map((item, index) => (
+                  <div key={item.id} className="row g-2 mb-2 align-items-end">
+                    <div className="col-6">
+                      <label className="small text-muted">Color</label>
+                      <input 
+                        type="text" 
+                        {...phoneForm.register(`colors.${index}.colorName`)} 
+                        className="form-control form-control-sm" 
+                      />
+                    </div>
+                    <div className="col-4">
+                      <label className="small text-muted">Qty</label>
+                      <input 
+                        type="number" 
+                        {...phoneForm.register(`colors.${index}.quantity`)} 
+                        className="form-control form-control-sm" 
+                      />
+                    </div>
+                    <div className="col-2">
+                      <button 
+                        type="button" 
+                        onClick={() => remove(index)} 
+                        className="btn btn-outline-danger btn-sm border-0"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                <button 
+                  type="button" 
+                  className="btn btn-link btn-sm p-0 text-decoration-none mt-2"
+                  onClick={() => append({ colorName: '', quantity: 1 })}
+                >
+                  + Add color variant
+                </button>
 
                 <button
                   type="submit"
@@ -113,8 +181,19 @@ const UpdatePhonePage = () => {
                 <small>Spec ID: #{initialData?.phoneSpecId}</small>
               </div>
 
-              <form onSubmit={specForm.handleSubmit(onSpecSubmit)} className="row g-3">
+              <form
+                onSubmit={specForm.handleSubmit(onSpecSubmit)}
+                className="row g-3"
+              >
                 <div className="form-subsection-title">General & Build</div>
+                <input {...specForm.register("id")} type="hidden" />
+                <div className="col-md-12">
+                  <label>Brand</label>
+                  <input
+                    {...specForm.register("brand.name")}
+                    className="form-control"
+                  />
+                </div>
                 <div className="col-md-6">
                   <label>Model Number</label>
                   <input
@@ -146,7 +225,10 @@ const UpdatePhonePage = () => {
                 </div>
                 <div className="col-md-6">
                   <label>Operating system</label>
-                  <input {...specForm.register("OS")} className="form-control" />
+                  <input
+                    {...specForm.register("OS")}
+                    className="form-control"
+                  />
                 </div>
                 <div className="col-md-6">
                   <label>Battery</label>
@@ -218,7 +300,10 @@ const UpdatePhonePage = () => {
                 <div className="form-subsection-title">Connectivity</div>
                 <div className="col-12">
                   <label>Wireless LAN</label>
-                  <input {...specForm.register("Wifi")} className="form-control" />
+                  <input
+                    {...specForm.register("Wifi")}
+                    className="form-control"
+                  />
                 </div>
                 <div className="col-md-6">
                   <label>Bluetooth</label>
@@ -229,7 +314,10 @@ const UpdatePhonePage = () => {
                 </div>
                 <div className="col-md-6">
                   <label>Port</label>
-                  <input {...specForm.register("Port")} className="form-control" />
+                  <input
+                    {...specForm.register("Port")}
+                    className="form-control"
+                  />
                 </div>
                 <div className="col-md-6">
                   <label>NFC</label>

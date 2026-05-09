@@ -10,7 +10,7 @@ const ProductDetails = () => {
   const model = slug.split("-")[slug.split("-").length - 1];
 
   const [phone, setPhone] = useState(null);
-  
+
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,7 +23,7 @@ const ProductDetails = () => {
 
   const token = localStorage.getItem("token");
   const storedUser = localStorage.getItem("user");
-  const currentUser = storedUser ? JSON.parse(storedUser) : null; 
+  const currentUser = storedUser ? JSON.parse(storedUser) : null;
 
   const fetchPhone = useCallback(async () => {
     try {
@@ -32,7 +32,7 @@ const ProductDetails = () => {
         const resData = await response.json();
         setPhone(resData);
         if (resData.phone.colors && resData.phone.colors.length > 0) {
-            setSelectedColor(resData.phone.colors[0].color.color);
+          setSelectedColor(resData.phone.colors[0].color.color);
         }
       }
     } catch (error) {
@@ -48,21 +48,24 @@ const ProductDetails = () => {
   const handleAddReview = async (e) => {
     e.preventDefault();
     if (!token) {
-        alert("Трябва да влезете в профила си, за да оставите ревю!");
-        return;
+      alert("Трябва да влезете в профила си, за да оставите ревю!");
+      return;
     }
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/phones/${phone.phone.id}/reviews`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
+      const response = await fetch(
+        `http://localhost:8000/api/phones/${phone.phone.id}/reviews`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ rating, comment }),
         },
-        body: JSON.stringify({ rating, comment }),
-      });
+      );
 
       if (response.ok) {
         setComment("");
@@ -96,15 +99,18 @@ const ProductDetails = () => {
     if (!token) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/reviews/${reviewId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
+      const response = await fetch(
+        `http://localhost:8000/api/reviews/${reviewId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ rating: editRating, comment: editComment }),
         },
-        body: JSON.stringify({ rating: editRating, comment: editComment }),
-      });
+      );
 
       if (response.ok) {
         setEditingReviewId(null);
@@ -119,16 +125,20 @@ const ProductDetails = () => {
   };
 
   const handleDeleteReview = async (reviewId) => {
-    if (!window.confirm("Сигурни ли сте, че искате да изтриете това ревю?")) return;
+    if (!window.confirm("Сигурни ли сте, че искате да изтриете това ревю?"))
+      return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/reviews/${reviewId}`, {
-        method: "DELETE",
-        headers: {
-          "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
+      const response = await fetch(
+        `http://localhost:8000/api/reviews/${reviewId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       if (response.ok) {
         fetchPhone();
@@ -141,14 +151,17 @@ const ProductDetails = () => {
   };
 
   const formatDate = (dateString) => {
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-GB', options);
+    const options = { day: "numeric", month: "short", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
   };
 
   const reviews = phone?.phone?.reviews || [];
-  const averageRating = reviews.length > 0 
-    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) 
-    : "0.0";
+  const averageRating =
+    reviews.length > 0
+      ? (
+          reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+        ).toFixed(1)
+      : "0.0";
 
   return (
     <div className="container-fluid px-4 px-xl-5 py-5 bg-white">
@@ -165,7 +178,9 @@ const ProductDetails = () => {
             </div>
 
             <div className="col-md-7 d-flex flex-column justify-content-center ps-lg-5">
-              <h2 className="fw-bold mb-4">{phone.phone.phone_spec.brand.name+" "+phone.phone.name}</h2>
+              <h2 className="fw-bold mb-4">
+                {phone.phone.phone_spec.brand.name + " " + phone.phone.name}
+              </h2>
 
               <div className="mb-4">
                 <h6 className="fw-bold mb-3">Colors:</h6>
@@ -180,7 +195,7 @@ const ProductDetails = () => {
                   ))}
                 </div>
               </div>
-              
+
               <div className="mb-5">
                 <h6 className="fw-bold mb-3">Storage:</h6>
                 <div className="storage-options">
@@ -239,15 +254,85 @@ const ProductDetails = () => {
           </div>
 
           <div className="tab-content py-4 px-3">
-            
             {activeTab === "description" && (
-                <div className="row text-muted small lh-lg">
-                  {/* Твоето Description съдържание... */}
-                  <div className="col-md-6 pe-lg-5">
-                    <h6 className="fw-bold text-dark mb-3">Description</h6>
-                    <p>{phone.phone.phone_spec.description}</p>
-                  </div>
+              <div className="row text-muted small lh-lg">
+                <div className="col-md-6 pe-lg-5">
+                  <h6 className="fw-bold text-dark mb-3">Description</h6>
+                  <p>{phone.phone.phone_spec.description}</p>
                 </div>
+
+                <div className="col-lg-3 border-start ps-lg-4 mb-4 mb-lg-0">
+                  <h6 className="fw-bold text-dark mb-4 fs-5">Feature</h6>
+                  <ul className="list-unstyled feature-list">
+                    <li className="d-flex align-items-center">
+                      <i className="bi bi-patch-check text-primary fs-4 me-3"></i>
+                      <span className="text-dark">
+                        Free 2 Year Warranty
+                      </span>
+                    </li>
+                    <li className="d-flex align-items-center">
+                      <i className="bi bi-truck text-primary fs-4 me-3"></i>
+                      <span className="text-dark">
+                        Free Shipping & Fasted Delivery
+                      </span>
+                    </li>
+                    <li className="d-flex align-items-center">
+                      <i className="bi bi-hand-thumbs-up text-primary fs-4 me-3"></i>
+                      <span className="text-dark">
+                        100% Money-back guarantee
+                      </span>
+                    </li>
+                    <li className="d-flex align-items-center">
+                      <i className="bi bi-headset text-primary fs-4 me-3"></i>
+                      <span className="text-dark">
+                        24/7 Customer support
+                      </span>
+                    </li>
+                    <li className="d-flex align-items-center">
+                      <i className="bi bi-credit-card text-primary fs-4 me-3"></i>
+                      <span className="text-dark">
+                        Secure payment method
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="col-lg-3 border-start ps-lg-4">
+                  <h6 className="fw-bold text-dark mb-4 fs-5">
+                    Shipping Information
+                  </h6>
+                  <ul className="list-unstyled shipping-info small">
+                    <li className="mb-2">
+                      <span className="fw-bold text-dark">Courier:</span>
+                      <span className="text-secondary ms-2">
+                        2 - 4 days, free shipping
+                      </span>
+                    </li>
+                    <li className="mb-2">
+                      <span className="fw-bold text-dark">Local Shipping:</span>
+                      <span className="text-secondary ms-2">
+                        up to one week, $19.00
+                      </span>
+                    </li>
+                    <li className="mb-2">
+                      <span className="fw-bold text-dark">
+                        UPS Ground Shipping:
+                      </span>
+                      <span className="text-secondary ms-2">
+                        4 - 6 days, $29.00
+                      </span>
+                    </li>
+                    <li className="mb-2">
+                      <span className="fw-bold text-dark">
+                        Unishop Global Export:
+                      </span>
+                      <span className="text-secondary ms-2">
+                        3 - 4 days, $39.00
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             )}
             {activeTab === "specification" && (
               <>
@@ -382,7 +467,6 @@ const ProductDetails = () => {
                         {phone.phone.phone_spec.Positioning}
                       </div>
                     </div>
-
                   </div>
                   <div className="col-md-6 ps-lg-5">
                     <h6 className="fw-bold text-dark mb-4 fs-5">
@@ -524,42 +608,50 @@ const ProductDetails = () => {
               </>
             )}
 
-
             {activeTab === "review" && (
               <div>
                 {/* ГОРНА ЧАСТ: Рейтинг (ляво) и Форма (дясно) на един ред */}
                 <div className="row mb-5 align-items-stretch">
-                  
                   {/* ЛЯВА КОЛОНА: ОБЩ РЕЙТИНГ */}
                   <div className="col-lg-4 col-md-5 mb-4 mb-md-0 d-flex">
-                    <div 
+                    <div
                       className="rating-box p-4 rounded w-100 d-flex flex-column justify-content-center align-items-center text-center shadow-sm"
-                      style={{ backgroundColor: '#1e293b', color: '#fff' }} // Тъмен slate фон за отличен контраст
+                      style={{ backgroundColor: "#1e293b", color: "#fff" }} // Тъмен slate фон за отличен контраст
                     >
-                      <h1 className="display-2 fw-bold mb-2 text-white">{averageRating}</h1>
+                      <h1 className="display-2 fw-bold mb-2 text-white">
+                        {averageRating}
+                      </h1>
                       <div className="mb-2 fs-4 text-warning">
-                         {"★".repeat(Math.round(averageRating))}
-                         <span style={{ color: '#475569' }}>{"★".repeat(5 - Math.round(averageRating))}</span>
+                        {"★".repeat(Math.round(averageRating))}
+                        <span style={{ color: "#475569" }}>
+                          {"★".repeat(5 - Math.round(averageRating))}
+                        </span>
                       </div>
-                      <small style={{ color: '#cbd5e1' }}>Customer Reviews ({reviews.length})</small>
+                      <small style={{ color: "#cbd5e1" }}>
+                        Customer Reviews ({reviews.length})
+                      </small>
                     </div>
                   </div>
 
                   <div className="col-lg-8 col-md-7 d-flex">
                     {token ? (
-                      <form 
-                        onSubmit={handleAddReview} 
-                        className="p-4 border rounded shadow-sm w-100 d-flex flex-column justify-content-center" 
-                        style={{ backgroundColor: '#f8fafc' }}
+                      <form
+                        onSubmit={handleAddReview}
+                        className="p-4 border rounded shadow-sm w-100 d-flex flex-column justify-content-center"
+                        style={{ backgroundColor: "#f8fafc" }}
                       >
                         <h6 className="fw-bold mb-3">Write a Review</h6>
                         <div className="row">
                           <div className="col-md-4 mb-3">
-                            <label className="fw-bold mb-2 small text-muted">Rating</label>
-                            <select 
-                              className="form-select" 
-                              value={rating} 
-                              onChange={(e) => setRating(Number(e.target.value))}
+                            <label className="fw-bold mb-2 small text-muted">
+                              Rating
+                            </label>
+                            <select
+                              className="form-select"
+                              value={rating}
+                              onChange={(e) =>
+                                setRating(Number(e.target.value))
+                              }
                             >
                               <option value={5}>5 - Excellent ★★★★★</option>
                               <option value={4}>4 - Very Good ★★★★☆</option>
@@ -569,10 +661,12 @@ const ProductDetails = () => {
                             </select>
                           </div>
                           <div className="col-md-8 mb-3">
-                            <label className="fw-bold mb-2 small text-muted">Your Review</label>
-                            <textarea 
-                              className="form-control" 
-                              rows="2" 
+                            <label className="fw-bold mb-2 small text-muted">
+                              Your Review
+                            </label>
+                            <textarea
+                              className="form-control"
+                              rows="2"
                               placeholder="What do you think about this phone?"
                               value={comment}
                               onChange={(e) => setComment(e.target.value)}
@@ -581,81 +675,146 @@ const ProductDetails = () => {
                           </div>
                         </div>
                         <div className="text-end mt-auto">
-                          <button type="submit" className="btn btn-primary px-4 fw-bold" disabled={isSubmitting}>
+                          <button
+                            type="submit"
+                            className="btn btn-primary px-4 fw-bold"
+                            disabled={isSubmitting}
+                          >
                             {isSubmitting ? "Submitting..." : "Submit Review"}
                           </button>
                         </div>
                       </form>
                     ) : (
-                      <div className="w-100 p-4 border rounded shadow-sm d-flex align-items-center justify-content-center" style={{ backgroundColor: '#f8fafc' }}>
+                      <div
+                        className="w-100 p-4 border rounded shadow-sm d-flex align-items-center justify-content-center"
+                        style={{ backgroundColor: "#f8fafc" }}
+                      >
                         <p className="mb-0 text-muted fs-5">
-                          Please <Link to="/login" className="fw-bold text-primary text-decoration-none">login</Link> to leave a review.
+                          Please{" "}
+                          <Link
+                            to="/login"
+                            className="fw-bold text-primary text-decoration-none"
+                          >
+                            login
+                          </Link>{" "}
+                          to leave a review.
                         </p>
                       </div>
                     )}
                   </div>
-                </div>                
-                <h6 className="fw-bold mb-4 border-bottom pb-2">Customer Feedback</h6>
-                
+                </div>
+                <h6 className="fw-bold mb-4 border-bottom pb-2">
+                  Customer Feedback
+                </h6>
+
                 <div className="reviews-list">
                   {reviews.length > 0 ? (
                     [...reviews]
-                      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                      .sort(
+                        (a, b) =>
+                          new Date(b.created_at) - new Date(a.created_at),
+                      )
                       .map((review) => {
                         const isEditing = editingReviewId === review.id;
-                        const isOwner = currentUser && (currentUser.id === review.user_id || currentUser?.user?.id === review.user_id);
+                        const isOwner =
+                          currentUser &&
+                          (currentUser.id === review.user_id ||
+                            currentUser?.user?.id === review.user_id);
 
                         return (
-                          <div key={review.id} className="pb-4 mb-4 position-relative" style={{ borderBottom: '1px dashed #e2e8f0' }}>
-                            
+                          <div
+                            key={review.id}
+                            className="pb-4 mb-4 position-relative"
+                            style={{ borderBottom: "1px dashed #e2e8f0" }}
+                          >
                             <div className="d-flex align-items-center mb-2">
                               <div
                                 className="rounded-circle me-3 d-flex justify-content-center align-items-center text-white fw-bold fs-5 shadow-sm"
-                                style={{ width: "48px", height: "48px", backgroundColor: '#3b82f6' }}
+                                style={{
+                                  width: "48px",
+                                  height: "48px",
+                                  backgroundColor: "#3b82f6",
+                                }}
                               >
-                                {review.user?.name ? review.user.name.charAt(0).toUpperCase() : "U"}
+                                {review.user?.name
+                                  ? review.user.name.charAt(0).toUpperCase()
+                                  : "U"}
                               </div>
                               <div>
                                 <div className="fw-bold text-dark fs-6">
-                                  {review.user?.name || "Unknown User"} 
-                                  <span className="text-muted fw-normal ms-2 small" style={{ fontSize: '0.8rem' }}>
+                                  {review.user?.name || "Unknown User"}
+                                  <span
+                                    className="text-muted fw-normal ms-2 small"
+                                    style={{ fontSize: "0.8rem" }}
+                                  >
                                     • {formatDate(review.created_at)}
                                   </span>
                                 </div>
                                 {!isEditing && (
-                                  <div className="text-warning" style={{ fontSize: '0.9rem' }}>
+                                  <div
+                                    className="text-warning"
+                                    style={{ fontSize: "0.9rem" }}
+                                  >
                                     {"★".repeat(review.rating)}
-                                    <span style={{ color: '#e2e8f0' }}>{"★".repeat(5 - review.rating)}</span>
+                                    <span style={{ color: "#e2e8f0" }}>
+                                      {"★".repeat(5 - review.rating)}
+                                    </span>
                                   </div>
                                 )}
                               </div>
                             </div>
-                            
+
                             {isEditing ? (
-                              <form onSubmit={(e) => handleUpdateReview(e, review.id)} className="ps-5 ms-3 mt-3">
+                              <form
+                                onSubmit={(e) =>
+                                  handleUpdateReview(e, review.id)
+                                }
+                                className="ps-5 ms-3 mt-3"
+                              >
                                 <div className="mb-2">
-                                  <select 
-                                    className="form-select form-select-sm w-auto mb-2" 
-                                    value={editRating} 
-                                    onChange={(e) => setEditRating(Number(e.target.value))}
+                                  <select
+                                    className="form-select form-select-sm w-auto mb-2"
+                                    value={editRating}
+                                    onChange={(e) =>
+                                      setEditRating(Number(e.target.value))
+                                    }
                                   >
-                                    <option value={5}>5 - Excellent ★★★★★</option>
-                                    <option value={4}>4 - Very Good ★★★★☆</option>
+                                    <option value={5}>
+                                      5 - Excellent ★★★★★
+                                    </option>
+                                    <option value={4}>
+                                      4 - Very Good ★★★★☆
+                                    </option>
                                     <option value={3}>3 - Average ★★★☆☆</option>
                                     <option value={2}>2 - Poor ★★☆☆☆</option>
-                                    <option value={1}>1 - Terrible ★☆☆☆☆</option>
+                                    <option value={1}>
+                                      1 - Terrible ★☆☆☆☆
+                                    </option>
                                   </select>
-                                  <textarea 
-                                    className="form-control" 
-                                    rows="2" 
+                                  <textarea
+                                    className="form-control"
+                                    rows="2"
                                     value={editComment}
-                                    onChange={(e) => setEditComment(e.target.value)}
+                                    onChange={(e) =>
+                                      setEditComment(e.target.value)
+                                    }
                                     required
                                   ></textarea>
                                 </div>
                                 <div className="d-flex gap-2">
-                                  <button type="submit" className="btn btn-sm btn-success">Save</button>
-                                  <button type="button" className="btn btn-sm btn-secondary" onClick={handleCancelEdit}>Cancel</button>
+                                  <button
+                                    type="submit"
+                                    className="btn btn-sm btn-success"
+                                  >
+                                    Save
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-secondary"
+                                    onClick={handleCancelEdit}
+                                  >
+                                    Cancel
+                                  </button>
                                 </div>
                               </form>
                             ) : (
@@ -666,14 +825,14 @@ const ProductDetails = () => {
 
                             {isOwner && !isEditing && (
                               <div className="position-absolute top-0 end-0 mt-1 d-flex gap-2">
-                                <button 
+                                <button
                                   className="btn btn-sm btn-outline-primary"
                                   onClick={() => handleStartEdit(review)}
                                   title="Edit your review"
                                 >
                                   Edit
                                 </button>
-                                <button 
+                                <button
                                   className="btn btn-sm btn-outline-danger"
                                   onClick={() => handleDeleteReview(review.id)}
                                   title="Delete your review"
@@ -688,11 +847,12 @@ const ProductDetails = () => {
                   ) : (
                     <div className="text-center py-5 text-muted">
                       <div className="fs-1 mb-3">💬</div>
-                      <p className="fs-5">No reviews yet. Be the first to review this phone!</p>
+                      <p className="fs-5">
+                        No reviews yet. Be the first to review this phone!
+                      </p>
                     </div>
                   )}
                 </div>
-
               </div>
             )}
           </div>
