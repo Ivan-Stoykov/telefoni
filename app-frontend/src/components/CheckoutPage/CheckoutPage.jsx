@@ -295,7 +295,7 @@ const CheckoutPage = () => {
 
                 <div className="summary-item-row mt-4">
                   <span>Total before discount</span>
-                  <span>{formatPrice(orderValue)}</span>
+                  <span className="text-nowrap">{formatPrice(orderValue)}</span>
                 </div>
 
                 <div className="summary-item-row">

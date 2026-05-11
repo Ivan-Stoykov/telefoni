@@ -233,8 +233,8 @@ const AccountPage = () => {
                       </div>
 
                       <div className="summary-row total">
-                        <span>TOTAL</span>
-                        <span className="total-price">{formatPrice(selectedOrder.total_price)}</span>
+                        <span className='pe-2'>TOTAL</span>
+                        <span className="total-price text-nowrap">{formatPrice(selectedOrder.total_price)}</span>
                       </div>
                     </div>
                   </div>
