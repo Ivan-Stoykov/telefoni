@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { formatPrice } from "../../utils/currency";
 import "./CheckoutPage.css";
 
 const CheckoutPage = () => {
@@ -76,7 +77,7 @@ const CheckoutPage = () => {
     const price = Number(item.price || item.phone_spec?.price || 0);
     return total + price * item.quantity;
   }, 0);
-а
+
   const shippingCost = formData.shipping.includes("Econt") ? 5 : 0;
 
   const finalTotal = orderValue + shippingCost;
@@ -286,11 +287,7 @@ const CheckoutPage = () => {
                         {item.quantity > 1 ? ` x${item.quantity}` : ""}
                       </span>
                       <span className="fw-medium text-dark text-nowrap">
-                        €
-                        {(
-                          (item.price || item.phone_spec?.price || 0) *
-                          item.quantity
-                        ).toFixed(2)}
+                        {formatPrice(Number(item.price || item.phone_spec?.price || 0) * item.quantity)}
                       </span>
                     </div>
                   ))}
@@ -298,7 +295,7 @@ const CheckoutPage = () => {
 
                 <div className="summary-item-row mt-4">
                   <span>Total before discount</span>
-                  <span>€{orderValue.toFixed(2)}</span>
+                  <span>{formatPrice(orderValue)}</span>
                 </div>
 
                 <div className="summary-item-row">
@@ -306,14 +303,14 @@ const CheckoutPage = () => {
                   <span>
                     {shippingCost === 0
                       ? "Free"
-                      : `€${shippingCost.toFixed(2)}`}
+                      : formatPrice(shippingCost)}
                   </span>
                 </div>
 
                 <div className="summary-total-row">
                   <span>TOTAL</span>
-                  <span className="text-primary fs-3">
-                    €{finalTotal.toFixed(2)}
+                  <span className="text-primary fs-6">
+                    {formatPrice(finalTotal)}
                   </span>
                 </div>
               </div>

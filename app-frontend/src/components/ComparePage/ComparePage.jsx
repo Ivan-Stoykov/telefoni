@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { formatPrice } from "../../utils/currency";
 import "./ComparePage.css";
 
 const ComparePage = () => {
@@ -76,7 +77,7 @@ const ComparePage = () => {
                   {phone.name || "Unknown Model"}
                 </h5>
                 <p className="fw-bold text-dark">
-                  {Number(phone.price || 0).toFixed(2)} €
+                  {formatPrice(phone.price)}
                 </p>
 
                 {/* --- СПЕЦИФИКАЦИИ --- */}

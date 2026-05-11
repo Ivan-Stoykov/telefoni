@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { formatPrice } from "../../../utils/currency";
 
 export default function PhonesPanel() {
   const [phones, setPhones] = useState([]);
@@ -76,7 +77,7 @@ export default function PhonesPanel() {
                 <td style={{ fontWeight: "600" }}>
                   {phone.phone_spec?.brand?.name + " " + phone.name || `Phone #${phone.id}`}
                 </td>
-                <td>€{Number(phone.price).toFixed(2)}</td>
+                <td>{formatPrice(phone.price)}</td>
                 <td>
                   <Link to={`edit/${phone.slug}`} className="action-btn">Edit</Link>
                   <button

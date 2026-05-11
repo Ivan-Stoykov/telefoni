@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { FiTrash2 } from 'react-icons/fi';
+import { formatPrice } from "../../utils/currency";
 import './CartPage.css';
 
 const CartPage = () => {
@@ -56,7 +57,7 @@ const CartPage = () => {
 
                                             <div className="d-flex align-items-center gap-4 mt-2">
                                                 <div className="cart-item-price mb-0">
-                                                    €{Number(item.price || 0).toFixed(2)}
+                                                    {formatPrice(item.price)}
                                                 </div>
 
                                                 <div className="d-flex align-items-center border rounded">
@@ -104,17 +105,17 @@ const CartPage = () => {
 
                                 <div className="summary-row mt-4">
                                     <span>Order value</span>
-                                    <span>€{orderValue.toFixed(2)}</span>
+                                    <span>{formatPrice(orderValue)}</span>
                                 </div>
 
                                 <div className="summary-row">
                                     <span>Total before discount</span>
-                                    <span>€{orderValue.toFixed(2)}</span>
+                                    <span>{formatPrice(orderValue)}</span>
                                 </div>
 
                                 <div className="summary-total">
                                     <span>TOTAL</span>
-                                    <span className="summary-total-price">€{orderValue.toFixed(2)}</span>
+                                    <span className="summary-total-price">{formatPrice(orderValue)}</span>
                                 </div>
 
                                 <Link to="/checkout" className="btn w-100 mt-4 checkout-btn text-decoration-none">

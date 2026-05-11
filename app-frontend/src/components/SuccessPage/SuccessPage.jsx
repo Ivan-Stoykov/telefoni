@@ -1,4 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
+import { formatPrice } from "../../utils/currency";
 import "./SuccessPage.css";
 
 const SuccessPage = () => {
@@ -7,20 +8,9 @@ const SuccessPage = () => {
     items = [],
     total = 0,
     beforeDiscount = 0,
-    shippingMethod,
+    shippingMethod, 
   } = location.state || {};
   const shippingCost = shippingMethod.includes("Econt") ? 5 : 0;
-
-  const formatPrice = (price) => {
-    if (!price) return null;
-    const [whole, cents] = Number(price).toFixed(2).split(".");
-    return (
-      <>
-        €{whole}
-        <span className="price-cents">{cents}</span>
-      </>
-    );
-  };
 
   return (
     <div className="success-page-container">
@@ -91,7 +81,7 @@ const SuccessPage = () => {
         <div className="success-total-row">
           <span>TOTAL</span>
           <span className="success-total-price">
-            €{Number(total).toFixed(2)}
+            {formatPrice(Number(total))}
           </span>
         </div>
 

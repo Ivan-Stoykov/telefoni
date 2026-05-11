@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './AccountPage.css';
+import { formatPrice } from '../../utils/currency';
 
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState('details');
@@ -175,7 +176,7 @@ const AccountPage = () => {
                         <div className="order-info">
                           <span className="order-id">Order ORD-2026-{order.id.toString().padStart(3, '0')}</span>
                           <span className="order-price">
-                            Date: {formatDate(order.created_at)} &nbsp;|&nbsp; Price: €{Number(order.total_price).toFixed(2)}
+                            Date: {formatDate(order.created_at)} &nbsp;|&nbsp; Price: {formatPrice(order.total_price)}
                           </span>
                         </div>
                         <button
@@ -212,7 +213,7 @@ const AccountPage = () => {
                               <div className="order-item-name">{item.phone?.phone_spec?.brand?.name + " " + item.phone?.name || `Phone #${item.phone_id}`}</div>
                               <div className="order-item-specs">Color: {item.color?.color || 'N/A'}</div>
                               <div className="order-item-price-qty">
-                                <span className="order-item-price">€{Number(item.price).toFixed(2)}</span>
+                                <span className="order-item-price">{formatPrice(item.price)}</span>
                                 <span className="order-item-qty">× {item.quantity}</span>
                               </div>
                             </div>
@@ -233,7 +234,7 @@ const AccountPage = () => {
 
                       <div className="summary-row total">
                         <span>TOTAL</span>
-                        <span className="total-price">€{Number(selectedOrder.total_price).toFixed(2)}</span>
+                        <span className="total-price">{formatPrice(selectedOrder.total_price)}</span>
                       </div>
                     </div>
                   </div>

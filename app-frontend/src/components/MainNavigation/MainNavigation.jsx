@@ -13,6 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCart } from "../../context/CartContext";
+import { formatPrice } from "../../utils/currency";
 
 export default function MainNavigation() {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
@@ -214,10 +215,11 @@ export default function MainNavigation() {
                           className="text-primary fw-bold"
                           style={{ fontSize: "0.8rem" }}
                         >
-                          €
-                          {Number(
-                            phone.price || phone.phone_spec?.price || 0,
-                          ).toFixed(2)}
+                          {formatPrice(
+                            Number(
+                              phone.price || phone.phone_spec?.price || 0
+                            )
+                          )}
                         </span>
                       </div>
                     </div>

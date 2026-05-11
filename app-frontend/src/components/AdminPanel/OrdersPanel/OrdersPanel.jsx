@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { formatPrice } from "../../../utils/currency";
 
 export default function OrdersPanel() {
   const [orders, setOrders] = useState([]);
@@ -270,7 +271,7 @@ export default function OrdersPanel() {
                       Color: {item.color?.color || "N/A"}
                     </div>
                     <div style={{ color: "#3b82f6", fontWeight: "600" }}>
-                      €{Number(item.price).toFixed(2)}{" "}
+                      {formatPrice(item.price)}{" "}
                       <span style={{ color: "#94a3b8" }}>x{item.quantity}</span>
                     </div>
                   </div>
@@ -287,7 +288,7 @@ export default function OrdersPanel() {
                 marginTop: "20px",
               }}
             >
-              Total: €{Number(selectedAdminOrder.total_price).toFixed(2)}
+              Total: {formatPrice(selectedAdminOrder.total_price)}
             </div>
           </div>
 
@@ -489,7 +490,7 @@ export default function OrdersPanel() {
                     `User #${order.user_id}`}
                 </td>
                 <td>{formatDate(order.created_at)}</td>
-                <td>€{Number(order.total_price).toFixed(2)}</td>
+                <td>{formatPrice(order.total_price)}</td>
                 <td>
                   <span
                     className={`admin-badge badge-${order.status?.toLowerCase() || "pending"}`}

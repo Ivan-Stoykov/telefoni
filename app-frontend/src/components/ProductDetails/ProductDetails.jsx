@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import "./ProductDetails.css";
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { formatPrice } from "../../utils/currency";
 
 const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState("description");
@@ -215,7 +216,7 @@ const ProductDetails = () => {
                 <div>
                   <p className="text-muted mb-0 fw-bold">Price:</p>
                   <h2 className="fw-bold mb-0">
-                    {phone.phone.price.toFixed(2)} €
+                    {formatPrice(phone.phone.price)}
                   </h2>
                 </div>
                 <button
@@ -305,29 +306,21 @@ const ProductDetails = () => {
                     <li className="mb-2">
                       <span className="fw-bold text-dark">Courier:</span>
                       <span className="text-secondary ms-2">
-                        2 - 4 days, free shipping
+                        2 - 4 days
                       </span>
                     </li>
                     <li className="mb-2">
-                      <span className="fw-bold text-dark">Local Shipping:</span>
+                      <span className="fw-bold text-dark">Econt Shipping:</span>
                       <span className="text-secondary ms-2">
-                        up to one week, $19.00
-                      </span>
-                    </li>
-                    <li className="mb-2">
-                      <span className="fw-bold text-dark">
-                        UPS Ground Shipping:
-                      </span>
-                      <span className="text-secondary ms-2">
-                        4 - 6 days, $29.00
+                         €5.00 / 9.81 BGN
                       </span>
                     </li>
                     <li className="mb-2">
                       <span className="fw-bold text-dark">
-                        Unishop Global Export:
+                        Speedy shipping
                       </span>
                       <span className="text-secondary ms-2">
-                        3 - 4 days, $39.00
+                        FREE
                       </span>
                     </li>
                   </ul>

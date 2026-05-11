@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import "./UpdatePhoneForm.css";
+import { formatPrice } from "../../../../utils/currency";
 import { useParams } from "react-router-dom";
+import "./UpdatePhoneForm.css";
 
 const UpdatePhonePage = () => {
   const { slug } = useParams();

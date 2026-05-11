@@ -1,5 +1,6 @@
 import './ProductCard.css';
 import { Link } from 'react-router-dom';
+import { formatPrice } from "../../utils/currency";
 
 const ProductCard = ({ phone }) => {
 
@@ -22,7 +23,7 @@ const ProductCard = ({ phone }) => {
           </h6>
         </Link>
 
-        <p className="price-text mb-2">{phone.price.toFixed(2)} €</p>
+        <p className="price-text mb-2">{formatPrice(phone.price)}</p>
 
         <div className="specs-list mb-3">
           <div>Processor: {phone.phone_spec.processor.brand + " " + phone.phone_spec.processor.name}</div>
