@@ -1,6 +1,5 @@
 import "./AdminPanel.css";
 import { Outlet, useLocation, Link } from "react-router-dom";
-import { formatPrice } from "../../../utils/currency";
 
 const AdminPanel = () => {
   const {pathname} = useLocation();

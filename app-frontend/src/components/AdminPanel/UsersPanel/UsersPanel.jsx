@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { formatPrice } from "../../../utils/currency";
 
 export default function UsersPanel() {
 

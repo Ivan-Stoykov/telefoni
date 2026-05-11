@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { formatPrice } from "../../../../utils/currency";
 import "./ProductAddForm.css";
 
 const ProductAddForm = () => {
