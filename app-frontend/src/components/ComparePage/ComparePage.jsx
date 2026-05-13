@@ -151,6 +151,25 @@ const ComparePage = () => {
                   </li>
                 </ul>
 
+                <h6 className="compare-category-title">
+                  Cameras
+                </h6>
+                <ul className="compare-specs-list">
+                  <li className="row">
+                    <div className="col-lg-2">Main:</div> <div className="col-lg-8">{phone.phone_spec.mainCamera
+                          .split("\\n")
+                          .map((c) => (
+                            <span key={c}>
+                              {c}
+                              <br />
+                            </span>
+                          )) || "N/A"}</div>
+                  </li>
+                  <li className="row">
+                    <div className="col-lg-2">Selfie:</div> <div className="col-lg-8">{phone.phone_spec?.SelfieCamera || "N/A"}</div>
+                  </li>
+                </ul>
+
                 <div className="d-flex gap-3 mt-auto pt-3 border-top">
                   <Link
                     to={`/product/${phone.slug}`}
