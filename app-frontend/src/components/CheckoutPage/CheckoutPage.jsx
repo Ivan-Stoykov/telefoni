@@ -263,7 +263,7 @@ const CheckoutPage = () => {
                     Cancel order
                   </button>
                   <button type="submit" className="payment-btn">
-                    Payment
+                    Order
                   </button>
                 </div>
               </div>
