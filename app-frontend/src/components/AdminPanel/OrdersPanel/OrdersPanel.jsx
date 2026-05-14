@@ -43,6 +43,18 @@ export default function OrdersPanel() {
     fetchAllData();
   }, []);
 
+  async function deleteOrder(orderId) {
+    const response = await fetch(`http://localhost:8000/api/orders/${orderId}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+    }
+    else {
+      alert("Грешка при изтриване на поръчката.");
+    }
+  }
+
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
@@ -498,12 +510,18 @@ export default function OrdersPanel() {
                     {(order.status || "pending").toUpperCase()}
                   </span>
                 </td>
-                <td>
+                <td className="btn-group">
                   <button
                     className="action-btn"
                     onClick={() => handleViewOrderDetails(order)}
                   >
-                    View Details
+                    View
+                  </button>
+                  <button
+                    className="action-btn delete"
+                    onClick={() => deleteOrder(order.id)}
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>
