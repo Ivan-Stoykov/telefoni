@@ -9,6 +9,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState(null);
 
   const storedUser = localStorage.getItem("user");
   const userData = JSON.parse(storedUser);
@@ -84,9 +85,9 @@ const CheckoutPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerError(null);
 
-    if (Object.keys(errors).length > 0) {
-      alert("Моля, попълнете всички задължителни полета коректно.");
+    if (!validateForm()) {
       return;
     }
 
@@ -159,6 +160,11 @@ const CheckoutPage = () => {
     <div className="checkout-page-container py-5">
       <div className="container px-4 px-lg-5" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit} noValidate>
+          {serverError && (
+            <div className="alert alert-danger mb-4" role="alert" style={{ borderRadius: '8px', border: 'none', backgroundColor: '#fee2e2', color: '#991b1b', padding: '15px' }}>
+              {serverError}
+            </div>
+          )}
           <div className="row g-5">
             {/* ЛЯВА ЧАСТ: Shipping Form */}
             <div className="col-lg-7 col-xl-8">
