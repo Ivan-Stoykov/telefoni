@@ -28,7 +28,18 @@ class PhoneController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+                'name' => 'required',
+                'price' => 'required|numeric',
+                'RAM' => 'required',
+                'Storage' => 'required',
+                'brand' => 'required_without:phoneSpecId',
+                'specs.processor.name' => 'required_without:phoneSpecId',
+        ]);
+
         $request->merge(['slug' => Str::slug(strtolower($request->name))]);
+
         if ($request->has('phoneSpecId')) {
             $phone = Phone::create($request->only([
                 'RAM',
@@ -43,13 +54,15 @@ class PhoneController extends Controller
             $brand = Brand::firstOrCreate(['name' => $request->input('brand')]);
             $processor = Processor::firstOrCreate([
                 'name' => $request->specs['processor']['name'],
-                'brand' => $request->specs['processor']['brand'],
-                'coreCount' => $request->specs['processor']['coreCount'],
-                'GPU' => $request->specs['processor']['GPU']]);
+                'brand' => $request->specs['processor']['brand'] ?? $brand->name,
+                'coreCount' => $request->specs['processor']['coreCount'] ?? 0,
+                'GPU' => $request->specs['processor']['GPU'] ?? 'Unknown'
+            ]);
 
             $specData = $request->input('specs');
             $specData['processorId'] = $processor->id;
-            $specData['brandId'] = $brand->id; 
+            $specData['brandId'] = $brand->id;
+
             $namearr = explode(' ', $request->input('name'));
             array_pop($namearr);
             $specData['specName'] = implode(' ', $namearr);
@@ -68,13 +81,16 @@ class PhoneController extends Controller
         }
         if ($request->has('colors')) {
                 foreach ($request->colors as $colorData) {
+                    if (!isset($colorData['colorName'])) continue;
                     $color = Color::firstOrCreate(['color' => $colorData['colorName']]);
                     PhoneColor::create([
                         'phoneId' => $phone->id,
                         'colorId' => $color->id,
-                        'quantity' => $colorData['quantity']
+                        'quantity' => $colorData['quantity'] ?? 0
                     ]);
                 }
+
+                return response()->json($phone, 201);
             }
     }
 
@@ -84,6 +100,7 @@ class PhoneController extends Controller
     public function show(string $slug)
     {
         $slug = strtolower($slug);
+        
 
         $phone = Phone::with("phoneSpec.processor", "phoneSpec.brand", "colors.color","reviews.user")
             ->where("slug", $slug)
@@ -91,7 +108,7 @@ class PhoneController extends Controller
 
         $models = Phone::where('phoneSpecId', $phone->phoneSpec->id)->where('isDeleted', false)->get();
         
-        return response(["phone" => $phone, 'models'=>$models], 200);
+        return response()->json(["phone" => $phone, 'models'=>$models], 200);
     }
 
     /**
@@ -100,21 +117,27 @@ class PhoneController extends Controller
     public function update(Request $request, string $id)
     {
         $phone = Phone::findOrFail($id);
+
+        $request->validate([
+            'price' => 'sometimes|numeric',
+        ]);
+        
         $phone->update($request->only(['RAM', 'Storage', 'price', 'name']));
 
-        PhoneColor::where('phoneId', $id)->delete();
 
         if ($request->has('colors')) {
+            PhoneColor::where('phoneId', $id)->delete();
             foreach ($request->colors as $colorData) {
+                if (!isset($colorData['colorName'])) continue;
                 $color = Color::firstOrCreate(['color' => $colorData['colorName']]);
                 PhoneColor::updateOrCreate(
                     ['phoneId' => $phone->id, 'colorId' => $color->id],
-                    ['quantity' => $colorData['quantity']]
+                    ['quantity' => $colorData['quantity'] ?? 0]
                 );
             }
         }
 
-        return response(['message' => 'Phone was updated'], 200);
+        return response()->json(['message' => 'Phone was updated'], 200);
     }
 
     /**
@@ -122,8 +145,9 @@ class PhoneController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        Phone::findOrFail($id)->where('id', $id)->update(['isDeleted' => true]);
-        return response(['message' => 'Phone was deleted'], 200);
+        $phone = Phone::findOrFail($id);
+        $phone->update(['isDeleted' => true]);
+        
+        return response()->json(['message' => 'Phone was deleted'], 200);
     }
 }
