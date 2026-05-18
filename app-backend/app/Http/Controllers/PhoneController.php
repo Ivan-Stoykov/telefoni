@@ -121,8 +121,9 @@ class PhoneController extends Controller
         $request->validate([
             'price' => 'sometimes|numeric',
         ]);
+        $request->merge(['slug' => Str::slug(strtolower($request->name))]);
         
-        $phone->update($request->only(['RAM', 'Storage', 'price', 'name']));
+        $phone->update($request->only(['RAM', 'Storage', 'price', 'name', 'slug']));
 
 
         if ($request->has('colors')) {
